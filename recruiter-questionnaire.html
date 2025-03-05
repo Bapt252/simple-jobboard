@@ -781,6 +781,100 @@
             font-size: 0.9rem;
         }
         
+        /* Boîte de confirmation pour redirection */
+        .confirmation-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .confirmation-dialog.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .confirmation-content {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .confirmation-dialog.active .confirmation-content {
+            transform: translateY(0);
+        }
+        
+        .confirmation-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .confirmation-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .confirmation-text {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .confirmation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .confirmation-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-cancel {
+            background-color: white;
+            color: var(--dark);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .btn-cancel:hover {
+            background-color: #f8fafc;
+        }
+        
+        .btn-confirm {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+        }
+        
+        .btn-confirm:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(108, 99, 255, 0.4);
+        }
+        
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -844,6 +938,10 @@
             }
             
             .option-buttons {
+                flex-direction: column;
+            }
+            
+            .confirmation-buttons {
                 flex-direction: column;
             }
         }
@@ -972,38 +1070,6 @@
                         <div class="question-header">
                             <h3 class="question-title">Fiche de poste</h3>
                             <p class="question-description">Si vous avez déjà une fiche de poste, vous pouvez la télécharger ici. Notre IA analysera automatiquement son contenu pour préremplir les informations du poste.</p>
-                        </div>
-                        
-                        <div id="no-position-message" style="display: none;">
-                            <div class="info-tip" style="background-color: rgba(108, 99, 255, 0.1); border-left-color: var(--primary);">
-                                <i class="fas fa-info-circle" style="color: var(--primary);"></i>
-                                <div class="info-tip-content">
-                                    <div class="info-tip-title">Exploration des profils</div>
-                                    <p class="info-tip-text">Vous avez indiqué ne pas avoir de poste spécifique à pourvoir. Vous pourrez explorer les profils disponibles et être contacté lorsqu'un candidat correspond à votre secteur d'activité.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="preferred-sectors" class="label-required">Secteurs d'activité privilégiés</label>
-                                <select id="preferred-sectors" multiple size="5" required style="height: auto;">
-                                    <option value="tech">Technologie</option>
-                                    <option value="finance">Finance</option>
-                                    <option value="healthcare">Santé</option>
-                                    <option value="retail">Commerce</option>
-                                    <option value="manufacturing">Industrie</option>
-                                    <option value="education">Éducation</option>
-                                    <option value="hospitality">Hôtellerie/Restauration</option>
-                                    <option value="consulting">Conseil</option>
-                                    <option value="media">Médias et Communication</option>
-                                    <option value="construction">Construction/BTP</option>
-                                </select>
-                                <p class="form-help" style="font-size: 0.85rem; color: var(--text); margin-top: 0.5rem;">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs secteurs.</p>
-                            </div>
-                            
-                            <div class="form-navigation">
-                                <button type="button" class="nav-btn btn-prev" id="prev2a"><i class="fas fa-arrow-left"></i> Précédent</button>
-                                <button type="button" class="nav-btn btn-next" id="next2a">Suivant <i class="fas fa-arrow-right"></i></button>
-                            </div>
                         </div>
                         
                         <div id="job-description-parser" class="conditional-section active">
@@ -1367,16 +1433,6 @@
                                 </div>
                             </div>
                             
-                            <div id="summary-no-position" style="display: none;">
-                                <div class="summary-block">
-                                    <h4 class="summary-title"><i class="fas fa-search"></i> Exploration des profils</h4>
-                                    <div class="summary-item">
-                                        <div class="summary-label">Secteurs privilégiés :</div>
-                                        <div class="summary-value" id="summary-preferred-sectors"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
                             <div id="summary-position-details">
                                 <div class="summary-block">
                                     <h4 class="summary-title"><i class="fas fa-briefcase"></i> Informations sur le poste</h4>
@@ -1450,6 +1506,21 @@
         </div>
     </section>
 
+    <!-- Boîte de dialogue de confirmation -->
+    <div class="confirmation-dialog" id="confirmation-dialog">
+        <div class="confirmation-content">
+            <div class="confirmation-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <h3 class="confirmation-title">Redirection vers l'accueil</h3>
+            <p class="confirmation-text">Vous avez indiqué ne pas avoir de poste à pourvoir. Vous allez être redirigé vers la page d'accueil où vous pourrez explorer les profils disponibles.</p>
+            <div class="confirmation-buttons">
+                <button class="confirmation-btn btn-cancel" id="cancel-redirect">Annuler</button>
+                <button class="confirmation-btn btn-confirm" id="confirm-redirect">Continuer</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="container">
             <p>&copy; 2025 Nexten - Tous droits réservés</p>
@@ -1467,20 +1538,21 @@
             // Boutons de navigation
             const next1Btn = document.getElementById('next1');
             const next2Btn = document.getElementById('next2');
-            const next2aBtn = document.getElementById('next2a');
             const next3Btn = document.getElementById('next3');
             const prev2Btn = document.getElementById('prev2');
-            const prev2aBtn = document.getElementById('prev2a');
             const prev3Btn = document.getElementById('prev3');
             const prev4Btn = document.getElementById('prev4');
             
             // Éléments conditionnels
             const hasPositionRadios = document.getElementsByName('has-position');
             const jobDescriptionParser = document.getElementById('job-description-parser');
-            const noPositionMessage = document.getElementById('no-position-message');
             const positionDetails = document.getElementById('position-details');
             const summaryPositionDetails = document.getElementById('summary-position-details');
-            const summaryNoPosition = document.getElementById('summary-no-position');
+            
+            // Dialogue de confirmation
+            const confirmationDialog = document.getElementById('confirmation-dialog');
+            const cancelRedirectBtn = document.getElementById('cancel-redirect');
+            const confirmRedirectBtn = document.getElementById('confirm-redirect');
             
             // Éléments du parser de fiche de poste
             const uploadArea = document.getElementById('upload-area');
@@ -1537,29 +1609,17 @@
                         document.querySelectorAll('input[name="has-position"]').forEach(radio => {
                             radio.closest('.radio-item').style.borderColor = '#e2e8f0';
                         });
+                        
+                        // Si l'utilisateur a choisi "Non", afficher la boîte de dialogue de confirmation
+                        if (hasPosition.value === 'no') {
+                            confirmationDialog.classList.add('active');
+                            return; // Arrêter la navigation
+                        }
                     }
                     
                     if (!isValid) {
                         alert('Veuillez remplir tous les champs obligatoires avant de continuer.');
                         return;
-                    }
-                }
-                
-                // Si nous sommes sur la deuxième page et que nous allons à la suivante
-                if (currentIndex === 2 && targetIndex === 3) {
-                    // Si nous avons indiqué "Non" pour avoir un poste, nous vérifions si le secteur a été sélectionné
-                    const hasPosition = document.querySelector('input[name="has-position"]:checked').value;
-                    
-                    if (hasPosition === 'no') {
-                        const preferredSectors = document.getElementById('preferred-sectors');
-                        if (preferredSectors.selectedOptions.length === 0) {
-                            isValid = false;
-                            preferredSectors.style.borderColor = '#e53e3e';
-                            alert('Veuillez sélectionner au moins un secteur d\'activité.');
-                            return;
-                        } else {
-                            preferredSectors.style.borderColor = '#e2e8f0';
-                        }
                     }
                 }
                 
@@ -1598,17 +1658,14 @@
                 questionContainers[targetIndex - 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             
-            // Gérer l'affichage conditionnel des détails du poste
-            hasPositionRadios.forEach(radio => {
-                radio.addEventListener('change', function() {
-                    if (this.value === 'yes') {
-                        jobDescriptionParser.classList.add('active');
-                        noPositionMessage.style.display = 'none';
-                    } else {
-                        jobDescriptionParser.classList.remove('active');
-                        noPositionMessage.style.display = 'block';
-                    }
-                });
+            // Gérer les choix dans le dialogue de confirmation
+            cancelRedirectBtn.addEventListener('click', function() {
+                confirmationDialog.classList.remove('active');
+            });
+            
+            confirmRedirectBtn.addEventListener('click', function() {
+                // Rediriger vers la page d'accueil
+                window.location.href = 'index.html';
             });
             
             // Gérer le téléchargement de fichier et le parsing
@@ -1708,10 +1765,8 @@
             // Gestionnaires d'événements pour les boutons de navigation
             next1Btn.addEventListener('click', () => navigateToQuestion(1, 2));
             next2Btn.addEventListener('click', () => navigateToQuestion(2, 3));
-            next2aBtn.addEventListener('click', () => navigateToQuestion(2, 3));
             next3Btn.addEventListener('click', () => navigateToQuestion(3, 4));
             prev2Btn.addEventListener('click', () => navigateToQuestion(2, 1));
-            prev2aBtn.addEventListener('click', () => navigateToQuestion(2, 1));
             prev3Btn.addEventListener('click', () => navigateToQuestion(3, 2));
             prev4Btn.addEventListener('click', () => navigateToQuestion(4, 3));
             
@@ -1726,89 +1781,73 @@
                 const companySize = document.getElementById('company-size');
                 document.getElementById('summary-company-size').textContent = companySize.options[companySize.selectedIndex]?.text || 'Non spécifié';
                 
-                // Vérifier si un poste est à pourvoir
-                const hasPosition = document.querySelector('input[name="has-position"]:checked')?.value;
+                // Informations sur le poste
+                document.getElementById('summary-job-title').textContent = document.getElementById('job-title').value || 'Non spécifié';
                 
-                if (hasPosition === 'no') {
-                    summaryPositionDetails.style.display = 'none';
-                    summaryNoPosition.style.display = 'block';
-                    
-                    // Secteurs privilégiés
-                    const preferredSectors = document.getElementById('preferred-sectors');
-                    const selectedSectors = Array.from(preferredSectors.selectedOptions).map(option => option.text);
-                    document.getElementById('summary-preferred-sectors').textContent = selectedSectors.join(', ') || 'Non spécifié';
-                } else {
-                    summaryPositionDetails.style.display = 'block';
-                    summaryNoPosition.style.display = 'none';
-                    
-                    // Informations sur le poste
-                    document.getElementById('summary-job-title').textContent = document.getElementById('job-title').value || 'Non spécifié';
-                    
-                    const recruitmentDeadline = document.getElementById('recruitment-deadline');
-                    document.getElementById('summary-recruitment-deadline').textContent = recruitmentDeadline.options[recruitmentDeadline.selectedIndex]?.text || 'Non spécifié';
-                    
-                    const noticePeriod = document.querySelector('input[name="notice-period"]:checked');
-                    let noticeText = 'Non spécifié';
-                    if (noticePeriod) {
-                        if (noticePeriod.value === 'no') {
-                            noticeText = 'Non';
-                        } else if (noticePeriod.value === '1-month') {
-                            noticeText = 'Oui, 1 mois';
-                        } else if (noticePeriod.value === '2-months') {
-                            noticeText = 'Oui, 2 mois';
-                        } else if (noticePeriod.value === '3-months') {
-                            noticeText = 'Oui, 3 mois';
-                        }
+                const recruitmentDeadline = document.getElementById('recruitment-deadline');
+                document.getElementById('summary-recruitment-deadline').textContent = recruitmentDeadline.options[recruitmentDeadline.selectedIndex]?.text || 'Non spécifié';
+                
+                const noticePeriod = document.querySelector('input[name="notice-period"]:checked');
+                let noticeText = 'Non spécifié';
+                if (noticePeriod) {
+                    if (noticePeriod.value === 'no') {
+                        noticeText = 'Non';
+                    } else if (noticePeriod.value === '1-month') {
+                        noticeText = 'Oui, 1 mois';
+                    } else if (noticePeriod.value === '2-months') {
+                        noticeText = 'Oui, 2 mois';
+                    } else if (noticePeriod.value === '3-months') {
+                        noticeText = 'Oui, 3 mois';
                     }
-                    document.getElementById('summary-notice-period').textContent = noticeText;
-                    
-                    const recruitmentContext = document.getElementById('recruitment-context');
-                    document.getElementById('summary-recruitment-context').textContent = recruitmentContext.options[recruitmentContext.selectedIndex]?.text || 'Non spécifié';
-                    
-                    const experienceRequired = document.getElementById('experience-required');
-                    document.getElementById('summary-experience-required').textContent = experienceRequired.options[experienceRequired.selectedIndex]?.text || 'Non spécifié';
-                    
-                    const sectorKnowledge = document.querySelector('input[name="sector-knowledge"]:checked')?.value;
-                    document.getElementById('summary-sector-knowledge').textContent = sectorKnowledge === 'yes' ? 'Oui' : 'Non';
-                    
-                    if (sectorKnowledge === 'yes') {
-                        summarySectorContainer.style.display = 'flex';
-                        const specificSector = document.getElementById('specific-sector');
-                        document.getElementById('summary-specific-sector').textContent = specificSector.options[specificSector.selectedIndex]?.text || 'Non spécifié';
-                    } else {
-                        summarySectorContainer.style.display = 'none';
-                    }
-                    
-                    // Environnement et conditions
-                    const workEnvironment = Array.from(document.querySelectorAll('input[name="work-environment"]:checked')).map(cb => cb.nextElementSibling.nextElementSibling.textContent);
-                    document.getElementById('summary-work-environment').textContent = workEnvironment.join(', ') || 'Non spécifié';
-                    
-                    document.getElementById('summary-team-composition').textContent = document.getElementById('team-composition').value || 'Non spécifié';
-                    document.getElementById('summary-career-opportunities').textContent = document.getElementById('career-opportunities').value || 'Non spécifié';
-                    document.getElementById('summary-salary').textContent = document.getElementById('salary').value || 'Non spécifié';
-                    
-                    const benefits = Array.from(document.querySelectorAll('input[name="benefits"]:checked')).map(cb => cb.nextElementSibling.nextElementSibling.textContent);
-                    const otherBenefits = document.getElementById('other-benefits').value;
-                    if (otherBenefits) benefits.push(otherBenefits);
-                    document.getElementById('summary-benefits').textContent = benefits.join(', ') || 'Non spécifié';
-                    
-                    const contractType = document.querySelector('input[name="contract-type"]:checked');
-                    let contractText = 'Non spécifié';
-                    if (contractType) {
-                        if (contractType.value === '35h-non-cadre') {
-                            contractText = '35h, non-cadre';
-                        } else if (contractType.value === '35h-cadre') {
-                            contractText = '35h, cadre';
-                        } else if (contractType.value === '39h-non-cadre') {
-                            contractText = '39h, non-cadre';
-                        } else if (contractType.value === '39h-cadre') {
-                            contractText = '39h, cadre';
-                        } else if (contractType.value === 'forfait-jour') {
-                            contractText = 'Forfait jour';
-                        }
-                    }
-                    document.getElementById('summary-contract-type').textContent = contractText;
                 }
+                document.getElementById('summary-notice-period').textContent = noticeText;
+                
+                const recruitmentContext = document.getElementById('recruitment-context');
+                document.getElementById('summary-recruitment-context').textContent = recruitmentContext.options[recruitmentContext.selectedIndex]?.text || 'Non spécifié';
+                
+                const experienceRequired = document.getElementById('experience-required');
+                document.getElementById('summary-experience-required').textContent = experienceRequired.options[experienceRequired.selectedIndex]?.text || 'Non spécifié';
+                
+                const sectorKnowledge = document.querySelector('input[name="sector-knowledge"]:checked')?.value;
+                document.getElementById('summary-sector-knowledge').textContent = sectorKnowledge === 'yes' ? 'Oui' : 'Non';
+                
+                if (sectorKnowledge === 'yes') {
+                    summarySectorContainer.style.display = 'flex';
+                    const specificSector = document.getElementById('specific-sector');
+                    document.getElementById('summary-specific-sector').textContent = specificSector.options[specificSector.selectedIndex]?.text || 'Non spécifié';
+                } else {
+                    summarySectorContainer.style.display = 'none';
+                }
+                
+                // Environnement et conditions
+                const workEnvironment = Array.from(document.querySelectorAll('input[name="work-environment"]:checked')).map(cb => cb.nextElementSibling.nextElementSibling.textContent);
+                document.getElementById('summary-work-environment').textContent = workEnvironment.join(', ') || 'Non spécifié';
+                
+                document.getElementById('summary-team-composition').textContent = document.getElementById('team-composition').value || 'Non spécifié';
+                document.getElementById('summary-career-opportunities').textContent = document.getElementById('career-opportunities').value || 'Non spécifié';
+                document.getElementById('summary-salary').textContent = document.getElementById('salary').value || 'Non spécifié';
+                
+                const benefits = Array.from(document.querySelectorAll('input[name="benefits"]:checked')).map(cb => cb.nextElementSibling.nextElementSibling.textContent);
+                const otherBenefits = document.getElementById('other-benefits').value;
+                if (otherBenefits) benefits.push(otherBenefits);
+                document.getElementById('summary-benefits').textContent = benefits.join(', ') || 'Non spécifié';
+                
+                const contractType = document.querySelector('input[name="contract-type"]:checked');
+                let contractText = 'Non spécifié';
+                if (contractType) {
+                    if (contractType.value === '35h-non-cadre') {
+                        contractText = '35h, non-cadre';
+                    } else if (contractType.value === '35h-cadre') {
+                        contractText = '35h, cadre';
+                    } else if (contractType.value === '39h-non-cadre') {
+                        contractText = '39h, non-cadre';
+                    } else if (contractType.value === '39h-cadre') {
+                        contractText = '39h, cadre';
+                    } else if (contractType.value === 'forfait-jour') {
+                        contractText = 'Forfait jour';
+                    }
+                }
+                document.getElementById('summary-contract-type').textContent = contractText;
             }
             
             // Soumission du formulaire
