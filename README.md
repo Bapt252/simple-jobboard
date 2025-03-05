@@ -1,6 +1,6 @@
-# Simple JobBoard
+# Nexten - Plateforme d'Emploi
 
-Un site d'offres d'emploi simple et fonctionnel créé en HTML, CSS et JavaScript.
+Une plateforme d'offres d'emploi moderne et fonctionnelle créée en HTML, CSS et JavaScript.
 
 ## Fonctionnalités
 
@@ -16,3 +16,4 @@ Un site d'offres d'emploi simple et fonctionnel créé en HTML, CSS et JavaScrip
 - CSS3
 - JavaScript (Vanilla)
 - Font Awesome pour les icônes
+- Police Google Fonts (Inter)
