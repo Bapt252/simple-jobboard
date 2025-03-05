@@ -139,6 +139,38 @@
             gap: 1rem;
         }
         
+        .rangable-item {
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            cursor: move;
+        }
+        
+        .rangable-item:hover {
+            background-color: #f1f5f9;
+        }
+        
+        .range-number {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 1rem;
+            font-weight: 500;
+        }
+        
+        .rangable-text {
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
         .form-buttons {
             display: flex;
             justify-content: space-between;
@@ -209,6 +241,41 @@
         .indicator-dot.active {
             background-color: var(--primary);
             transform: scale(1.3);
+        }
+        
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f1f5f9;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .tag-remove {
+            margin-left: 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+        
+        .tag-remove:hover {
+            color: #e74c3c;
+        }
+        
+        .drag-instruction {
+            font-size: 0.8rem;
+            color: var(--text);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-style: italic;
         }
         
         .conditional-section {
@@ -283,58 +350,72 @@
             color: white;
         }
         
-        .publish-later-box {
-            background-color: rgba(108, 99, 255, 0.05);
-            border: 1px dashed var(--primary);
-            border-radius: var(--radius);
-            padding: 1rem;
-            margin-bottom: 1.5rem;
+        .skill-tags {
             display: flex;
-            align-items: center;
-        }
-        
-        .publish-later-icon {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-right: 1rem;
-        }
-        
-        .publish-later-text {
-            flex-grow: 1;
-            font-size: 0.95rem;
-            color: var(--text);
-        }
-        
-        .publish-later-link {
-            color: var(--primary);
-            font-weight: 500;
-            text-decoration: underline;
-        }
-        
-        .auto-fill-section {
-            background-color: #f8fafc;
-            border-radius: var(--radius);
-            padding: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
             margin-top: 0.5rem;
-            display: flex;
+        }
+        
+        .skill-tag {
+            display: inline-flex;
             align-items: center;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        .auto-fill-section:hover {
-            background-color: #f1f5f9;
-        }
-        
-        .auto-fill-icon {
+            background-color: rgba(108, 99, 255, 0.1);
             color: var(--primary);
-            font-size: 1.2rem;
-            margin-right: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
         }
         
-        .auto-fill-text {
+        .skill-tag .remove {
+            margin-left: 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
             color: var(--text);
+        }
+        
+        .skill-tag .remove:hover {
+            color: #e74c3c;
+        }
+        
+        .custom-range {
+            width: 100%;
+            appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+            margin: 1rem 0;
+        }
+        
+        .custom-range::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .custom-range::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+        
+        .range-value {
+            text-align: center;
             font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-top: 0.5rem;
         }
     </style>
 </head>
@@ -356,9 +437,9 @@
         <div class="container">
             <div class="questionnaire-container">
                 <div class="upload-steps">
-                    <div class="upload-step" id="postStep">
-                        <div class="step-number"><i class="fas fa-file-alt"></i></div>
-                        <div class="step-title">Poste</div>
+                    <div class="upload-step completed">
+                        <div class="step-number"><i class="fas fa-check"></i></div>
+                        <div class="step-title">Offre d'emploi</div>
                     </div>
                     <div class="upload-step active">
                         <div class="step-number">2</div>
@@ -371,17 +452,8 @@
                 </div>
             
                 <div class="questionnaire-intro">
-                    <h3>Complétez votre profil d'entreprise</h3>
-                    <p>Ces informations nous aideront à trouver les meilleurs candidats pour vos besoins de recrutement.</p>
-                </div>
-                
-                <div class="publish-later-box" id="publishLaterBox">
-                    <div class="publish-later-icon">
-                        <i class="fas fa-info-circle"></i>
-                    </div>
-                    <div class="publish-later-text">
-                        Vous n'avez pas encore publié d'offre d'emploi. Vous pouvez continuer à remplir votre profil et <a href="post-job.html" class="publish-later-link">publier une offre plus tard</a>.
-                    </div>
+                    <h3>Précisez vos critères de recherche</h3>
+                    <p>Répondez à ces questions pour nous aider à trouver les candidats qui correspondent le mieux à vos besoins.</p>
                 </div>
 
                 <div class="progress-bar-container">
@@ -391,269 +463,282 @@
                 <div class="section-indicator" id="sectionIndicator">
                     <div class="indicator-dot active" data-section="1"></div>
                     <div class="indicator-dot" data-section="2"></div>
+                    <div class="indicator-dot" data-section="3"></div>
                 </div>
 
                 <form id="recruiterForm">
-                    <!-- Section 1: Informations sur l'entreprise -->
+                    <!-- Section 1: Compétences et Expérience -->
                     <div class="form-section" id="section1">
-                        <h4 class="form-section-title"><i class="fas fa-building"></i> Informations sur l'entreprise</h4>
+                        <h4 class="form-section-title"><i class="fas fa-briefcase"></i> Compétences et Expérience</h4>
                         
-                        <div class="input-group">
-                            <label for="companyName">Nom de la structure*</label>
-                            <input type="text" id="companyName" required>
+                        <div class="form-tip">
+                            <i class="fas fa-lightbulb"></i> Plus vous êtes précis dans vos critères, plus notre matching sera pertinent. Cependant, trop de critères restrictifs peut limiter le nombre de candidats.
                         </div>
                         
                         <div class="input-group">
-                            <label for="companyAddress">Adresse complète*</label>
-                            <input type="text" id="companyAddress" placeholder="Ex: 10 rue de la Paix, 75002 Paris" required>
+                            <label for="requiredSkills">Compétences essentielles (obligatoires)</label>
+                            <input type="text" id="requiredSkills" placeholder="Tapez une compétence et appuyez sur Entrée...">
+                            <div class="skill-tags" id="requiredSkillTags"></div>
+                            <small>Ex: JavaScript, React, Python...</small>
                         </div>
                         
                         <div class="input-group">
-                            <label for="companyWebsite">Site internet</label>
-                            <input type="url" id="companyWebsite" placeholder="https://example.com">
-                            <div class="auto-fill-section" id="autoFillFromWebsite">
-                                <i class="fas fa-magic auto-fill-icon"></i>
-                                <span class="auto-fill-text">Remplir automatiquement la description à partir du site web</span>
+                            <label for="bonusSkills">Compétences souhaitées (bonus)</label>
+                            <input type="text" id="bonusSkills" placeholder="Tapez une compétence et appuyez sur Entrée...">
+                            <div class="skill-tags" id="bonusSkillTags"></div>
+                            <small>Ex: TypeScript, Redux, Docker...</small>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Niveau d'expérience requis</label>
+                            <div class="grid-options">
+                                <div class="radio-label">
+                                    <input type="radio" name="experienceLevel" value="junior" class="radio-input" id="expJunior">
+                                    <label for="expJunior">Junior (0-2 ans)</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="experienceLevel" value="intermediate" class="radio-input" id="expIntermediate">
+                                    <label for="expIntermediate">Intermédiaire (3-5 ans)</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="experienceLevel" value="senior" class="radio-input" id="expSenior">
+                                    <label for="expSenior">Senior (6+ ans)</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="experienceLevel" value="any" class="radio-input" id="expAny">
+                                    <label for="expAny">Peu importe</label>
+                                </div>
                             </div>
                         </div>
                         
                         <div class="input-group">
-                            <label for="companyDescription">Présentation rapide</label>
-                            <textarea id="companyDescription" rows="5" placeholder="Présentez brièvement votre entreprise, ses activités et sa culture..."></textarea>
+                            <label>Formation requise</label>
+                            <div class="grid-options">
+                                <div class="radio-label">
+                                    <input type="radio" name="education" value="no-degree" class="radio-input" id="eduNoDegree">
+                                    <label for="eduNoDegree">Pas de diplôme spécifique</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="education" value="bac" class="radio-input" id="eduBac">
+                                    <label for="eduBac">Bac</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="education" value="bac2" class="radio-input" id="eduBac2">
+                                    <label for="eduBac2">Bac+2/3</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="education" value="bac5" class="radio-input" id="eduBac5">
+                                    <label for="eduBac5">Bac+5 et plus</label>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="input-group">
-                            <label>Taille de structure*</label>
+                            <label for="specificEducation">Formation spécifique (optionnel)</label>
+                            <input type="text" id="specificEducation" placeholder="Ex: Ingénieur informatique, Master en data science...">
+                        </div>
+                    </div>
+                    
+                    <!-- Section 2: Conditions de travail -->
+                    <div class="form-section hidden" id="section2">
+                        <h4 class="form-section-title"><i class="fas fa-building"></i> Conditions de travail</h4>
+                        
+                        <div class="input-group">
+                            <label>Type de contrat</label>
                             <div class="grid-options">
                                 <div class="radio-label">
-                                    <input type="radio" name="companySize" value="startup" class="radio-input" id="sizeStartup">
-                                    <label for="sizeStartup">Start-up (< 10)</label>
+                                    <input type="radio" name="contractType" value="cdi" class="radio-input" id="contractCDI">
+                                    <label for="contractCDI">CDI</label>
                                 </div>
                                 <div class="radio-label">
-                                    <input type="radio" name="companySize" value="tpe" class="radio-input" id="sizeTPE">
-                                    <label for="sizeTPE">TPE (< 20)</label>
+                                    <input type="radio" name="contractType" value="cdd" class="radio-input" id="contractCDD">
+                                    <label for="contractCDD">CDD</label>
                                 </div>
                                 <div class="radio-label">
-                                    <input type="radio" name="companySize" value="pme" class="radio-input" id="sizePME">
-                                    <label for="sizePME">PME (< 250)</label>
+                                    <input type="radio" name="contractType" value="freelance" class="radio-input" id="contractFreelance">
+                                    <label for="contractFreelance">Freelance</label>
                                 </div>
                                 <div class="radio-label">
-                                    <input type="radio" name="companySize" value="eti" class="radio-input" id="sizeETI">
-                                    <label for="sizeETI">ETI (250-5000)</label>
+                                    <input type="radio" name="contractType" value="internship" class="radio-input" id="contractInternship">
+                                    <label for="contractInternship">Stage</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Modalité de travail</label>
+                            <div class="grid-options">
+                                <div class="radio-label">
+                                    <input type="radio" name="workMode" value="office" class="radio-input" id="workOffice">
+                                    <label for="workOffice">Bureau (présentiel)</label>
                                 </div>
                                 <div class="radio-label">
-                                    <input type="radio" name="companySize" value="group" class="radio-input" id="sizeGroup">
-                                    <label for="sizeGroup">Grand groupe (> 5000)</label>
+                                    <input type="radio" name="workMode" value="hybrid" class="radio-input" id="workHybrid">
+                                    <label for="workHybrid">Hybride</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="workMode" value="remote" class="radio-input" id="workRemote">
+                                    <label for="workRemote">Télétravail complet</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group conditional-section" id="hybridDaysSection" style="display: none;">
+                            <label>Nombre de jours de télétravail par semaine</label>
+                            <div class="grid-options">
+                                <div class="radio-label">
+                                    <input type="radio" name="hybridDays" value="1" class="radio-input" id="hybrid1">
+                                    <label for="hybrid1">1 jour</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="hybridDays" value="2" class="radio-input" id="hybrid2">
+                                    <label for="hybrid2">2 jours</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="hybridDays" value="3" class="radio-input" id="hybrid3">
+                                    <label for="hybrid3">3 jours</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="hybridDays" value="4" class="radio-input" id="hybrid4">
+                                    <label for="hybrid4">4 jours</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Environnement de travail</label>
+                            <div class="grid-options">
+                                <div class="radio-label">
+                                    <input type="radio" name="workEnvironment" value="openspace" class="radio-input" id="envOpenSpace">
+                                    <label for="envOpenSpace">Open Space</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="workEnvironment" value="office" class="radio-input" id="envOffice">
+                                    <label for="envOffice">Bureau fermé</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="workEnvironment" value="mixed" class="radio-input" id="envMixed">
+                                    <label for="envMixed">Mixte</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="workEnvironment" value="any" class="radio-input" id="envAny">
+                                    <label for="envAny">Pas d'importance</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="minSalary">Fourchette de rémunération (brut annuel en €)</label>
+                            <div style="display: flex; gap: 1rem;">
+                                <input type="number" id="minSalary" placeholder="Min" style="width: 50%;">
+                                <input type="number" id="maxSalary" placeholder="Max" style="width: 50%;">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Urgent / Date de début</label>
+                            <div class="grid-options">
+                                <div class="radio-label">
+                                    <input type="radio" name="startDate" value="immediate" class="radio-input" id="startImmediate">
+                                    <label for="startImmediate">Immédiatement</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="startDate" value="1month" class="radio-input" id="start1Month">
+                                    <label for="start1Month">Dans le mois</label>
+                                </div>
+                                <div class="radio-label">
+                                    <input type="radio" name="startDate" value="flexible" class="radio-input" id="startFlexible">
+                                    <label for="startFlexible">Flexible</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Section 2: Informations sur le poste -->
-                    <div class="form-section hidden" id="section2">
-                        <h4 class="form-section-title"><i class="fas fa-briefcase"></i> Informations sur le poste</h4>
+                    <!-- Section 3: Critères complémentaires -->
+                    <div class="form-section hidden" id="section3">
+                        <h4 class="form-section-title"><i class="fas fa-sliders-h"></i> Critères complémentaires</h4>
                         
                         <div class="input-group">
-                            <label>Avez-vous un poste sur lequel vous souhaitez recruter ?</label>
-                            <div class="radio-label">
-                                <input type="radio" name="hasPosition" value="yes" class="radio-input" id="positionYes">
-                                <label for="positionYes">Oui</label>
+                            <label>Distance maximale domicile-travail acceptable</label>
+                            <input type="range" class="custom-range" id="maxCommuteRange" min="10" max="120" step="10" value="60">
+                            <div class="range-labels">
+                                <span>10 min</span>
+                                <span>1h</span>
+                                <span>2h</span>
                             </div>
-                            <div class="radio-label">
-                                <input type="radio" name="hasPosition" value="no" class="radio-input" id="positionNo">
-                                <label for="positionNo">Non, je souhaite juste explorer les profils disponibles</label>
+                            <div class="range-value" id="maxCommuteValue">60 minutes</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Importance de l'expérience vs. potentiel</label>
+                            <input type="range" class="custom-range" id="expVsPotentialRange" min="0" max="100" step="10" value="50">
+                            <div class="range-labels">
+                                <span>Potentiel</span>
+                                <span>Équilibré</span>
+                                <span>Expérience</span>
+                            </div>
+                            <div class="range-value" id="expVsPotentialValue">Équilibré (50%)</div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Disponibilité du candidat</label>
+                            <div class="grid-options">
+                                <div class="checkbox-label">
+                                    <input type="checkbox" name="availability" value="immediate" class="checkbox-input" id="availImmediate">
+                                    <label for="availImmediate">Disponible immédiatement</label>
+                                </div>
+                                <div class="checkbox-label">
+                                    <input type="checkbox" name="availability" value="1month" class="checkbox-input" id="avail1Month">
+                                    <label for="avail1Month">Préavis ≤ 1 mois</label>
+                                </div>
+                                <div class="checkbox-label">
+                                    <input type="checkbox" name="availability" value="3months" class="checkbox-input" id="avail3Months">
+                                    <label for="avail3Months">Préavis ≤ 3 mois</label>
+                                </div>
+                                <div class="checkbox-label">
+                                    <input type="checkbox" name="availability" value="any" class="checkbox-input" id="availAny" checked>
+                                    <label for="availAny">Peu importe</label>
+                                </div>
                             </div>
                         </div>
                         
-                        <div class="conditional-section hidden" id="positionSection">
-                            <div class="input-group">
-                                <label>Délai de recrutement (plusieurs choix possibles)</label>
-                                <div class="grid-options">
-                                    <div class="checkbox-label">
-                                        <input type="checkbox" name="recruitmentDeadline" value="immediate" class="checkbox-input" id="deadlineImmediate">
-                                        <label for="deadlineImmediate">Immédiat</label>
-                                    </div>
-                                    <div class="checkbox-label">
-                                        <input type="checkbox" name="recruitmentDeadline" value="2weeks" class="checkbox-input" id="deadline2Weeks">
-                                        <label for="deadline2Weeks">2 semaines</label>
-                                    </div>
-                                    <div class="checkbox-label">
-                                        <input type="checkbox" name="recruitmentDeadline" value="1month" class="checkbox-input" id="deadline1Month">
-                                        <label for="deadline1Month">1 mois</label>
-                                    </div>
-                                    <div class="checkbox-label">
-                                        <input type="checkbox" name="recruitmentDeadline" value="2months" class="checkbox-input" id="deadline2Months">
-                                        <label for="deadline2Months">2 mois</label>
-                                    </div>
-                                    <div class="checkbox-label">
-                                        <input type="checkbox" name="recruitmentDeadline" value="3months" class="checkbox-input" id="deadline3Months">
-                                        <label for="deadline3Months">3 mois</label>
-                                    </div>
+                        <div class="input-group">
+                            <label>Excluriez-vous des candidats actuellement en poste ?</label>
+                            <div class="radio-label">
+                                <input type="radio" name="currentlyEmployed" value="yes" class="radio-input" id="employed">
+                                <label for="employed">Oui, je préfère des candidats disponibles</label>
+                            </div>
+                            <div class="radio-label">
+                                <input type="radio" name="currentlyEmployed" value="no" class="radio-input" id="notEmployed">
+                                <label for="notEmployed">Non, cela n'a pas d'importance</label>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label>Langues requises</label>
+                            <div class="grid-options">
+                                <div class="checkbox-label">
+                                    <input type="checkbox" name="languages" value="french" class="checkbox-input" id="langFrench" checked>
+                                    <label for="langFrench">Français</label>
+                                </div>
+                                <div class="checkbox-label">
+                                    <input type="checkbox" name="languages" value="english" class="checkbox-input" id="langEnglish">
+                                    <label for="langEnglish">Anglais</label>
+                                </div>
+                                <div class="checkbox-label">
+                                    <input type="checkbox" name="languages" value="spanish" class="checkbox-input" id="langSpanish">
+                                    <label for="langSpanish">Espagnol</label>
+                                </div>
+                                <div class="checkbox-label">
+                                    <input type="checkbox" name="languages" value="german" class="checkbox-input" id="langGerman">
+                                    <label for="langGerman">Allemand</label>
                                 </div>
                             </div>
-                            
-                            <div class="input-group">
-                                <label>Pouvez-vous gérer un préavis ?</label>
-                                <div class="radio-label">
-                                    <input type="radio" name="canHandleNotice" value="yes" class="radio-input" id="noticeYes">
-                                    <label for="noticeYes">Oui</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="canHandleNotice" value="no" class="radio-input" id="noticeNo">
-                                    <label for="noticeNo">Non</label>
-                                </div>
-                                
-                                <div class="conditional-section hidden" id="noticeSection">
-                                    <label>Durée de préavis acceptable</label>
-                                    <div class="grid-options">
-                                        <div class="checkbox-label">
-                                            <input type="checkbox" name="acceptableNotice" value="1month" class="checkbox-input" id="notice1Month">
-                                            <label for="notice1Month">1 mois</label>
-                                        </div>
-                                        <div class="checkbox-label">
-                                            <input type="checkbox" name="acceptableNotice" value="2months" class="checkbox-input" id="notice2Months">
-                                            <label for="notice2Months">2 mois</label>
-                                        </div>
-                                        <div class="checkbox-label">
-                                            <input type="checkbox" name="acceptableNotice" value="3months" class="checkbox-input" id="notice3Months">
-                                            <label for="notice3Months">3 mois</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label>Contexte de recrutement</label>
-                                <div class="grid-options">
-                                    <div class="radio-label">
-                                        <input type="radio" name="recruitmentContext" value="creation" class="radio-input" id="contextCreation">
-                                        <label for="contextCreation">Création de poste</label>
-                                    </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="recruitmentContext" value="replacement" class="radio-input" id="contextReplacement">
-                                        <label for="contextReplacement">Remplacement</label>
-                                    </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="recruitmentContext" value="growth" class="radio-input" id="contextGrowth">
-                                        <label for="contextGrowth">Accroissement d'activité / Renfort</label>
-                                    </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="recruitmentContext" value="private" class="radio-input" id="contextPrivate">
-                                        <label for="contextPrivate">Je ne souhaite pas communiquer</label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label>Années d'expérience requises pour le poste</label>
-                                <div class="grid-options">
-                                    <div class="radio-label">
-                                        <input type="radio" name="experienceYears" value="junior" class="radio-input" id="expJunior">
-                                        <label for="expJunior">Profil Junior</label>
-                                    </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="experienceYears" value="2-3" class="radio-input" id="exp2to3">
-                                        <label for="exp2to3">2 ans - 3 ans</label>
-                                    </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="experienceYears" value="5-10" class="radio-input" id="exp5to10">
-                                        <label for="exp5to10">5 ans - 10 ans</label>
-                                    </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="experienceYears" value="10+" class="radio-input" id="exp10plus">
-                                        <label for="exp10plus">10 ans et plus</label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label>La connaissance de votre secteur est-elle obligatoire ?</label>
-                                <div class="radio-label">
-                                    <input type="radio" name="sectorKnowledge" value="yes" class="radio-input" id="sectorKnowledgeYes">
-                                    <label for="sectorKnowledgeYes">Oui</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="sectorKnowledge" value="no" class="radio-input" id="sectorKnowledgeNo">
-                                    <label for="sectorKnowledgeNo">Non</label>
-                                </div>
-                                
-                                <div class="conditional-section hidden" id="sectorSection">
-                                    <label for="requiredSector">Secteur d'activité</label>
-                                    <select id="requiredSector">
-                                        <option value="">Sélectionner un secteur</option>
-                                        <option value="tech">Informatique / Tech</option>
-                                        <option value="finance">Finance / Banque / Assurance</option>
-                                        <option value="healthcare">Santé / Pharmaceutique</option>
-                                        <option value="retail">Commerce / Distribution</option>
-                                        <option value="industry">Industrie / Production</option>
-                                        <option value="education">Éducation / Formation</option>
-                                        <option value="media">Médias / Communication</option>
-                                        <option value="consulting">Conseil / Consulting</option>
-                                        <option value="public">Secteur public</option>
-                                        <option value="nonprofit">Associatif / ONG</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label>Environnement de travail</label>
-                                <div class="grid-options">
-                                    <div class="radio-label">
-                                        <input type="radio" name="workEnvironment" value="openspace" class="radio-input" id="envOpenSpace">
-                                        <label for="envOpenSpace">Open Space</label>
-                                    </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="workEnvironment" value="office" class="radio-input" id="envOffice">
-                                        <label for="envOffice">Bureau fermé</label>
-                                    </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="workEnvironment" value="mixed" class="radio-input" id="envMixed">
-                                        <label for="envMixed">Mixte</label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label for="teamComposition">Composition de l'équipe et rattachement interne</label>
-                                <textarea id="teamComposition" rows="3" placeholder="Ex: Équipe de 5 personnes, rattaché à un responsable..."></textarea>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label for="careerProspects">Perspectives d'évolution</label>
-                                <textarea id="careerProspects" rows="3" placeholder="Mentionnez les possibilités d'évolution au sein de l'entreprise..."></textarea>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label for="salaryRange">Rémunération</label>
-                                <input type="text" id="salaryRange" placeholder="Ex: 45 000 € - 55 000 € brut annuel">
-                            </div>
-                            
-                            <div class="input-group">
-                                <label for="benefits">Avantages</label>
-                                <textarea id="benefits" rows="3" placeholder="Ex: Télétravail 2 jours/semaine, RTT, 13e mois, tickets restaurant..."></textarea>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label>Type de contrat</label>
-                                <div class="grid-options">
-                                    <div class="checkbox-label">
-                                        <input type="checkbox" name="contractType" value="35h" class="checkbox-input" id="contract35h">
-                                        <label for="contract35h">35h</label>
-                                    </div>
-                                    <div class="checkbox-label">
-                                        <input type="checkbox" name="contractType" value="39h" class="checkbox-input" id="contract39h">
-                                        <label for="contract39h">39h</label>
-                                    </div>
-                                    <div class="checkbox-label">
-                                        <input type="checkbox" name="contractType" value="cadre" class="checkbox-input" id="contractCadre">
-                                        <label for="contractCadre">Cadre</label>
-                                    </div>
-                                    <div class="checkbox-label">
-                                        <input type="checkbox" name="contractType" value="non-cadre" class="checkbox-input" id="contractNonCadre">
-                                        <label for="contractNonCadre">Non-cadre</label>
-                                    </div>
-                                </div>
-                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="additionalNotes">Notes ou exigences supplémentaires</label>
+                            <textarea id="additionalNotes" rows="4" placeholder="Informations complémentaires qui vous aideront à trouver le candidat idéal..."></textarea>
                         </div>
                     </div>
                     
@@ -674,30 +759,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Vérifier si une offre a été publiée
-            function checkJobStatus() {
-                // Simuler que l'offre n'a pas été publiée
-                // En production, cela serait vérifié via une session ou un cookie
-                const jobPublished = false;
-                const publishLaterBox = document.getElementById('publishLaterBox');
-                const postStep = document.getElementById('postStep');
-                
-                if (jobPublished) {
-                    // Si l'offre a été publiée, marquer l'étape comme complétée
-                    publishLaterBox.style.display = 'none';
-                    postStep.classList.add('completed');
-                } else {
-                    // Si l'offre n'a pas été publiée, afficher la notification
-                    publishLaterBox.style.display = 'flex';
-                    postStep.classList.remove('completed');
-                }
-            }
-            
-            checkJobStatus();
-            
             // Variables de navigation
             let currentSection = 1;
-            const totalSections = 2;
+            const totalSections = 3;
             const progressBar = document.getElementById('progressBar');
             const backButton = document.getElementById('backButton');
             const nextButton = document.getElementById('nextButton');
@@ -707,63 +771,101 @@
             updateProgressBar();
             updateButtons();
             
-            // Gestion de l'auto-remplissage à partir du site web
-            document.getElementById('autoFillFromWebsite').addEventListener('click', function() {
-                const websiteUrl = document.getElementById('companyWebsite').value;
-                if (websiteUrl) {
-                    // Simuler l'analyse du site web
-                    document.getElementById('autoFillFromWebsite').innerHTML = '<i class="fas fa-spinner fa-spin auto-fill-icon"></i> Analyse en cours...';
-                    
-                    setTimeout(() => {
-                        // Simuler les résultats de l'analyse
-                        document.getElementById('companyDescription').value = "Notre entreprise est un leader dans son domaine, offrant des solutions innovantes à nos clients depuis plus de 10 ans. Nous sommes passionnés par la qualité et l'excellence, avec une équipe dynamique et diversifiée.";
-                        
-                        // Restaurer le bouton
-                        document.getElementById('autoFillFromWebsite').innerHTML = '<i class="fas fa-magic auto-fill-icon"></i> <span class="auto-fill-text">Remplir automatiquement la description à partir du site web</span>';
-                        
-                        // Notification de succès
-                        alert('La description a été automatiquement remplie à partir de l\'analyse du site web.');
-                    }, 1500);
+            // Gestion du mode de travail hybride
+            document.querySelectorAll('[name="workMode"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const hybridDaysSection = document.getElementById('hybridDaysSection');
+                    if (this.value === 'hybrid') {
+                        hybridDaysSection.style.display = 'block';
+                    } else {
+                        hybridDaysSection.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Gestion des sliders
+            const maxCommuteRange = document.getElementById('maxCommuteRange');
+            const maxCommuteValue = document.getElementById('maxCommuteValue');
+            
+            maxCommuteRange.addEventListener('input', function() {
+                maxCommuteValue.textContent = `${this.value} minutes`;
+            });
+            
+            const expVsPotentialRange = document.getElementById('expVsPotentialRange');
+            const expVsPotentialValue = document.getElementById('expVsPotentialValue');
+            
+            expVsPotentialRange.addEventListener('input', function() {
+                let valueText;
+                const value = parseInt(this.value);
+                
+                if (value < 30) {
+                    valueText = `Privilégie le potentiel (${value}%)`;
+                } else if (value < 40) {
+                    valueText = `Plutôt potentiel (${value}%)`;
+                } else if (value <= 60) {
+                    valueText = `Équilibré (${value}%)`;
+                } else if (value < 70) {
+                    valueText = `Plutôt expérience (${value}%)`;
                 } else {
-                    alert('Veuillez d\'abord saisir l\'URL de votre site web.');
+                    valueText = `Privilégie l'expérience (${value}%)`;
+                }
+                
+                expVsPotentialValue.textContent = valueText;
+            });
+            
+            // Gestion des tags de compétences
+            function setupSkillInput(inputId, tagContainerId) {
+                const input = document.getElementById(inputId);
+                const container = document.getElementById(tagContainerId);
+                
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && this.value.trim()) {
+                        e.preventDefault();
+                        addSkillTag(this.value.trim(), container);
+                        this.value = '';
+                    }
+                });
+            }
+            
+            function addSkillTag(skill, container) {
+                // Vérifier si le tag existe déjà
+                const existingTags = container.querySelectorAll('.skill-tag');
+                for (let tag of existingTags) {
+                    if (tag.getAttribute('data-skill').toLowerCase() === skill.toLowerCase()) {
+                        return; // Ne pas ajouter de doublons
+                    }
+                }
+                
+                const tag = document.createElement('div');
+                tag.className = 'skill-tag';
+                tag.setAttribute('data-skill', skill);
+                tag.innerHTML = `${skill} <span class="remove">&times;</span>`;
+                container.appendChild(tag);
+                
+                tag.querySelector('.remove').addEventListener('click', function() {
+                    tag.remove();
+                });
+            }
+            
+            setupSkillInput('requiredSkills', 'requiredSkillTags');
+            setupSkillInput('bonusSkills', 'bonusSkillTags');
+            
+            // Gestion de la case à cocher "Peu importe" pour la disponibilité
+            document.getElementById('availAny').addEventListener('change', function() {
+                const availOptions = document.querySelectorAll('[name="availability"]:not(#availAny)');
+                if (this.checked) {
+                    availOptions.forEach(option => {
+                        option.checked = false;
+                        option.disabled = true;
+                    });
+                } else {
+                    availOptions.forEach(option => {
+                        option.disabled = false;
+                    });
                 }
             });
             
-            // Gestion des sections conditionnelles
-            document.querySelectorAll('[name="hasPosition"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const positionSection = document.getElementById('positionSection');
-                    if (this.value === 'yes') {
-                        positionSection.classList.remove('hidden');
-                    } else {
-                        positionSection.classList.add('hidden');
-                    }
-                });
-            });
-            
-            document.querySelectorAll('[name="canHandleNotice"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const noticeSection = document.getElementById('noticeSection');
-                    if (this.value === 'yes') {
-                        noticeSection.classList.remove('hidden');
-                    } else {
-                        noticeSection.classList.add('hidden');
-                    }
-                });
-            });
-            
-            document.querySelectorAll('[name="sectorKnowledge"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const sectorSection = document.getElementById('sectorSection');
-                    if (this.value === 'yes') {
-                        sectorSection.classList.remove('hidden');
-                    } else {
-                        sectorSection.classList.add('hidden');
-                    }
-                });
-            });
-            
-            // Navigation
+            // Navigation entre les sections
             backButton.addEventListener('click', function() {
                 if (currentSection > 1) {
                     showSection(currentSection - 1);
@@ -775,7 +877,6 @@
                     showSection(currentSection + 1);
                 } else {
                     // Formulaire terminé, rediriger vers les matches
-                    // Simuler une soumission de formulaire
                     submitForm();
                 }
             });
@@ -829,12 +930,12 @@
                 backButton.style.display = currentSection === 1 ? 'none' : 'block';
                 
                 // Changer le texte du bouton Suivant à la dernière section
-                nextButton.textContent = currentSection === totalSections ? 'Terminer' : 'Suivant';
+                nextButton.textContent = currentSection === totalSections ? 'Trouver des candidats' : 'Suivant';
             }
             
             // Fonction pour soumettre le formulaire
             function submitForm() {
-                nextButton.textContent = 'Traitement en cours...';
+                nextButton.textContent = 'Recherche en cours...';
                 nextButton.disabled = true;
                 
                 // Simuler un délai de traitement
