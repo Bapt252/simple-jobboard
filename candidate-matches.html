@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offres recommandées - Nexten</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .matches-section {
+            padding: 4rem 0;
+        }
+        
+        .matches-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .matches-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .match-card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .match-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .match-score {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-bottom-left-radius: var(--radius);
+        }
+        
+        .match-company-logo {
+            width: 80px;
+            height: 80px;
+            min-width: 80px;
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+        }
+        
+        .company-initial {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .match-content {
+            flex: 1;
+        }
+        
+        .match-header {
+            margin-bottom: 1rem;
+        }
+        
+        .match-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+        
+        .match-company {
+            font-size: 1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.3rem;
+        }
+        
+        .match-company i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .match-location {
+            font-size: 0.9rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+        }
+        
+        .match-location i {
+            margin-right: 0.5rem;
+            color: #e74c3c;
+        }
+        
+        .match-body {
+            margin-bottom: 1rem;
+        }
+        
+        .match-description {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .match-salary {
+            font-weight: 500;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .match-salary i {
+            margin-right: 0.5rem;
+            color: var(--success);
+        }
+        
+        .match-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        .match-tags {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .match-tag {
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .match-tag.highlight {
+            background-color: rgba(108, 99, 255, 0.2);
+            border: 1px solid var(--primary);
+        }
+        
+        .match-apply {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .match-apply:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .matches-summary {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .summary-title i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .summary-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .highlight-section {
+            background-color: rgba(108, 99, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .highlight-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight-text {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.5;
+        }
+        
+        .no-matches {
+            text-align: center;
+            background-color: white;
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .no-matches i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .no-matches h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .match-type {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background-color: #3498db;
+            color: white;
+            padding: 0.3rem 0.7rem;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-briefcase"></i> Nexten</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Offres d'emploi</a></li>
+                    <li><a href="post-job.html">Publier une offre</a></li>
+                    <li><a href="candidate-upload.html" class="active">Espace candidat</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="matches-section">
+        <div class="container">
+            <div class="matches-intro">
+                <h2>Vos offres d'emploi recommandées</h2>
+                <p class="section-description">Voici les 10 meilleures offres correspondant à votre profil, analysées et sélectionnées spécialement pour vous.</p>
+            </div>
+            
+            <div class="matches-container">
+                <div class="matches-summary">
+                    <h3 class="summary-title"><i class="fas fa-user-check"></i> Votre profil</h3>
+                    <div class="info-item">
+                        <div class="info-label">Nom :</div>
+                        <div class="info-value">John Doe</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Expérience :</div>
+                        <div class="info-value">Développeur Frontend (3 ans)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Compétences :</div>
+                    </div>
+                    <div class="summary-skills">
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">MongoDB</span>
+                    </div>
+                    
+                    <div class="highlight-section">
+                        <h4 class="highlight-title">Comment nous avons sélectionné ces offres</h4>
+                        <p class="highlight-text">Notre algorithme a identifié les offres qui correspondent le mieux à vos compétences, votre expérience et vos préférences. Les offres sont classées par score de compatibilité, en tenant compte de la correspondance des compétences, du niveau d'expérience requis et du type de poste.</p>
+                    </div>
+                </div>
+                
+                <!-- Liste des offres recommandées -->
+                <div class="match-card">
+                    <div class="match-score">95% Match</div>
+                    <div class="match-type">CDI</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">T</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">Développeur Frontend React</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> TechSolutions</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> Paris, France</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">Nous recherchons un développeur frontend React expérimenté pour rejoindre notre équipe et participer au développement de nouvelles fonctionnalités pour notre plateforme SaaS...</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> 45 000 € - 60 000 € / an</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                <span class="match-tag highlight">React</span>
+                                <span class="match-tag highlight">JavaScript</span>
+                                <span class="match-tag highlight">TypeScript</span>
+                                <span class="match-tag highlight">HTML5</span>
+                                <span class="match-tag highlight">CSS3</span>
+                                <span class="match-tag">Redux</span>
+                            </div>
+                            <button class="match-apply">Postuler</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <div class="match-score">90% Match</div>
+                    <div class="match-type">Télétravail</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">D</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">Développeur Full Stack JavaScript</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> DigitalCraft</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> Remote</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">Rejoignez notre équipe internationale pour développer des applications web modernes utilisant React, Node.js et MongoDB. Vous travaillerez en télétravail complet avec une équipe dynamique...</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> 50 000 € - 65 000 € / an</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                <span class="match-tag highlight">React</span>
+                                <span class="match-tag highlight">Node.js</span>
+                                <span class="match-tag highlight">JavaScript</span>
+                                <span class="match-tag highlight">MongoDB</span>
+                                <span class="match-tag">Express</span>
+                            </div>
+                            <button class="match-apply">Postuler</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <div class="match-score">85% Match</div>
+                    <div class="match-type">CDI</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">I</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">Développeur Frontend Angular/React</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> InnovateX</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> Lyon, France</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">Nous cherchons un développeur frontend pour travailler sur des projets innovants dans le domaine de la fintech. Expérience avec React ou Angular requise...</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> 42 000 € - 55 000 € / an</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                <span class="match-tag highlight">JavaScript</span>
+                                <span class="match-tag highlight">React</span>
+                                <span class="match-tag">Angular</span>
+                                <span class="match-tag highlight">CSS3</span>
+                                <span class="match-tag highlight">HTML5</span>
+                            </div>
+                            <button class="match-apply">Postuler</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <div class="match-score">82% Match</div>
+                    <div class="match-type">Freelance</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">W</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">Développeur React Native</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> WebMobile</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> Nantes, France</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">Recherche un développeur React Native pour un projet de 6 mois visant à créer une application mobile pour le secteur de la santé...</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> 450 € - 550 € / jour</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                <span class="match-tag highlight">JavaScript</span>
+                                <span class="match-tag">React Native</span>
+                                <span class="match-tag highlight">React</span>
+                                <span class="match-tag">Mobile</span>
+                                <span class="match-tag highlight">Git</span>
+                            </div>
+                            <button class="match-apply">Postuler</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <div class="match-score">78% Match</div>
+                    <div class="match-type">CDI</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">C</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">Développeur Frontend Vue.js</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> CloudTech</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> Bordeaux, France</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">Rejoignez notre équipe pour développer des interfaces utilisateur avancées pour notre solution cloud. Expérience en Vue.js appréciée, mais nous acceptons les développeurs React prêts à apprendre...</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> 40 000 € - 55 000 € / an</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                <span class="match-tag">Vue.js</span>
+                                <span class="match-tag highlight">JavaScript</span>
+                                <span class="match-tag highlight">HTML5</span>
+                                <span class="match-tag highlight">CSS3</span>
+                                <span class="match-tag">Vuex</span>
+                            </div>
+                            <button class="match-apply">Postuler</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ajouter d'autres cartes d'offres jusqu'à 10 au total -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Nexten - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ajouter des effets aux boutons de candidature
+            document.querySelectorAll('.match-apply').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.innerHTML = '<i class="fas fa-check"></i> Candidature envoyée';
+                    this.style.backgroundColor = 'var(--success)';
+                    this.disabled = true;
+                    
+                    // Simuler une notification
+                    setTimeout(() => {
+                        alert('Votre candidature a été envoyée avec succès ! Le recruteur recevra votre CV et pourra vous contacter directement.');
+                    }, 500);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
