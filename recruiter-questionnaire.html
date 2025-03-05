@@ -111,10 +111,14 @@
         }
         
         .stepper.step2::after {
-            width: 50%;
+            width: 33.3%;
         }
         
         .stepper.step3::after {
+            width: 66.6%;
+        }
+        
+        .stepper.step4::after {
             width: 100%;
         }
         
@@ -473,6 +477,192 @@
         .conditional-section.active {
             display: block;
         }
+
+        /* Job description parser */
+        .upload-area {
+            border: 2px dashed #e2e8f0;
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background-color: rgba(108, 99, 255, 0.03);
+            position: relative;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(108, 99, 255, 0.05);
+            transform: translateY(-5px);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .upload-area:hover .upload-icon {
+            transform: translateY(-10px);
+        }
+        
+        .upload-area h4 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.8rem;
+        }
+        
+        .upload-area p {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-area .formats {
+            font-size: 0.9rem;
+            color: var(--text);
+            opacity: 0.7;
+        }
+        
+        .browse-text {
+            color: var(--primary);
+            text-decoration: underline;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .browse-text:hover {
+            color: var(--primary-dark);
+        }
+        
+        .hide-input {
+            display: none;
+        }
+        
+        .file-info {
+            display: none;
+            background-color: rgba(108, 99, 255, 0.1);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        .file-name {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .file-name i {
+            color: var(--primary);
+            margin-right: 0.7rem;
+        }
+        
+        .parsed-container {
+            display: none;
+            animation: fadeIn 0.5s forwards;
+            margin: 1.5rem 0;
+        }
+        
+        .parsed-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .parsed-section {
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid var(--primary);
+            animation: slideInRight 0.5s forwards;
+        }
+        
+        .parsed-item {
+            display: flex;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .parsed-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .parsed-label {
+            font-weight: 500;
+            width: 140px;
+            color: var(--primary-dark);
+        }
+        
+        .parsed-value {
+            flex: 1;
+            color: var(--dark);
+        }
+        
+        .parsing-progress {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1.5rem 0;
+        }
+        
+        .parsing-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .option-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .option-button {
+            flex: 1;
+            padding: 0.9rem 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .option-button-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+        }
+        
+        .option-button-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(108, 99, 255, 0.4);
+        }
+        
+        .option-button-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .option-button-secondary:hover {
+            background-color: rgba(108, 99, 255, 0.1);
+            transform: translateY(-3px);
+        }
         
         /* Boutons navigation */
         .form-navigation {
@@ -652,6 +842,10 @@
             .nav-btn {
                 width: 100%;
             }
+            
+            .option-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -682,10 +876,14 @@
                     </div>
                     <div class="step">
                         <div class="step-circle">2</div>
-                        <div class="step-text">Poste</div>
+                        <div class="step-text">Fiche de poste</div>
                     </div>
                     <div class="step">
                         <div class="step-circle">3</div>
+                        <div class="step-text">Détails</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">4</div>
                         <div class="step-text">Résumé</div>
                     </div>
                 </div>
@@ -769,11 +967,11 @@
                         </div>
                     </div>
                     
-                    <!-- Question 2: Informations sur le poste -->
+                    <!-- Question 2: Parsing de fiche de poste -->
                     <div class="question-container" id="question2">
                         <div class="question-header">
-                            <h3 class="question-title">Informations sur le poste</h3>
-                            <p class="question-description">Précisez les détails du poste pour lequel vous recrutez. Ces informations sont essentielles pour trouver les meilleurs candidats.</p>
+                            <h3 class="question-title">Fiche de poste</h3>
+                            <p class="question-description">Si vous avez déjà une fiche de poste, vous pouvez la télécharger ici. Notre IA analysera automatiquement son contenu pour préremplir les informations du poste.</p>
                         </div>
                         
                         <div id="no-position-message" style="display: none;">
@@ -808,7 +1006,103 @@
                             </div>
                         </div>
                         
+                        <div id="job-description-parser" class="conditional-section active">
+                            <div class="info-tip">
+                                <i class="fas fa-robot"></i>
+                                <div class="info-tip-content">
+                                    <div class="info-tip-title">Analyse automatique</div>
+                                    <p class="info-tip-text">Notre IA va analyser votre fiche de poste pour extraire automatiquement le titre, les compétences requises, la description et d'autres informations clés. Vous pourrez ensuite vérifier et compléter ces informations.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="upload-area" id="upload-area">
+                                <i class="fas fa-file-upload upload-icon"></i>
+                                <h4>Téléchargez votre fiche de poste</h4>
+                                <p>Glissez votre fichier ici ou <span class="browse-text">parcourez vos fichiers</span></p>
+                                <p class="formats">Formats acceptés : PDF, DOCX, DOC, TXT</p>
+                                <input type="file" id="job-description-file" class="hide-input" accept=".pdf,.docx,.doc,.txt">
+                            </div>
+                            
+                            <div class="file-info" id="file-info">
+                                <div class="file-name"><i class="fas fa-file-alt"></i> <span id="file-name">job_description.pdf</span></div>
+                            </div>
+                            
+                            <div class="parsing-progress" id="parsing-progress" style="display: none;">
+                                <div class="parsing-progress-fill" id="parsing-progress-fill"></div>
+                            </div>
+                            
+                            <div class="parsed-container" id="parsed-container">
+                                <h4 class="parsed-title">Informations extraites de votre fiche de poste</h4>
+                                
+                                <div class="parsed-section">
+                                    <div class="parsed-item">
+                                        <div class="parsed-label">Titre du poste :</div>
+                                        <div class="parsed-value" id="parsed-title">Développeur Frontend Senior</div>
+                                    </div>
+                                    <div class="parsed-item">
+                                        <div class="parsed-label">Lieu :</div>
+                                        <div class="parsed-value" id="parsed-location">Paris, France</div>
+                                    </div>
+                                    <div class="parsed-item">
+                                        <div class="parsed-label">Type de contrat :</div>
+                                        <div class="parsed-value" id="parsed-contract-type">CDI</div>
+                                    </div>
+                                    <div class="parsed-item">
+                                        <div class="parsed-label">Expérience :</div>
+                                        <div class="parsed-value" id="parsed-experience">3-5 ans</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="parsed-section">
+                                    <div class="parsed-item">
+                                        <div class="parsed-label">Compétences :</div>
+                                        <div class="parsed-value" id="parsed-skills">
+                                            <div class="summary-tags">
+                                                <span class="summary-tag">JavaScript</span>
+                                                <span class="summary-tag">React</span>
+                                                <span class="summary-tag">TypeScript</span>
+                                                <span class="summary-tag">HTML/CSS</span>
+                                                <span class="summary-tag">Git</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="parsed-section">
+                                    <div class="parsed-item">
+                                        <div class="parsed-label">Description :</div>
+                                        <div class="parsed-value" id="parsed-description">
+                                            Nous recherchons un développeur Frontend expérimenté pour rejoindre notre équipe produit. Le candidat idéal aura une solide expérience avec React et TypeScript et sera passionné par la création d'interfaces utilisateur performantes et intuitives.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="option-buttons" id="parser-buttons">
+                                <button type="button" class="option-button option-button-primary" id="use-parsed-data">Utiliser ces informations</button>
+                                <button type="button" class="option-button option-button-secondary" id="manual-entry">Saisir manuellement</button>
+                            </div>
+                            
+                            <div class="form-navigation">
+                                <button type="button" class="nav-btn btn-prev" id="prev2"><i class="fas fa-arrow-left"></i> Précédent</button>
+                                <button type="button" class="nav-btn btn-next" id="next2">Suivant <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 3: Informations sur le poste -->
+                    <div class="question-container" id="question3">
+                        <div class="question-header">
+                            <h3 class="question-title">Détails du poste</h3>
+                            <p class="question-description">Précisez les détails du poste pour lequel vous recrutez. Ces informations sont essentielles pour trouver les meilleurs candidats.</p>
+                        </div>
+                        
                         <div id="position-details" class="conditional-section active">
+                            <div class="form-group">
+                                <label for="job-title" class="label-required">Titre du poste</label>
+                                <input type="text" id="job-title" placeholder="Ex: Développeur Frontend" required>
+                            </div>
+                            
                             <div class="form-group">
                                 <label for="recruitment-deadline" class="label-required">Délai de recrutement</label>
                                 <select id="recruitment-deadline" required>
@@ -1035,14 +1329,14 @@
                             </div>
                             
                             <div class="form-navigation">
-                                <button type="button" class="nav-btn btn-prev" id="prev2"><i class="fas fa-arrow-left"></i> Précédent</button>
-                                <button type="button" class="nav-btn btn-next" id="next2">Suivant <i class="fas fa-arrow-right"></i></button>
+                                <button type="button" class="nav-btn btn-prev" id="prev3"><i class="fas fa-arrow-left"></i> Précédent</button>
+                                <button type="button" class="nav-btn btn-next" id="next3">Suivant <i class="fas fa-arrow-right"></i></button>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Question 3: Résumé et validation -->
-                    <div class="question-container" id="question3">
+                    <!-- Question 4: Résumé et validation -->
+                    <div class="question-container" id="question4">
                         <div class="question-header">
                             <h3 class="question-title">Récapitulatif de vos informations</h3>
                             <p class="question-description">Vérifiez les informations que vous avez fournies avant de finaliser.</p>
@@ -1086,6 +1380,10 @@
                             <div id="summary-position-details">
                                 <div class="summary-block">
                                     <h4 class="summary-title"><i class="fas fa-briefcase"></i> Informations sur le poste</h4>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Titre du poste :</div>
+                                        <div class="summary-value" id="summary-job-title"></div>
+                                    </div>
                                     <div class="summary-item">
                                         <div class="summary-label">Délai de recrutement :</div>
                                         <div class="summary-value" id="summary-recruitment-deadline"></div>
@@ -1143,7 +1441,7 @@
                         </div>
                         
                         <div class="form-navigation">
-                            <button type="button" class="nav-btn btn-prev" id="prev3"><i class="fas fa-arrow-left"></i> Précédent</button>
+                            <button type="button" class="nav-btn btn-prev" id="prev4"><i class="fas fa-arrow-left"></i> Précédent</button>
                             <button type="submit" class="nav-btn btn-submit">Terminer <i class="fas fa-check"></i></button>
                         </div>
                     </div>
@@ -1170,16 +1468,33 @@
             const next1Btn = document.getElementById('next1');
             const next2Btn = document.getElementById('next2');
             const next2aBtn = document.getElementById('next2a');
+            const next3Btn = document.getElementById('next3');
             const prev2Btn = document.getElementById('prev2');
             const prev2aBtn = document.getElementById('prev2a');
             const prev3Btn = document.getElementById('prev3');
+            const prev4Btn = document.getElementById('prev4');
             
             // Éléments conditionnels
             const hasPositionRadios = document.getElementsByName('has-position');
-            const positionDetails = document.getElementById('position-details');
+            const jobDescriptionParser = document.getElementById('job-description-parser');
             const noPositionMessage = document.getElementById('no-position-message');
+            const positionDetails = document.getElementById('position-details');
             const summaryPositionDetails = document.getElementById('summary-position-details');
             const summaryNoPosition = document.getElementById('summary-no-position');
+            
+            // Éléments du parser de fiche de poste
+            const uploadArea = document.getElementById('upload-area');
+            const jobDescriptionFile = document.getElementById('job-description-file');
+            const fileInfo = document.getElementById('file-info');
+            const fileName = document.getElementById('file-name');
+            const parsingProgress = document.getElementById('parsing-progress');
+            const parsingProgressFill = document.getElementById('parsing-progress-fill');
+            const parsedContainer = document.getElementById('parsed-container');
+            const useParsedDataBtn = document.getElementById('use-parsed-data');
+            const manualEntryBtn = document.getElementById('manual-entry');
+            
+            // Champs du formulaire de détails du poste
+            const jobTitleInput = document.getElementById('job-title');
             
             // Éléments secteur requis
             const sectorKnowledgeRadios = document.getElementsByName('sector-knowledge');
@@ -1194,47 +1509,58 @@
             // Fonction pour naviguer entre les questions
             function navigateToQuestion(currentIndex, targetIndex) {
                 // Vérification de la validité du formulaire pour la section actuelle
-                const currentInputs = questionContainers[currentIndex - 1].querySelectorAll('input[required]:not([type="radio"]), select[required], textarea[required]');
-                const currentRadios = {};
-                questionContainers[currentIndex - 1].querySelectorAll('input[type="radio"][required]').forEach(radio => {
-                    if (!currentRadios[radio.name]) {
-                        currentRadios[radio.name] = false;
-                    }
-                    if (radio.checked) {
-                        currentRadios[radio.name] = true;
-                    }
-                });
-                
+                const currentContainer = questionContainers[currentIndex - 1];
                 let isValid = true;
                 
-                // Vérifier les inputs classiques
-                currentInputs.forEach(input => {
-                    if (!input.value.trim()) {
+                // Si nous sommes sur la première page et que nous allons à la suivante
+                if (currentIndex === 1 && targetIndex === 2) {
+                    const requiredInputs = currentContainer.querySelectorAll('input[required]:not([type="radio"]), select[required], textarea[required]');
+                    const hasPosition = document.querySelector('input[name="has-position"]:checked');
+                    
+                    // Vérifier les inputs classiques
+                    requiredInputs.forEach(input => {
+                        if (!input.value.trim()) {
+                            isValid = false;
+                            input.style.borderColor = '#e53e3e';
+                        } else {
+                            input.style.borderColor = '#e2e8f0';
+                        }
+                    });
+                    
+                    // Vérifier si un choix a été fait pour "Avez-vous un poste sur lequel vous souhaitez recruter ?"
+                    if (!hasPosition) {
                         isValid = false;
-                        input.style.borderColor = '#e53e3e';
-                    } else {
-                        input.style.borderColor = '#e2e8f0';
-                    }
-                });
-                
-                // Vérifier les boutons radio
-                Object.keys(currentRadios).forEach(name => {
-                    if (!currentRadios[name]) {
-                        isValid = false;
-                        questionContainers[currentIndex - 1].querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                        document.querySelectorAll('input[name="has-position"]').forEach(radio => {
                             radio.closest('.radio-item').style.borderColor = '#e53e3e';
                         });
                     } else {
-                        questionContainers[currentIndex - 1].querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                        document.querySelectorAll('input[name="has-position"]').forEach(radio => {
                             radio.closest('.radio-item').style.borderColor = '#e2e8f0';
                         });
                     }
-                });
+                    
+                    if (!isValid) {
+                        alert('Veuillez remplir tous les champs obligatoires avant de continuer.');
+                        return;
+                    }
+                }
                 
-                // Si le formulaire n'est pas valide, ne pas continuer
-                if (!isValid && targetIndex > currentIndex) {
-                    alert('Veuillez remplir tous les champs obligatoires avant de continuer.');
-                    return;
+                // Si nous sommes sur la deuxième page et que nous allons à la suivante
+                if (currentIndex === 2 && targetIndex === 3) {
+                    // Si nous avons indiqué "Non" pour avoir un poste, nous vérifions si le secteur a été sélectionné
+                    const hasPosition = document.querySelector('input[name="has-position"]:checked').value;
+                    
+                    if (hasPosition === 'no') {
+                        const preferredSectors = document.getElementById('preferred-sectors');
+                        if (preferredSectors.selectedOptions.length === 0) {
+                            isValid = false;
+                            preferredSectors.style.borderColor = '#e53e3e';
+                            alert('Veuillez sélectionner au moins un secteur d\'activité.');
+                            return;
+                        } else {
+                            preferredSectors.style.borderColor = '#e2e8f0';
+                        }
+                    }
                 }
                 
                 // Mise à jour des classes actives
@@ -1258,7 +1584,7 @@
                 });
                 
                 // Si nous allons au résumé, mettons à jour les valeurs
-                if (targetIndex === 3) {
+                if (targetIndex === 4) {
                     updateSummary();
                 }
                 
@@ -1276,13 +1602,67 @@
             hasPositionRadios.forEach(radio => {
                 radio.addEventListener('change', function() {
                     if (this.value === 'yes') {
-                        positionDetails.classList.add('active');
+                        jobDescriptionParser.classList.add('active');
                         noPositionMessage.style.display = 'none';
                     } else {
-                        positionDetails.classList.remove('active');
+                        jobDescriptionParser.classList.remove('active');
                         noPositionMessage.style.display = 'block';
                     }
                 });
+            });
+            
+            // Gérer le téléchargement de fichier et le parsing
+            uploadArea.addEventListener('click', function() {
+                jobDescriptionFile.click();
+            });
+            
+            jobDescriptionFile.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    fileName.textContent = file.name;
+                    fileInfo.style.display = 'block';
+                    
+                    // Simuler le parsing
+                    simulateParsing();
+                }
+            });
+            
+            function simulateParsing() {
+                // Afficher la barre de progression
+                parsingProgress.style.display = 'block';
+                parsedContainer.style.display = 'none';
+                
+                // Simuler une progression
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 5;
+                    parsingProgressFill.style.width = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            parsingProgress.style.display = 'none';
+                            parsedContainer.style.display = 'block';
+                        }, 500);
+                    }
+                }, 150);
+            }
+            
+            // Utiliser les données parsées
+            useParsedDataBtn.addEventListener('click', function() {
+                // Remplir les champs avec les données parsées
+                jobTitleInput.value = document.getElementById('parsed-title').textContent;
+                
+                // Autres champs à remplir ici (dans une vraie application)
+                
+                // Passer à l'étape suivante
+                navigateToQuestion(2, 3);
+            });
+            
+            // Saisie manuelle
+            manualEntryBtn.addEventListener('click', function() {
+                // Simplement passer à l'étape suivante sans remplir les champs
+                navigateToQuestion(2, 3);
             });
             
             // Gérer l'affichage conditionnel des détails du secteur requis
@@ -1329,9 +1709,11 @@
             next1Btn.addEventListener('click', () => navigateToQuestion(1, 2));
             next2Btn.addEventListener('click', () => navigateToQuestion(2, 3));
             next2aBtn.addEventListener('click', () => navigateToQuestion(2, 3));
+            next3Btn.addEventListener('click', () => navigateToQuestion(3, 4));
             prev2Btn.addEventListener('click', () => navigateToQuestion(2, 1));
             prev2aBtn.addEventListener('click', () => navigateToQuestion(2, 1));
             prev3Btn.addEventListener('click', () => navigateToQuestion(3, 2));
+            prev4Btn.addEventListener('click', () => navigateToQuestion(4, 3));
             
             // Fonction pour mettre à jour le résumé
             function updateSummary() {
@@ -1360,6 +1742,8 @@
                     summaryNoPosition.style.display = 'none';
                     
                     // Informations sur le poste
+                    document.getElementById('summary-job-title').textContent = document.getElementById('job-title').value || 'Non spécifié';
+                    
                     const recruitmentDeadline = document.getElementById('recruitment-deadline');
                     document.getElementById('summary-recruitment-deadline').textContent = recruitmentDeadline.options[recruitmentDeadline.selectedIndex]?.text || 'Non spécifié';
                     
