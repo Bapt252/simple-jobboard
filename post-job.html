@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publier une offre d'emploi - JobBoard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-briefcase"></i> JobBoard</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Offres d'emploi</a></li>
+                    <li><a href="post-job.html" class="active">Publier une offre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="post-job">
+        <div class="container">
+            <h2>Publier une nouvelle offre d'emploi</h2>
+            <form id="job-form">
+                <div class="form-group">
+                    <label for="job-title">Titre du poste*</label>
+                    <input type="text" id="job-title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company-name">Nom de l'entreprise*</label>
+                    <input type="text" id="company-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Lieu*</label>
+                    <input type="text" id="location" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="job-type">Type de contrat*</label>
+                    <select id="job-type" required>
+                        <option value="">Sélectionner</option>
+                        <option value="full-time">CDI</option>
+                        <option value="part-time">CDD</option>
+                        <option value="contract">Freelance</option>
+                        <option value="internship">Stage</option>
+                        <option value="remote">Télétravail</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Catégorie*</label>
+                    <select id="category" required>
+                        <option value="">Sélectionner</option>
+                        <option value="tech">Technologie</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="design">Design</option>
+                        <option value="sales">Ventes</option>
+                        <option value="other">Autre</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="salary">Salaire (optionnel)</label>
+                    <input type="text" id="salary" placeholder="ex: 45 000 € - 60 000 € / an">
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="description">Description du poste*</label>
+                    <textarea id="description" rows="10" required></textarea>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="requirements">Compétences requises*</label>
+                    <textarea id="requirements" rows="5" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="application-email">Email de contact*</label>
+                    <input type="email" id="application-email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="application-url">URL de candidature (optionnel)</label>
+                    <input type="url" id="application-url" placeholder="https://exemple.com/postuler">
+                </div>
+                
+                <div class="form-group full-width">
+                    <button type="submit" class="btn-submit">Publier l'offre</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 JobBoard - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script src="post-job.js"></script>
+</body>
+</html>
