@@ -26,7 +26,7 @@
             border-radius: var(--radius);
             padding: 3rem;
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             transition: all 0.3s ease;
             cursor: pointer;
         }
@@ -331,6 +331,32 @@
         .upload-content, .upload-later-content {
             display: none;
         }
+        
+        .do-it-later-btn {
+            display: block;
+            width: 100%;
+            background-color: #f8fafc;
+            color: var(--text);
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .do-it-later-btn:hover {
+            background-color: #e2e8f0;
+            color: var(--dark);
+        }
+        
+        .do-it-later-btn i {
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -397,6 +423,10 @@
                         <p class="file-formats">Formats acceptés : PDF, DOCX, DOC</p>
                         <input type="file" id="fileInput" class="hide-input" accept=".pdf,.docx,.doc">
                     </div>
+                    
+                    <a href="candidate-questionnaire.html" class="do-it-later-btn">
+                        <i class="fas fa-arrow-right"></i> Faire plus tard et passer au questionnaire
+                    </a>
                     
                     <div class="file-info" id="fileInfo">
                         <div class="file-name" id="fileName">CV_John_Doe.pdf</div>
@@ -486,11 +516,6 @@
                             <button class="action-btn btn-edit">Modifier les informations</button>
                             <button class="action-btn btn-continue" id="continueBtn">Compléter le questionnaire</button>
                         </div>
-                    </div>
-                    
-                    <div class="skip-upload">
-                        <p class="skip-text">Vous préférez remplir le questionnaire d'abord ?</p>
-                        <a href="candidate-questionnaire.html" class="skip-btn">Passer au questionnaire</a>
                     </div>
                 </div>
             </div>
