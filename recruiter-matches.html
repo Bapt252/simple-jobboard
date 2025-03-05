@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidats recommandés - Nexten</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .matches-section {
+            padding: 4rem 0;
+        }
+        
+        .matches-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .matches-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .job-summary {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .summary-title i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .summary-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .highlight-section {
+            background-color: rgba(108, 99, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .highlight-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight-text {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.5;
+        }
+        
+        .candidate-card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .candidate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .match-score {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-bottom-left-radius: var(--radius);
+        }
+        
+        .candidate-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .candidate-avatar {
+            width: 80px;
+            height: 80px;
+            min-width: 80px;
+            background-color: #f8fafc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 2rem;
+        }
+        
+        .candidate-info {
+            flex: 1;
+        }
+        
+        .candidate-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+        
+        .candidate-title {
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+        }
+        
+        .candidate-location {
+            font-size: 0.9rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+        }
+        
+        .candidate-location i {
+            margin-right: 0.5rem;
+            color: #e74c3c;
+        }
+        
+        .candidate-body {
+            margin-bottom: 1.5rem;
+        }
+        
+        .experience-item {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+        
+        .experience-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--primary);
+        }
+        
+        .experience-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .experience-company {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        
+        .experience-duration {
+            font-size: 0.8rem;
+            color: var(--text);
+            font-style: italic;
+        }
+        
+        .candidate-skills {
+            margin-top: 1.5rem;
+        }
+        
+        .skills-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.8rem;
+        }
+        
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .skill-tag {
+            display: inline-block;
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .skill-tag.highlight {
+            background-color: rgba(108, 99, 255, 0.2);
+            border: 1px solid var(--primary);
+        }
+        
+        .candidate-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        .candidate-education {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        
+        .education-degree {
+            font-weight: 500;
+        }
+        
+        .contact-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .contact-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .view-profile {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            margin-right: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .view-profile:hover {
+            background-color: rgba(108, 99, 255, 0.1);
+        }
+        
+        .contact-actions {
+            display: flex;
+        }
+        
+        .candidate-experience {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-briefcase"></i> Nexten</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Offres d'emploi</a></li>
+                    <li><a href="post-job.html" class="active">Publier une offre</a></li>
+                    <li><a href="candidate-upload.html">Espace candidat</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="matches-section">
+        <div class="container">
+            <div class="matches-intro">
+                <h2>Candidats recommandés</h2>
+                <p class="section-description">Voici les 10 meilleurs profils correspondant à votre offre, analysés et sélectionnés spécialement pour vous.</p>
+            </div>
+            
+            <div class="matches-container">
+                <div class="job-summary">
+                    <h3 class="summary-title"><i class="fas fa-briefcase"></i> Votre offre d'emploi</h3>
+                    <div class="info-item">
+                        <div class="info-label">Titre :</div>
+                        <div class="info-value">Développeur Frontend React</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Entreprise :</div>
+                        <div class="info-value">TechSolutions</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Lieu :</div>
+                        <div class="info-value">Paris, France</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Type :</div>
+                        <div class="info-value">CDI</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Expérience :</div>
+                        <div class="info-value">2 à 5 ans</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Compétences :</div>
+                    </div>
+                    <div class="summary-skills">
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">Redux</span>
+                    </div>
+                    
+                    <div class="highlight-section">
+                        <h4 class="highlight-title">Comment nous avons sélectionné ces candidats</h4>
+                        <p class="highlight-text">Notre algorithme a identifié les candidats qui correspondent le mieux aux exigences de votre poste. Les profils sont classés par score de compatibilité, en tenant compte de la correspondance des compétences, du niveau d'expérience et des critères spécifiques que vous avez mentionnés.</p>
+                    </div>
+                </div>
+                
+                <!-- Liste des candidats recommandés -->
+                <div class="candidate-card">
+                    <div class="match-score">95% Match</div>
+                    <div class="candidate-header">
+                        <div class="candidate-avatar">JD</div>
+                        <div class="candidate-info">
+                            <h3 class="candidate-name">John Doe</h3>
+                            <div class="candidate-title">Développeur Frontend (3 ans d'expérience)</div>
+                            <div class="candidate-location"><i class="fas fa-map-marker-alt"></i> Paris, France</div>
+                        </div>
+                    </div>
+                    <div class="candidate-body">
+                        <div class="candidate-experience">
+                            Développeur frontend passionné avec 3 ans d'expérience dans la création d'applications web modernes et réactives. Expertise en React, JavaScript et TypeScript.
+                        </div>
+                        <div class="experience-item">
+                            <div class="experience-title">Développeur Frontend</div>
+                            <div class="experience-company">TechSolutions</div>
+                            <div class="experience-duration">Jan 2020 - Présent (3 ans)</div>
+                        </div>
+                        <div class="candidate-skills">
+                            <h4 class="skills-title">Compétences</h4>
+                            <div class="skills-list">
+                                <span class="skill-tag highlight">JavaScript</span>
+                                <span class="skill-tag highlight">React</span>
+                                <span class="skill-tag highlight">TypeScript</span>
+                                <span class="skill-tag highlight">HTML5</span>
+                                <span class="skill-tag highlight">CSS3</span>
+                                <span class="skill-tag">Node.js</span>
+                                <span class="skill-tag">Git</span>
+                                <span class="skill-tag">MongoDB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="candidate-footer">
+                        <div class="candidate-education">
+                            <span class="education-degree">Master en Informatique</span> - Université de Paris (2019)
+                        </div>
+                        <div class="contact-actions">
+                            <button class="view-profile">Voir le profil</button>
+                            <button class="contact-btn">Contacter</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="candidate-card">
+                    <div class="match-score">90% Match</div>
+                    <div class="candidate-header">
+                        <div class="candidate-avatar">EM</div>
+                        <div class="candidate-info">
+                            <h3 class="candidate-name">Emma Martin</h3>
+                            <div class="candidate-title">Développeuse Frontend React (4 ans d'expérience)</div>
+                            <div class="candidate-location"><i class="fas fa-map-marker-alt"></i> Lyon, France</div>
+                        </div>
+                    </div>
+                    <div class="candidate-body">
+                        <div class="candidate-experience">
+                            Développeuse frontend React avec 4 ans d'expérience. Spécialisée dans la création d'interfaces utilisateur accessibles et performantes. Passionnée par l'UX/UI et les bonnes pratiques de développement.
+                        </div>
+                        <div class="experience-item">
+                            <div class="experience-title">Lead Frontend Developer</div>
+                            <div class="experience-company">WebAgency</div>
+                            <div class="experience-duration">Mar 2022 - Présent (1 an)</div>
+                        </div>
+                        <div class="experience-item">
+                            <div class="experience-title">Développeuse Frontend</div>
+                            <div class="experience-company">DigitalStudio</div>
+                            <div class="experience-duration">Jan 2019 - Feb 2022 (3 ans)</div>
+                        </div>
+                        <div class="candidate-skills">
+                            <h4 class="skills-title">Compétences</h4>
+                            <div class="skills-list">
+                                <span class="skill-tag highlight">React</span>
+                                <span class="skill-tag highlight">JavaScript</span>
+                                <span class="skill-tag highlight">TypeScript</span>
+                                <span class="skill-tag highlight">HTML5</span>
+                                <span class="skill-tag highlight">CSS3</span>
+                                <span class="skill-tag highlight">Redux</span>
+                                <span class="skill-tag">Styled Components</span>
+                                <span class="skill-tag">Jest</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="candidate-footer">
+                        <div class="candidate-education">
+                            <span class="education-degree">Licence en Informatique</span> - Université de Lyon (2018)
+                        </div>
+                        <div class="contact-actions">
+                            <button class="view-profile">Voir le profil</button>
+                            <button class="contact-btn">Contacter</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="candidate-card">
+                    <div class="match-score">85% Match</div>
+                    <div class="candidate-header">
+                        <div class="candidate-avatar">TD</div>
+                        <div class="candidate-info">
+                            <h3 class="candidate-name">Thomas Dubois</h3>
+                            <div class="candidate-title">Développeur JavaScript Full Stack (5 ans d'expérience)</div>
+                            <div class="candidate-location"><i class="fas fa-map-marker-alt"></i> Paris, France</div>
+                        </div>
+                    </div>
+                    <div class="candidate-body">
+                        <div class="candidate-experience">
+                            Développeur full stack avec une forte expertise en React et Node.js. Expérience dans le développement d'applications web complexes et évolutives. Passionné par les nouvelles technologies web.
+                        </div>
+                        <div class="experience-item">
+                            <div class="experience-title">Développeur Full Stack</div>
+                            <div class="experience-company">InnovateTech</div>
+                            <div class="experience-duration">Jun 2020 - Présent (2.5 ans)</div>
+                        </div>
+                        <div class="experience-item">
+                            <div class="experience-title">Développeur Frontend</div>
+                            <div class="experience-company">WebExpert</div>
+                            <div class="experience-duration">Apr 2018 - May 2020 (2 ans)</div>
+                        </div>
+                        <div class="candidate-skills">
+                            <h4 class="skills-title">Compétences</h4>
+                            <div class="skills-list">
+                                <span class="skill-tag highlight">JavaScript</span>
+                                <span class="skill-tag highlight">React</span>
+                                <span class="skill-tag">Node.js</span>
+                                <span class="skill-tag highlight">HTML5</span>
+                                <span class="skill-tag highlight">CSS3</span>
+                                <span class="skill-tag">Express</span>
+                                <span class="skill-tag">MongoDB</span>
+                                <span class="skill-tag">GraphQL</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="candidate-footer">
+                        <div class="candidate-education">
+                            <span class="education-degree">Master en Développement Web</span> - École d'Ingénierie Digitale (2018)
+                        </div>
+                        <div class="contact-actions">
+                            <button class="view-profile">Voir le profil</button>
+                            <button class="contact-btn">Contacter</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="candidate-card">
+                    <div class="match-score">82% Match</div>
+                    <div class="candidate-header">
+                        <div class="candidate-avatar">SL</div>
+                        <div class="candidate-info">
+                            <h3 class="candidate-name">Sophie Laurent</h3>
+                            <div class="candidate-title">Développeuse Frontend (2 ans d'expérience)</div>
+                            <div class="candidate-location"><i class="fas fa-map-marker-alt"></i> Paris, France</div>
+                        </div>
+                    </div>
+                    <div class="candidate-body">
+                        <div class="candidate-experience">
+                            Développeuse frontend junior avec une passion pour la création d'interfaces utilisateur intuitives et accessibles. Forte expertise en React et CSS moderne.
+                        </div>
+                        <div class="experience-item">
+                            <div class="experience-title">Développeuse Frontend</div>
+                            <div class="experience-company">StartupLab</div>
+                            <div class="experience-duration">Sep 2021 - Présent (1.5 ans)</div>
+                        </div>
+                        <div class="experience-item">
+                            <div class="experience-title">Stagiaire Développement Web</div>
+                            <div class="experience-company">DigitalAgency</div>
+                            <div class="experience-duration">Feb 2021 - Aug 2021 (6 mois)</div>
+                        </div>
+                        <div class="candidate-skills">
+                            <h4 class="skills-title">Compétences</h4>
+                            <div class="skills-list">
+                                <span class="skill-tag highlight">React</span>
+                                <span class="skill-tag highlight">JavaScript</span>
+                                <span class="skill-tag highlight">HTML5</span>
+                                <span class="skill-tag highlight">CSS3</span>
+                                <span class="skill-tag">Sass</span>
+                                <span class="skill-tag">Figma</span>
+                                <span class="skill-tag">Git</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="candidate-footer">
+                        <div class="candidate-education">
+                            <span class="education-degree">Licence en Design Numérique</span> - École de Design (2020)
+                        </div>
+                        <div class="contact-actions">
+                            <button class="view-profile">Voir le profil</button>
+                            <button class="contact-btn">Contacter</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="candidate-card">
+                    <div class="match-score">78% Match</div>
+                    <div class="candidate-header">
+                        <div class="candidate-avatar">AM</div>
+                        <div class="candidate-info">
+                            <h3 class="candidate-name">Alexandre Moreau</h3>
+                            <div class="candidate-title">Développeur Frontend / UX Designer (3 ans d'expérience)</div>
+                            <div class="candidate-location"><i class="fas fa-map-marker-alt"></i> Marseille, France</div>
+                        </div>
+                    </div>
+                    <div class="candidate-body">
+                        <div class="candidate-experience">
+                            Double profil développeur frontend et UX designer avec une approche centrée sur l'utilisateur. Expérience significative dans la création d'interfaces utilisateur esthétiques et fonctionnelles.
+                        </div>
+                        <div class="experience-item">
+                            <div class="experience-title">Développeur Frontend / UX Designer</div>
+                            <div class="experience-company">DesignTech</div>
+                            <div class="experience-duration">Jul 2020 - Présent (2.5 ans)</div>
+                        </div>
+                        <div class="candidate-skills">
+                            <h4 class="skills-title">Compétences</h4>
+                            <div class="skills-list">
+                                <span class="skill-tag highlight">React</span>
+                                <span class="skill-tag highlight">JavaScript</span>
+                                <span class="skill-tag highlight">HTML5</span>
+                                <span class="skill-tag highlight">CSS3</span>
+                                <span class="skill-tag">Figma</span>
+                                <span class="skill-tag">UI/UX Design</span>
+                                <span class="skill-tag">Adobe XD</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="candidate-footer">
+                        <div class="candidate-education">
+                            <span class="education-degree">Master en UX Design</span> - École de Design Interactif (2020)
+                        </div>
+                        <div class="contact-actions">
+                            <button class="view-profile">Voir le profil</button>
+                            <button class="contact-btn">Contacter</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ajouter d'autres cartes de candidats jusqu'à 10 au total -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Nexten - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ajouter des effets aux boutons de contact
+            document.querySelectorAll('.contact-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.innerHTML = '<i class="fas fa-check"></i> Contact envoyé';
+                    this.style.backgroundColor = 'var(--success)';
+                    this.disabled = true;
+                    
+                    // Simuler une notification
+                    setTimeout(() => {
+                        alert('Votre demande de contact a été envoyée. Le candidat recevra un email avec les détails de votre offre et pourra vous répondre directement.');
+                    }, 500);
+                });
+            });
+            
+            // Ajouter des effets aux boutons de profil
+            document.querySelectorAll('.view-profile').forEach(button => {
+                button.addEventListener('click', function() {
+                    alert('Cette fonctionnalité sera disponible dans la prochaine version de la plateforme.');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
