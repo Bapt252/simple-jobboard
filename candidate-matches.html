@@ -161,7 +161,7 @@
             border: 1px solid var(--primary);
         }
         
-        .match-apply {
+        .apply-btn {
             background-color: var(--primary);
             color: white;
             border: none;
@@ -172,7 +172,7 @@
             transition: background-color 0.3s ease;
         }
         
-        .match-apply:hover {
+        .apply-btn:hover {
             background-color: var(--primary-dark);
         }
         
@@ -254,6 +254,68 @@
             border-radius: 20px;
             font-weight: 500;
         }
+        
+        .upload-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+        
+        .upload-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+            text-align: center;
+            position: relative;
+        }
+        
+        .upload-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            right: -40%;
+            width: 80%;
+            height: 2px;
+            background-color: #e2e8f0;
+        }
+        
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .step-title {
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .upload-step.active .step-number {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .upload-step.active .step-title {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .upload-step.completed .step-number {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -262,7 +324,7 @@
             <h1><i class="fas fa-briefcase"></i> Nexten</h1>
             <nav>
                 <ul>
-                    <li><a href="index.html">Offres d'emploi</a></li>
+                    <li><a href="index.html">Accueil</a></li>
                     <li><a href="post-job.html">Publier une offre</a></li>
                     <li><a href="candidate-upload.html" class="active">Espace candidat</a></li>
                 </ul>
@@ -272,6 +334,21 @@
 
     <section class="matches-section">
         <div class="container">
+            <div class="upload-steps">
+                <div class="upload-step completed">
+                    <div class="step-number"><i class="fas fa-check"></i></div>
+                    <div class="step-title">Upload CV</div>
+                </div>
+                <div class="upload-step completed">
+                    <div class="step-number"><i class="fas fa-check"></i></div>
+                    <div class="step-title">Questionnaire</div>
+                </div>
+                <div class="upload-step active">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Matching</div>
+                </div>
+            </div>
+        
             <div class="matches-intro">
                 <h2>Vos offres d'emploi recommandées</h2>
                 <p class="section-description">Voici les 10 meilleures offres correspondant à votre profil, analysées et sélectionnées spécialement pour vous.</p>
@@ -289,6 +366,14 @@
                         <div class="info-value">Développeur Frontend (3 ans)</div>
                     </div>
                     <div class="info-item">
+                        <div class="info-label">Localisation :</div>
+                        <div class="info-value">Paris, France</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Préférences :</div>
+                        <div class="info-value">CDI, Télétravail partiel, Tech</div>
+                    </div>
+                    <div class="info-item">
                         <div class="info-label">Compétences :</div>
                     </div>
                     <div class="summary-skills">
@@ -304,7 +389,7 @@
                     
                     <div class="highlight-section">
                         <h4 class="highlight-title">Comment nous avons sélectionné ces offres</h4>
-                        <p class="highlight-text">Notre algorithme a identifié les offres qui correspondent le mieux à vos compétences, votre expérience et vos préférences. Les offres sont classées par score de compatibilité, en tenant compte de la correspondance des compétences, du niveau d'expérience requis et du type de poste.</p>
+                        <p class="highlight-text">Notre algorithme a identifié les offres qui correspondent le mieux à vos compétences, votre expérience et vos préférences. En combinant les données de votre CV et vos réponses au questionnaire, nous avons pu créer un profil complet qui nous a permis de vous proposer les offres les plus pertinentes pour vous.</p>
                     </div>
                 </div>
                 
@@ -334,7 +419,7 @@
                                 <span class="match-tag highlight">CSS3</span>
                                 <span class="match-tag">Redux</span>
                             </div>
-                            <button class="match-apply">Postuler</button>
+                            <button class="apply-btn">Postuler</button>
                         </div>
                     </div>
                 </div>
@@ -363,7 +448,7 @@
                                 <span class="match-tag highlight">MongoDB</span>
                                 <span class="match-tag">Express</span>
                             </div>
-                            <button class="match-apply">Postuler</button>
+                            <button class="apply-btn">Postuler</button>
                         </div>
                     </div>
                 </div>
@@ -392,7 +477,7 @@
                                 <span class="match-tag highlight">CSS3</span>
                                 <span class="match-tag highlight">HTML5</span>
                             </div>
-                            <button class="match-apply">Postuler</button>
+                            <button class="apply-btn">Postuler</button>
                         </div>
                     </div>
                 </div>
@@ -421,7 +506,7 @@
                                 <span class="match-tag">Mobile</span>
                                 <span class="match-tag highlight">Git</span>
                             </div>
-                            <button class="match-apply">Postuler</button>
+                            <button class="apply-btn">Postuler</button>
                         </div>
                     </div>
                 </div>
@@ -450,7 +535,7 @@
                                 <span class="match-tag highlight">CSS3</span>
                                 <span class="match-tag">Vuex</span>
                             </div>
-                            <button class="match-apply">Postuler</button>
+                            <button class="apply-btn">Postuler</button>
                         </div>
                     </div>
                 </div>
@@ -469,7 +554,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Ajouter des effets aux boutons de candidature
-            document.querySelectorAll('.match-apply').forEach(button => {
+            document.querySelectorAll('.apply-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     this.innerHTML = '<i class="fas fa-check"></i> Candidature envoyée';
                     this.style.backgroundColor = 'var(--success)';
