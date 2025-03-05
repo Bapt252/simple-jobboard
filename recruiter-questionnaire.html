@@ -3,419 +3,759 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Questionnaire recruteur - Nexten</title>
+    <title>Questionnaire Recruteur - Nexten</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Styles principaux modernisés */
         .questionnaire-section {
             padding: 4rem 0;
+            background-color: var(--gray);
         }
         
         .questionnaire-container {
             background-color: white;
+            padding: 2.5rem;
             border-radius: var(--radius);
             box-shadow: var(--shadow-md);
-            padding: 2.5rem;
             max-width: 800px;
             margin: 0 auto;
-        }
-        
-        .questionnaire-intro {
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .questionnaire-intro h3 {
-            font-size: 1.4rem;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-        
-        .questionnaire-intro p {
-            color: var(--text);
-        }
-        
-        .progress-bar-container {
-            width: 100%;
-            height: 8px;
-            background-color: #f1f5f9;
-            border-radius: 4px;
-            margin-bottom: 2.5rem;
+            transition: all 0.4s ease;
+            position: relative;
             overflow: hidden;
         }
         
-        .progress-bar-fill {
-            height: 100%;
-            background-color: var(--primary);
-            width: 10%;
-            transition: width 0.3s ease;
+        .questionnaire-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(108, 99, 255, 0.03) 0%,
+                rgba(0, 194, 203, 0.03) 25%,
+                rgba(108, 99, 255, 0.03) 50%,
+                rgba(0, 194, 203, 0.03) 75%,
+                rgba(108, 99, 255, 0.03) 100%
+            );
+            transform: rotate(30deg);
+            z-index: 0;
         }
         
-        .form-section {
-            margin-bottom: 2.5rem;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 2rem;
+        .questionnaire-container > * {
+            position: relative;
+            z-index: 1;
         }
         
-        .form-section:last-child {
-            margin-bottom: 0;
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-        
-        .form-section-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
             color: var(--dark);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-        }
-        
-        .form-section-title i {
-            margin-right: 0.8rem;
-            color: var(--primary);
-        }
-        
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .input-group:last-child {
-            margin-bottom: 0;
-        }
-        
-        .input-group label {
-            display: block;
-            font-weight: 500;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-        
-        .input-group input,
-        .input-group select,
-        .input-group textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-        
-        .input-group input:focus,
-        .input-group select:focus,
-        .input-group textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
-        }
-        
-        .radio-group,
-        .checkbox-group {
-            margin-bottom: 0.8rem;
-        }
-        
-        .radio-label,
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            margin-bottom: 0.5rem;
-        }
-        
-        .radio-input,
-        .checkbox-input {
-            margin-right: 0.8rem;
-            width: 1.2rem;
-            height: 1.2rem;
-            accent-color: var(--primary);
-        }
-        
-        .grid-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 1rem;
-        }
-        
-        .rangable-item {
-            background-color: #f8fafc;
-            border-radius: var(--radius);
-            padding: 1rem;
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            cursor: move;
-        }
-        
-        .rangable-item:hover {
-            background-color: #f1f5f9;
-        }
-        
-        .range-number {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 28px;
-            margin-right: 1rem;
-            font-weight: 500;
-        }
-        
-        .rangable-text {
-            font-weight: 500;
-            color: var(--dark);
-        }
-        
-        .form-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 2rem;
-        }
-        
-        .btn-back {
-            background-color: transparent;
-            color: var(--text);
-            border: 1px solid #e2e8f0;
-            padding: 0.8rem 1.5rem;
-            border-radius: var(--radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-back:hover {
-            background-color: #f8fafc;
-        }
-        
-        .btn-next {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: var(--radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        .btn-next:hover {
-            background-color: var(--primary-dark);
-        }
-        
-        .form-tip {
-            background-color: rgba(52, 152, 219, 0.1);
-            border-left: 3px solid #3498db;
-            padding: 0.8rem 1rem;
-            border-radius: 0 var(--radius) var(--radius) 0;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            color: var(--text);
-        }
-        
-        .form-tip i {
-            color: #3498db;
-            margin-right: 0.5rem;
-        }
-        
-        .section-indicator {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-        
-        .indicator-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: #e2e8f0;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .indicator-dot.active {
-            background-color: var(--primary);
-            transform: scale(1.3);
-        }
-        
-        .tag-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .tag {
-            display: inline-flex;
-            align-items: center;
-            background-color: #f1f5f9;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-        
-        .tag-remove {
-            margin-left: 0.5rem;
-            cursor: pointer;
-            font-size: 0.8rem;
-            color: var(--text);
-        }
-        
-        .tag-remove:hover {
-            color: #e74c3c;
-        }
-        
-        .drag-instruction {
-            font-size: 0.8rem;
-            color: var(--text);
-            text-align: center;
             margin-bottom: 1rem;
-            font-style: italic;
+            position: relative;
+            display: inline-block;
         }
         
-        .conditional-section {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px dashed #e2e8f0;
+        .section-title::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 40%;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 10px;
         }
         
-        .hidden {
-            display: none;
+        .section-description {
+            color: var(--text);
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
         }
         
-        .upload-steps {
+        /* Stepper modernisé */
+        .stepper {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
         }
         
-        .upload-step {
+        .stepper::before {
+            content: '';
+            position: absolute;
+            height: 3px;
+            background-color: #e2e8f0;
+            width: 100%;
+            top: 25px;
+            z-index: -1;
+        }
+        
+        .stepper::after {
+            content: '';
+            position: absolute;
+            height: 3px;
+            background-color: var(--primary);
+            width: 0%;
+            top: 25px;
+            z-index: -1;
+            transition: width 0.5s ease;
+        }
+        
+        .stepper.step1::after {
+            width: 0%;
+        }
+        
+        .stepper.step2::after {
+            width: 33.3%;
+        }
+        
+        .stepper.step3::after {
+            width: 66.6%;
+        }
+        
+        .stepper.step4::after {
+            width: 100%;
+        }
+        
+        .step {
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 30%;
-            text-align: center;
             position: relative;
+            z-index: 1;
         }
         
-        .upload-step:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            top: 25px;
-            right: -40%;
-            width: 80%;
-            height: 2px;
-            background-color: #e2e8f0;
-        }
-        
-        .step-number {
+        .step-circle {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border: 3px solid #e2e8f0;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: #f8fafc;
-            border: 2px solid #e2e8f0;
-            color: var(--text);
+            margin-bottom: 12px;
             font-weight: 600;
-            margin-bottom: 1rem;
+            color: var(--text);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .step-text {
+            font-weight: 500;
+            color: var(--text);
             transition: all 0.3s ease;
         }
         
-        .step-title {
-            font-weight: 500;
-            color: var(--text);
+        .step.active .step-circle {
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 0 5px rgba(108, 99, 255, 0.2);
         }
         
-        .upload-step.active .step-number {
+        .step.active .step-circle::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            z-index: -1;
+            animation: circleAnim 0.5s forwards;
+        }
+        
+        .step.active .step-text {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .step.completed .step-circle {
             background-color: var(--primary);
             border-color: var(--primary);
             color: white;
         }
         
-        .upload-step.active .step-title {
-            color: var(--primary);
+        .step.completed .step-circle i {
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        /* Styles des questions et formulaires */
+        .question-container {
+            display: none;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        .question-container.active {
+            display: block;
+        }
+        
+        .question-header {
+            margin-bottom: 2rem;
+        }
+        
+        .question-title {
+            font-size: 1.5rem;
             font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.8rem;
         }
         
-        .upload-step.completed .step-number {
-            background-color: var(--success);
-            border-color: var(--success);
-            color: white;
-        }
-        
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .skill-tag {
-            display: inline-flex;
-            align-items: center;
-            background-color: rgba(108, 99, 255, 0.1);
-            color: var(--primary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-        
-        .skill-tag .remove {
-            margin-left: 0.5rem;
-            cursor: pointer;
-            font-size: 0.8rem;
+        .question-description {
             color: var(--text);
+            font-size: 1.05rem;
+            line-height: 1.5;
         }
         
-        .skill-tag .remove:hover {
-            color: #e74c3c;
+        .form-group {
+            margin-bottom: 1.8rem;
         }
         
-        .custom-range {
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .label-required::after {
+            content: '*';
+            color: var(--primary);
+            margin-left: 4px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
             width: 100%;
-            appearance: none;
-            height: 8px;
-            border-radius: 4px;
-            background: #e2e8f0;
-            outline: none;
-            margin: 1rem 0;
+            padding: 0.9rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--light);
         }
         
-        .custom-range::-webkit-slider-thumb {
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Range sliders modernisés */
+        .range-container {
+            margin-bottom: 2rem;
+        }
+        
+        .range-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+        
+        .range-title {
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .range-value {
+            background-color: var(--primary);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            min-width: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .range-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             background: var(--primary);
             cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
-        .custom-range::-webkit-slider-thumb:hover {
+        .range-slider::-webkit-slider-thumb:hover {
             transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(108, 99, 255, 0.4);
+        }
+        
+        .range-slider::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .range-slider::-moz-range-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 8px rgba(108, 99, 255, 0.4);
         }
         
         .range-labels {
             display: flex;
             justify-content: space-between;
             margin-top: 0.5rem;
-            font-size: 0.8rem;
+        }
+        
+        .range-label {
+            font-size: 0.85rem;
             color: var(--text);
         }
         
-        .range-value {
-            text-align: center;
-            font-size: 0.9rem;
+        /* Checkbox modernisés */
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .custom-checkbox {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .checkmark {
+            position: relative;
+            height: 22px;
+            width: 22px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .checkbox-item:hover input ~ .checkmark {
+            background-color: #d1d5db;
+        }
+        
+        .checkbox-item input:checked ~ .checkmark {
+            background-color: var(--primary);
+        }
+        
+        .checkmark:after {
+            content: '';
+            position: absolute;
+            display: none;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .checkbox-item input:checked ~ .checkmark:after {
+            display: block;
+        }
+        
+        .checkbox-label {
+            font-size: 0.95rem;
+            color: var(--dark);
+            cursor: pointer;
+        }
+        
+        /* Radio buttons */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .radio-item {
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+        }
+        
+        .radio-item:hover {
+            border-color: var(--primary);
+            background-color: rgba(108, 99, 255, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .custom-radio {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+        
+        .radio-checkmark {
+            position: relative;
+            height: 22px;
+            width: 22px;
+            background-color: #e2e8f0;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .radio-item input:checked ~ .radio-checkmark {
+            background-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        }
+        
+        .radio-checkmark:after {
+            content: '';
+            position: absolute;
+            display: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        
+        .radio-item input:checked ~ .radio-checkmark:after {
+            display: block;
+        }
+        
+        .radio-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .radio-label {
             font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.2rem;
+        }
+        
+        .radio-description {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        
+        /* Tags input */
+        .tags-input-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            background-color: var(--light);
+            min-height: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .tags-input-container:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        }
+        
+        .tag {
+            display: flex;
+            align-items: center;
+            background-color: rgba(108, 99, 255, 0.1);
             color: var(--primary);
-            margin-top: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        
+        .tag:hover {
+            background-color: rgba(108, 99, 255, 0.2);
+        }
+        
+        .tag-remove {
+            margin-left: 0.5rem;
+            cursor: pointer;
+            color: var(--primary);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: rgba(108, 99, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .tag-remove:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .tags-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 0.4rem 0;
+            min-width: 150px;
+            background-color: transparent;
+            font-size: 1rem;
+        }
+        
+        /* Boutons navigation */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2.5rem;
+        }
+        
+        .nav-btn {
+            padding: 0.9rem 1.8rem;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+        }
+        
+        .btn-prev {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-prev:hover {
+            background-color: rgba(108, 99, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .btn-prev i {
+            margin-right: 0.5rem;
+        }
+        
+        .btn-next, .btn-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+        }
+        
+        .btn-next:hover, .btn-submit:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(108, 99, 255, 0.4);
+        }
+        
+        .btn-next i, .btn-submit i {
+            margin-left: 0.5rem;
+        }
+        
+        /* Summary section */
+        .summary-section {
+            margin-top: 1.5rem;
+        }
+        
+        .summary-block {
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .summary-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .summary-title i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .summary-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .summary-label {
+            font-weight: 500;
+            width: 180px;
+            color: var(--primary-dark);
+            flex-shrink: 0;
+        }
+        
+        .summary-value {
+            color: var(--dark);
+            flex: 1;
+        }
+        
+        .summary-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .summary-tag {
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        /* Info tips */
+        .info-tip {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left: 3px solid #3498db;
+            padding: 1rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .info-tip i {
+            color: #3498db;
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
+        }
+        
+        .info-tip-content {
+            flex: 1;
+        }
+        
+        .info-tip-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-tip-text {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes circleAnim {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .questionnaire-section {
+                padding: 3rem 0;
+            }
+            
+            .questionnaire-container {
+                padding: 1.5rem;
+            }
+            
+            .stepper {
+                margin-bottom: 2rem;
+            }
+            
+            .step-circle {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+            
+            .step-text {
+                font-size: 0.8rem;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-item {
+                flex-direction: column;
+            }
+            
+            .summary-label {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            
+            .form-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -435,316 +775,445 @@
 
     <section class="questionnaire-section">
         <div class="container">
-            <div class="questionnaire-container">
-                <div class="upload-steps">
-                    <div class="upload-step completed">
-                        <div class="step-number"><i class="fas fa-check"></i></div>
-                        <div class="step-title">Offre d'emploi</div>
-                    </div>
-                    <div class="upload-step active">
-                        <div class="step-number">2</div>
-                        <div class="step-title">Questionnaire</div>
-                    </div>
-                    <div class="upload-step">
-                        <div class="step-number">3</div>
-                        <div class="step-title">Matching</div>
-                    </div>
-                </div>
+            <h2 class="section-title">Questionnaire recruteur</h2>
+            <p class="section-description">Aidez-nous à mieux comprendre vos besoins pour un matching parfait avec les candidats.</p>
             
-                <div class="questionnaire-intro">
-                    <h3>Précisez vos critères de recherche</h3>
-                    <p>Répondez à ces questions pour nous aider à trouver les candidats qui correspondent le mieux à vos besoins.</p>
-                </div>
-
-                <div class="progress-bar-container">
-                    <div class="progress-bar-fill" id="progressBar"></div>
+            <div class="questionnaire-container">
+                <div class="stepper step1">
+                    <div class="step active">
+                        <div class="step-circle">1</div>
+                        <div class="step-text">Environnement</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">2</div>
+                        <div class="step-text">Compétences</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-text">Personnalité</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">4</div>
+                        <div class="step-text">Résumé</div>
+                    </div>
                 </div>
                 
-                <div class="section-indicator" id="sectionIndicator">
-                    <div class="indicator-dot active" data-section="1"></div>
-                    <div class="indicator-dot" data-section="2"></div>
-                    <div class="indicator-dot" data-section="3"></div>
-                </div>
-
-                <form id="recruiterForm">
-                    <!-- Section 1: Compétences et Expérience -->
-                    <div class="form-section" id="section1">
-                        <h4 class="form-section-title"><i class="fas fa-briefcase"></i> Compétences et Expérience</h4>
-                        
-                        <div class="form-tip">
-                            <i class="fas fa-lightbulb"></i> Plus vous êtes précis dans vos critères, plus notre matching sera pertinent. Cependant, trop de critères restrictifs peut limiter le nombre de candidats.
+                <form id="recruiter-form">
+                    <!-- Question 1: Environnement de travail -->
+                    <div class="question-container active" id="question1">
+                        <div class="question-header">
+                            <h3 class="question-title">Environnement de travail</h3>
+                            <p class="question-description">Décrivez l'environnement de travail et la culture de votre entreprise pour trouver les candidats qui s'y adapteront le mieux.</p>
                         </div>
                         
-                        <div class="input-group">
-                            <label for="requiredSkills">Compétences essentielles (obligatoires)</label>
-                            <input type="text" id="requiredSkills" placeholder="Tapez une compétence et appuyez sur Entrée...">
-                            <div class="skill-tags" id="requiredSkillTags"></div>
-                            <small>Ex: JavaScript, React, Python...</small>
-                        </div>
-                        
-                        <div class="input-group">
-                            <label for="bonusSkills">Compétences souhaitées (bonus)</label>
-                            <input type="text" id="bonusSkills" placeholder="Tapez une compétence et appuyez sur Entrée...">
-                            <div class="skill-tags" id="bonusSkillTags"></div>
-                            <small>Ex: TypeScript, Redux, Docker...</small>
-                        </div>
-                        
-                        <div class="input-group">
-                            <label>Niveau d'expérience requis</label>
-                            <div class="grid-options">
-                                <div class="radio-label">
-                                    <input type="radio" name="experienceLevel" value="junior" class="radio-input" id="expJunior">
-                                    <label for="expJunior">Junior (0-2 ans)</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="experienceLevel" value="intermediate" class="radio-input" id="expIntermediate">
-                                    <label for="expIntermediate">Intermédiaire (3-5 ans)</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="experienceLevel" value="senior" class="radio-input" id="expSenior">
-                                    <label for="expSenior">Senior (6+ ans)</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="experienceLevel" value="any" class="radio-input" id="expAny">
-                                    <label for="expAny">Peu importe</label>
-                                </div>
+                        <div class="info-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="info-tip-content">
+                                <div class="info-tip-title">Pourquoi c'est important</div>
+                                <p class="info-tip-text">La compatibilité culturelle est un facteur clé de réussite à long terme. Les candidats qui partagent vos valeurs et s'épanouissent dans votre type d'environnement sont plus susceptibles de rester et de performer.</p>
                             </div>
                         </div>
                         
-                        <div class="input-group">
-                            <label>Formation requise</label>
-                            <div class="grid-options">
-                                <div class="radio-label">
-                                    <input type="radio" name="education" value="no-degree" class="radio-input" id="eduNoDegree">
-                                    <label for="eduNoDegree">Pas de diplôme spécifique</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="education" value="bac" class="radio-input" id="eduBac">
-                                    <label for="eduBac">Bac</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="education" value="bac2" class="radio-input" id="eduBac2">
-                                    <label for="eduBac2">Bac+2/3</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="education" value="bac5" class="radio-input" id="eduBac5">
-                                    <label for="eduBac5">Bac+5 et plus</label>
-                                </div>
+                        <div class="form-group">
+                            <label for="work-environment" class="label-required">Comment décririez-vous l'environnement de travail ?</label>
+                            <select id="work-environment" required>
+                                <option value="">Sélectionnez une option</option>
+                                <option value="structured">Structuré et organisé</option>
+                                <option value="dynamic">Dynamique et en évolution rapide</option>
+                                <option value="creative">Créatif et innovant</option>
+                                <option value="collaborative">Collaboratif et axé sur l'équipe</option>
+                                <option value="autonomous">Autonome et indépendant</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="label-required">Quelles sont les valeurs les plus importantes dans votre entreprise ?</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="innovation">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Innovation</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="excellence">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Excellence</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="integrity">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Intégrité</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="collaboration">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Collaboration</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="customer-focus">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Focus client</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="diversity">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Diversité</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="work-life-balance">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Équilibre vie pro/perso</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="accountability">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Responsabilité</span>
+                                </label>
                             </div>
                         </div>
                         
-                        <div class="input-group">
-                            <label for="specificEducation">Formation spécifique (optionnel)</label>
-                            <input type="text" id="specificEducation" placeholder="Ex: Ingénieur informatique, Master en data science...">
-                        </div>
-                    </div>
-                    
-                    <!-- Section 2: Conditions de travail -->
-                    <div class="form-section hidden" id="section2">
-                        <h4 class="form-section-title"><i class="fas fa-building"></i> Conditions de travail</h4>
-                        
-                        <div class="input-group">
-                            <label>Type de contrat</label>
-                            <div class="grid-options">
-                                <div class="radio-label">
-                                    <input type="radio" name="contractType" value="cdi" class="radio-input" id="contractCDI">
-                                    <label for="contractCDI">CDI</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="contractType" value="cdd" class="radio-input" id="contractCDD">
-                                    <label for="contractCDD">CDD</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="contractType" value="freelance" class="radio-input" id="contractFreelance">
-                                    <label for="contractFreelance">Freelance</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="contractType" value="internship" class="radio-input" id="contractInternship">
-                                    <label for="contractInternship">Stage</label>
-                                </div>
+                        <div class="range-container">
+                            <div class="range-header">
+                                <span class="range-title">Degré de formalité dans l'environnement de travail</span>
+                                <span class="range-value" id="formality-value">5</span>
                             </div>
-                        </div>
-                        
-                        <div class="input-group">
-                            <label>Modalité de travail</label>
-                            <div class="grid-options">
-                                <div class="radio-label">
-                                    <input type="radio" name="workMode" value="office" class="radio-input" id="workOffice">
-                                    <label for="workOffice">Bureau (présentiel)</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="workMode" value="hybrid" class="radio-input" id="workHybrid">
-                                    <label for="workHybrid">Hybride</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="workMode" value="remote" class="radio-input" id="workRemote">
-                                    <label for="workRemote">Télétravail complet</label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="input-group conditional-section" id="hybridDaysSection" style="display: none;">
-                            <label>Nombre de jours de télétravail par semaine</label>
-                            <div class="grid-options">
-                                <div class="radio-label">
-                                    <input type="radio" name="hybridDays" value="1" class="radio-input" id="hybrid1">
-                                    <label for="hybrid1">1 jour</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="hybridDays" value="2" class="radio-input" id="hybrid2">
-                                    <label for="hybrid2">2 jours</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="hybridDays" value="3" class="radio-input" id="hybrid3">
-                                    <label for="hybrid3">3 jours</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="hybridDays" value="4" class="radio-input" id="hybrid4">
-                                    <label for="hybrid4">4 jours</label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="input-group">
-                            <label>Environnement de travail</label>
-                            <div class="grid-options">
-                                <div class="radio-label">
-                                    <input type="radio" name="workEnvironment" value="openspace" class="radio-input" id="envOpenSpace">
-                                    <label for="envOpenSpace">Open Space</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="workEnvironment" value="office" class="radio-input" id="envOffice">
-                                    <label for="envOffice">Bureau fermé</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="workEnvironment" value="mixed" class="radio-input" id="envMixed">
-                                    <label for="envMixed">Mixte</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="workEnvironment" value="any" class="radio-input" id="envAny">
-                                    <label for="envAny">Pas d'importance</label>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="input-group">
-                            <label for="minSalary">Fourchette de rémunération (brut annuel en €)</label>
-                            <div style="display: flex; gap: 1rem;">
-                                <input type="number" id="minSalary" placeholder="Min" style="width: 50%;">
-                                <input type="number" id="maxSalary" placeholder="Max" style="width: 50%;">
-                            </div>
-                        </div>
-                        
-                        <div class="input-group">
-                            <label>Urgent / Date de début</label>
-                            <div class="grid-options">
-                                <div class="radio-label">
-                                    <input type="radio" name="startDate" value="immediate" class="radio-input" id="startImmediate">
-                                    <label for="startImmediate">Immédiatement</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="startDate" value="1month" class="radio-input" id="start1Month">
-                                    <label for="start1Month">Dans le mois</label>
-                                </div>
-                                <div class="radio-label">
-                                    <input type="radio" name="startDate" value="flexible" class="radio-input" id="startFlexible">
-                                    <label for="startFlexible">Flexible</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Section 3: Critères complémentaires -->
-                    <div class="form-section hidden" id="section3">
-                        <h4 class="form-section-title"><i class="fas fa-sliders-h"></i> Critères complémentaires</h4>
-                        
-                        <div class="input-group">
-                            <label>Distance maximale domicile-travail acceptable</label>
-                            <input type="range" class="custom-range" id="maxCommuteRange" min="10" max="120" step="10" value="60">
+                            <input type="range" min="1" max="10" value="5" class="range-slider" id="formality-slider">
                             <div class="range-labels">
-                                <span>10 min</span>
-                                <span>1h</span>
-                                <span>2h</span>
+                                <span class="range-label">Décontracté</span>
+                                <span class="range-label">Équilibré</span>
+                                <span class="range-label">Formel</span>
                             </div>
-                            <div class="range-value" id="maxCommuteValue">60 minutes</div>
                         </div>
                         
-                        <div class="input-group">
-                            <label>Importance de l'expérience vs. potentiel</label>
-                            <input type="range" class="custom-range" id="expVsPotentialRange" min="0" max="100" step="10" value="50">
+                        <div class="range-container">
+                            <div class="range-header">
+                                <span class="range-title">Niveau d'autonomie attendu</span>
+                                <span class="range-value" id="autonomy-value">5</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="range-slider" id="autonomy-slider">
                             <div class="range-labels">
-                                <span>Potentiel</span>
-                                <span>Équilibré</span>
-                                <span>Expérience</span>
-                            </div>
-                            <div class="range-value" id="expVsPotentialValue">Équilibré (50%)</div>
-                        </div>
-                        
-                        <div class="input-group">
-                            <label>Disponibilité du candidat</label>
-                            <div class="grid-options">
-                                <div class="checkbox-label">
-                                    <input type="checkbox" name="availability" value="immediate" class="checkbox-input" id="availImmediate">
-                                    <label for="availImmediate">Disponible immédiatement</label>
-                                </div>
-                                <div class="checkbox-label">
-                                    <input type="checkbox" name="availability" value="1month" class="checkbox-input" id="avail1Month">
-                                    <label for="avail1Month">Préavis ≤ 1 mois</label>
-                                </div>
-                                <div class="checkbox-label">
-                                    <input type="checkbox" name="availability" value="3months" class="checkbox-input" id="avail3Months">
-                                    <label for="avail3Months">Préavis ≤ 3 mois</label>
-                                </div>
-                                <div class="checkbox-label">
-                                    <input type="checkbox" name="availability" value="any" class="checkbox-input" id="availAny" checked>
-                                    <label for="availAny">Peu importe</label>
-                                </div>
+                                <span class="range-label">Encadrement régulier</span>
+                                <span class="range-label">Mixte</span>
+                                <span class="range-label">Très autonome</span>
                             </div>
                         </div>
                         
-                        <div class="input-group">
-                            <label>Excluriez-vous des candidats actuellement en poste ?</label>
-                            <div class="radio-label">
-                                <input type="radio" name="currentlyEmployed" value="yes" class="radio-input" id="employed">
-                                <label for="employed">Oui, je préfère des candidats disponibles</label>
-                            </div>
-                            <div class="radio-label">
-                                <input type="radio" name="currentlyEmployed" value="no" class="radio-input" id="notEmployed">
-                                <label for="notEmployed">Non, cela n'a pas d'importance</label>
-                            </div>
+                        <div class="form-group">
+                            <label for="team-size">Taille de l'équipe directe</label>
+                            <select id="team-size">
+                                <option value="">Sélectionnez une option</option>
+                                <option value="solo">Travail en solo</option>
+                                <option value="small">Petite équipe (2-5 personnes)</option>
+                                <option value="medium">Équipe moyenne (6-15 personnes)</option>
+                                <option value="large">Grande équipe (16-30 personnes)</option>
+                                <option value="very-large">Très grande équipe (31+ personnes)</option>
+                            </select>
                         </div>
                         
-                        <div class="input-group">
-                            <label>Langues requises</label>
-                            <div class="grid-options">
-                                <div class="checkbox-label">
-                                    <input type="checkbox" name="languages" value="french" class="checkbox-input" id="langFrench" checked>
-                                    <label for="langFrench">Français</label>
-                                </div>
-                                <div class="checkbox-label">
-                                    <input type="checkbox" name="languages" value="english" class="checkbox-input" id="langEnglish">
-                                    <label for="langEnglish">Anglais</label>
-                                </div>
-                                <div class="checkbox-label">
-                                    <input type="checkbox" name="languages" value="spanish" class="checkbox-input" id="langSpanish">
-                                    <label for="langSpanish">Espagnol</label>
-                                </div>
-                                <div class="checkbox-label">
-                                    <input type="checkbox" name="languages" value="german" class="checkbox-input" id="langGerman">
-                                    <label for="langGerman">Allemand</label>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label for="work-arrangement" class="label-required">Organisation du travail</label>
+                            <select id="work-arrangement" required>
+                                <option value="">Sélectionnez une option</option>
+                                <option value="fully-remote">100% télétravail</option>
+                                <option value="hybrid-flexible">Hybride flexible</option>
+                                <option value="hybrid-fixed">Hybride avec jours fixes</option>
+                                <option value="mainly-office">Principalement au bureau</option>
+                                <option value="fully-office">100% au bureau</option>
+                            </select>
                         </div>
                         
-                        <div class="input-group">
-                            <label for="additionalNotes">Notes ou exigences supplémentaires</label>
-                            <textarea id="additionalNotes" rows="4" placeholder="Informations complémentaires qui vous aideront à trouver le candidat idéal..."></textarea>
+                        <div class="form-navigation">
+                            <div></div> <!-- Espace vide pour l'alignement -->
+                            <button type="button" class="nav-btn btn-next" id="next1">Suivant <i class="fas fa-arrow-right"></i></button>
                         </div>
                     </div>
                     
-                    <div class="form-buttons">
-                        <button type="button" class="btn-back" id="backButton">Retour</button>
-                        <button type="button" class="btn-next" id="nextButton">Suivant</button>
+                    <!-- Question 2: Compétences et expérience -->
+                    <div class="question-container" id="question2">
+                        <div class="question-header">
+                            <h3 class="question-title">Compétences et expérience</h3>
+                            <p class="question-description">Précisez les compétences et l'expérience que vous recherchez au-delà des exigences techniques de base.</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="soft-skills" class="label-required">Quelles soft skills sont les plus importantes pour ce poste ?</label>
+                            <div class="tags-input-container" id="soft-skills-container">
+                                <input type="text" class="tags-input" id="soft-skills-input" placeholder="Tapez et appuyez sur Entrée...">
+                                <input type="hidden" id="soft-skills" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="label-required">Quelle est l'importance de l'expérience passée par rapport au potentiel ?</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="experience-vs-potential" value="experience" class="custom-radio" required>
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <span class="radio-label">Priorité à l'expérience</span>
+                                        <span class="radio-description">Nous recherchons quelqu'un qui a déjà fait ses preuves dans un rôle similaire.</span>
+                                    </div>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="experience-vs-potential" value="balanced" class="custom-radio">
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <span class="radio-label">Équilibre expérience/potentiel</span>
+                                        <span class="radio-description">Nous valorisons l'expérience mais sommes ouverts aux talents prometteurs.</span>
+                                    </div>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="experience-vs-potential" value="potential" class="custom-radio">
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <span class="radio-label">Priorité au potentiel</span>
+                                        <span class="radio-description">Nous préférons quelqu'un avec du potentiel que nous pourrons former.</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="range-container">
+                            <div class="range-header">
+                                <span class="range-title">Niveau de spécialisation recherché</span>
+                                <span class="range-value" id="specialization-value">5</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="range-slider" id="specialization-slider">
+                            <div class="range-labels">
+                                <span class="range-label">Généraliste</span>
+                                <span class="range-label">Équilibré</span>
+                                <span class="range-label">Expert spécialisé</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="learning-curve" class="label-required">Quelle est la courbe d'apprentissage pour ce poste ?</label>
+                            <select id="learning-curve" required>
+                                <option value="">Sélectionnez une option</option>
+                                <option value="quick">Rapide (1-2 semaines)</option>
+                                <option value="moderate">Modérée (1-2 mois)</option>
+                                <option value="steep">Importante (3-6 mois)</option>
+                                <option value="very-steep">Très importante (6+ mois)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="additional-skills">Y a-t-il des compétences secondaires qui seraient un plus ?</label>
+                            <textarea id="additional-skills" rows="3" placeholder="Décrivez toutes compétences additionnelles qui seraient appréciées..."></textarea>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="nav-btn btn-prev" id="prev2"><i class="fas fa-arrow-left"></i> Précédent</button>
+                            <button type="button" class="nav-btn btn-next" id="next2">Suivant <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 3: Personnalité et adaptation -->
+                    <div class="question-container" id="question3">
+                        <div class="question-header">
+                            <h3 class="question-title">Personnalité et adaptation</h3>
+                            <p class="question-description">Précisez quel type de personnalité et de mode de travail s'intégrerait le mieux dans votre équipe.</p>
+                        </div>
+                        
+                        <div class="info-tip">
+                            <i class="fas fa-lightbulb"></i>
+                            <div class="info-tip-content">
+                                <div class="info-tip-title">Conseil</div>
+                                <p class="info-tip-text">La diversité des personnalités enrichit une équipe, mais certains traits peuvent mieux correspondre à des rôles spécifiques. Soyez honnête sur la culture existante pour assurer une bonne intégration.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="label-required">Quel type de personnalité s'intègrerait le mieux dans l'équipe ?</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="analytical">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Analytique</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="creative">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Créatif</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="detail-oriented">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Méthodique</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="adaptable">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Adaptable</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="team-player">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Esprit d'équipe</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="independent">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Indépendant</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="proactive">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Proactif</span>
+                                </label>
+                                <label class="checkbox-item">
+                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="organized">
+                                    <span class="checkmark"></span>
+                                    <span class="checkbox-label">Organisé</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="range-container">
+                            <div class="range-header">
+                                <span class="range-title">Rythme de travail attendu</span>
+                                <span class="range-value" id="pace-value">5</span>
+                            </div>
+                            <input type="range" min="1" max="10" value="5" class="range-slider" id="pace-slider">
+                            <div class="range-labels">
+                                <span class="range-label">Méthodique</span>
+                                <span class="range-label">Équilibré</span>
+                                <span class="range-label">Rapide</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="label-required">Quelle est la dynamique d'équipe idéale pour ce poste ?</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="team-dynamics" value="collaborative" class="custom-radio" required>
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <span class="radio-label">Très collaborative</span>
+                                        <span class="radio-description">Le travail implique une collaboration constante et une communication régulière.</span>
+                                    </div>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="team-dynamics" value="balanced" class="custom-radio">
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <span class="radio-label">Équilibrée</span>
+                                        <span class="radio-description">Un mélange de travail d'équipe et de travail individuel.</span>
+                                    </div>
+                                </label>
+                                <label class="radio-item">
+                                    <input type="radio" name="team-dynamics" value="independent" class="custom-radio">
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <span class="radio-label">Indépendante</span>
+                                        <span class="radio-description">Le travail est principalement individuel avec des points de coordination.</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="challenges">Quels défis ou difficultés le candidat pourrait-il rencontrer dans ce poste ?</label>
+                            <textarea id="challenges" rows="3" placeholder="Décrivez les défis potentiels..."></textarea>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="nav-btn btn-prev" id="prev3"><i class="fas fa-arrow-left"></i> Précédent</button>
+                            <button type="button" class="nav-btn btn-next" id="next3">Suivant <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                    
+                    <!-- Question 4: Résumé et validation -->
+                    <div class="question-container" id="question4">
+                        <div class="question-header">
+                            <h3 class="question-title">Résumé de vos préférences</h3>
+                            <p class="question-description">Vérifiez les informations que vous avez fournies et confirmez pour améliorer le matching avec les candidats.</p>
+                        </div>
+                        
+                        <div class="summary-section">
+                            <div class="summary-block">
+                                <h4 class="summary-title"><i class="fas fa-building"></i> Environnement de travail</h4>
+                                <div class="summary-item">
+                                    <div class="summary-label">Environnement :</div>
+                                    <div class="summary-value" id="summary-environment"></div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Valeurs :</div>
+                                    <div class="summary-value">
+                                        <div class="summary-tags" id="summary-values"></div>
+                                    </div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Formalité :</div>
+                                    <div class="summary-value" id="summary-formality"></div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Autonomie :</div>
+                                    <div class="summary-value" id="summary-autonomy"></div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Taille d'équipe :</div>
+                                    <div class="summary-value" id="summary-team-size"></div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Organisation :</div>
+                                    <div class="summary-value" id="summary-work-arrangement"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-block">
+                                <h4 class="summary-title"><i class="fas fa-graduation-cap"></i> Compétences et expérience</h4>
+                                <div class="summary-item">
+                                    <div class="summary-label">Soft skills :</div>
+                                    <div class="summary-value">
+                                        <div class="summary-tags" id="summary-soft-skills"></div>
+                                    </div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Expérience/Potentiel :</div>
+                                    <div class="summary-value" id="summary-experience-potential"></div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Spécialisation :</div>
+                                    <div class="summary-value" id="summary-specialization"></div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Courbe d'apprentissage :</div>
+                                    <div class="summary-value" id="summary-learning-curve"></div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Compétences secondaires :</div>
+                                    <div class="summary-value" id="summary-additional-skills"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-block">
+                                <h4 class="summary-title"><i class="fas fa-user"></i> Personnalité et adaptation</h4>
+                                <div class="summary-item">
+                                    <div class="summary-label">Traits de personnalité :</div>
+                                    <div class="summary-value">
+                                        <div class="summary-tags" id="summary-personality"></div>
+                                    </div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Rythme de travail :</div>
+                                    <div class="summary-value" id="summary-pace"></div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Dynamique d'équipe :</div>
+                                    <div class="summary-value" id="summary-team-dynamics"></div>
+                                </div>
+                                <div class="summary-item">
+                                    <div class="summary-label">Défis :</div>
+                                    <div class="summary-value" id="summary-challenges"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="nav-btn btn-prev" id="prev4"><i class="fas fa-arrow-left"></i> Précédent</button>
+                            <button type="submit" class="nav-btn btn-submit">Terminer <i class="fas fa-check"></i></button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -759,191 +1228,299 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Variables de navigation
-            let currentSection = 1;
-            const totalSections = 3;
-            const progressBar = document.getElementById('progressBar');
-            const backButton = document.getElementById('backButton');
-            const nextButton = document.getElementById('nextButton');
-            const sectionIndicators = document.querySelectorAll('.indicator-dot');
+            // Références aux éléments
+            const recruiterForm = document.getElementById('recruiter-form');
+            const stepper = document.querySelector('.stepper');
+            const steps = document.querySelectorAll('.step');
+            const questionContainers = document.querySelectorAll('.question-container');
             
-            // Initialisation
-            updateProgressBar();
-            updateButtons();
+            // Boutons de navigation
+            const next1Btn = document.getElementById('next1');
+            const next2Btn = document.getElementById('next2');
+            const next3Btn = document.getElementById('next3');
+            const prev2Btn = document.getElementById('prev2');
+            const prev3Btn = document.getElementById('prev3');
+            const prev4Btn = document.getElementById('prev4');
             
-            // Gestion du mode de travail hybride
-            document.querySelectorAll('[name="workMode"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const hybridDaysSection = document.getElementById('hybridDaysSection');
-                    if (this.value === 'hybrid') {
-                        hybridDaysSection.style.display = 'block';
-                    } else {
-                        hybridDaysSection.style.display = 'none';
+            // Sliders et leurs valeurs
+            const formalitySlider = document.getElementById('formality-slider');
+            const formalityValue = document.getElementById('formality-value');
+            const autonomySlider = document.getElementById('autonomy-slider');
+            const autonomyValue = document.getElementById('autonomy-value');
+            const specializationSlider = document.getElementById('specialization-slider');
+            const specializationValue = document.getElementById('specialization-value');
+            const paceSlider = document.getElementById('pace-slider');
+            const paceValue = document.getElementById('pace-value');
+            
+            // Tags input pour soft skills
+            const softSkillsInput = document.getElementById('soft-skills-input');
+            const softSkillsContainer = document.getElementById('soft-skills-container');
+            const softSkillsHidden = document.getElementById('soft-skills');
+            let softSkills = [];
+            
+            // Fonction pour naviguer entre les questions
+            function navigateToQuestion(currentIndex, targetIndex) {
+                // Vérification de la validité du formulaire pour la section actuelle
+                const currentInputs = questionContainers[currentIndex - 1].querySelectorAll('input[required], select[required], textarea[required]');
+                let isValid = true;
+                
+                currentInputs.forEach(input => {
+                    if (input.type === 'checkbox' || input.type === 'radio') {
+                        const name = input.name;
+                        const checked = document.querySelector(`input[name="${name}"]:checked`);
+                        if (!checked) isValid = false;
+                    } else if (!input.value.trim()) {
+                        isValid = false;
                     }
                 });
-            });
-            
-            // Gestion des sliders
-            const maxCommuteRange = document.getElementById('maxCommuteRange');
-            const maxCommuteValue = document.getElementById('maxCommuteValue');
-            
-            maxCommuteRange.addEventListener('input', function() {
-                maxCommuteValue.textContent = `${this.value} minutes`;
-            });
-            
-            const expVsPotentialRange = document.getElementById('expVsPotentialRange');
-            const expVsPotentialValue = document.getElementById('expVsPotentialValue');
-            
-            expVsPotentialRange.addEventListener('input', function() {
-                let valueText;
-                const value = parseInt(this.value);
                 
-                if (value < 30) {
-                    valueText = `Privilégie le potentiel (${value}%)`;
-                } else if (value < 40) {
-                    valueText = `Plutôt potentiel (${value}%)`;
-                } else if (value <= 60) {
-                    valueText = `Équilibré (${value}%)`;
-                } else if (value < 70) {
-                    valueText = `Plutôt expérience (${value}%)`;
-                } else {
-                    valueText = `Privilégie l'expérience (${value}%)`;
+                if (!isValid && targetIndex > currentIndex) {
+                    alert('Veuillez remplir tous les champs obligatoires avant de continuer.');
+                    return;
                 }
                 
-                expVsPotentialValue.textContent = valueText;
-            });
-            
-            // Gestion des tags de compétences
-            function setupSkillInput(inputId, tagContainerId) {
-                const input = document.getElementById(inputId);
-                const container = document.getElementById(tagContainerId);
+                // Mise à jour des classes actives
+                questionContainers.forEach(container => container.classList.remove('active'));
+                questionContainers[targetIndex - 1].classList.add('active');
                 
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' && this.value.trim()) {
-                        e.preventDefault();
-                        addSkillTag(this.value.trim(), container);
-                        this.value = '';
+                // Mise à jour du stepper
+                stepper.className = `stepper step${targetIndex}`;
+                
+                steps.forEach((step, index) => {
+                    step.classList.remove('active', 'completed');
+                    
+                    if (index + 1 === targetIndex) {
+                        step.classList.add('active');
+                    } else if (index + 1 < targetIndex) {
+                        step.classList.add('completed');
+                        step.querySelector('.step-circle').innerHTML = '<i class="fas fa-check"></i>';
+                    } else {
+                        step.querySelector('.step-circle').textContent = index + 1;
                     }
                 });
+                
+                // Si nous allons au résumé, mettons à jour les valeurs
+                if (targetIndex === 4) {
+                    updateSummary();
+                }
+                
+                // Animation de transition
+                questionContainers[targetIndex - 1].style.opacity = '0';
+                setTimeout(() => {
+                    questionContainers[targetIndex - 1].style.opacity = '1';
+                }, 50);
+                
+                // Scroll en haut du formulaire
+                questionContainers[targetIndex - 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             
-            function addSkillTag(skill, container) {
-                // Vérifier si le tag existe déjà
-                const existingTags = container.querySelectorAll('.skill-tag');
-                for (let tag of existingTags) {
-                    if (tag.getAttribute('data-skill').toLowerCase() === skill.toLowerCase()) {
-                        return; // Ne pas ajouter de doublons
-                    }
-                }
-                
+            // Gestionnaires d'événements pour les boutons de navigation
+            next1Btn.addEventListener('click', () => navigateToQuestion(1, 2));
+            next2Btn.addEventListener('click', () => navigateToQuestion(2, 3));
+            next3Btn.addEventListener('click', () => navigateToQuestion(3, 4));
+            prev2Btn.addEventListener('click', () => navigateToQuestion(2, 1));
+            prev3Btn.addEventListener('click', () => navigateToQuestion(3, 2));
+            prev4Btn.addEventListener('click', () => navigateToQuestion(4, 3));
+            
+            // Gestionnaires d'événements pour les sliders
+            formalitySlider.addEventListener('input', function() {
+                formalityValue.textContent = this.value;
+            });
+            
+            autonomySlider.addEventListener('input', function() {
+                autonomyValue.textContent = this.value;
+            });
+            
+            specializationSlider.addEventListener('input', function() {
+                specializationValue.textContent = this.value;
+            });
+            
+            paceSlider.addEventListener('input', function() {
+                paceValue.textContent = this.value;
+            });
+            
+            // Fonction pour créer un tag
+            function createTag(label) {
                 const tag = document.createElement('div');
-                tag.className = 'skill-tag';
-                tag.setAttribute('data-skill', skill);
-                tag.innerHTML = `${skill} <span class="remove">&times;</span>`;
-                container.appendChild(tag);
+                tag.className = 'tag';
+                tag.textContent = label;
                 
-                tag.querySelector('.remove').addEventListener('click', function() {
-                    tag.remove();
+                const closeBtn = document.createElement('span');
+                closeBtn.className = 'tag-remove';
+                closeBtn.innerHTML = '&times;';
+                closeBtn.addEventListener('click', function() {
+                    softSkillsContainer.removeChild(tag);
+                    softSkills = softSkills.filter(skill => skill !== label);
+                    softSkillsHidden.value = softSkills.join(',');
                 });
+                
+                tag.appendChild(closeBtn);
+                return tag;
             }
             
-            setupSkillInput('requiredSkills', 'requiredSkillTags');
-            setupSkillInput('bonusSkills', 'bonusSkillTags');
-            
-            // Gestion de la case à cocher "Peu importe" pour la disponibilité
-            document.getElementById('availAny').addEventListener('change', function() {
-                const availOptions = document.querySelectorAll('[name="availability"]:not(#availAny)');
-                if (this.checked) {
-                    availOptions.forEach(option => {
-                        option.checked = false;
-                        option.disabled = true;
-                    });
-                } else {
-                    availOptions.forEach(option => {
-                        option.disabled = false;
-                    });
+            // Gestion des tags pour les soft skills
+            softSkillsInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && this.value.trim() !== '') {
+                    e.preventDefault();
+                    
+                    const value = this.value.trim();
+                    if (softSkills.includes(value)) return;
+                    
+                    softSkills.push(value);
+                    softSkillsContainer.insertBefore(createTag(value), softSkillsInput);
+                    softSkillsHidden.value = softSkills.join(',');
+                    this.value = '';
                 }
             });
             
-            // Navigation entre les sections
-            backButton.addEventListener('click', function() {
-                if (currentSection > 1) {
-                    showSection(currentSection - 1);
-                }
-            });
+            // Suggestions de soft skills
+            const softSkillsSuggestions = [
+                'Communication', 'Travail d\'équipe', 'Résolution de problèmes', 
+                'Adaptabilité', 'Gestion du temps', 'Leadership', 'Créativité',
+                'Pensée critique', 'Écoute active', 'Négociation', 'Empathie'
+            ];
             
-            nextButton.addEventListener('click', function() {
-                if (currentSection < totalSections) {
-                    showSection(currentSection + 1);
-                } else {
-                    // Formulaire terminé, rediriger vers les matches
-                    submitForm();
-                }
+            // Ajout de quelques suggestions initiales de soft skills
+            softSkillsSuggestions.slice(0, 3).forEach(skill => {
+                softSkills.push(skill);
+                softSkillsContainer.insertBefore(createTag(skill), softSkillsInput);
             });
+            softSkillsHidden.value = softSkills.join(',');
             
-            sectionIndicators.forEach(dot => {
-                dot.addEventListener('click', function() {
-                    const sectionNumber = parseInt(this.getAttribute('data-section'));
-                    showSection(sectionNumber);
+            // Fonction pour mettre à jour le résumé
+            function updateSummary() {
+                // Environnement de travail
+                const workEnvironment = document.getElementById('work-environment');
+                document.getElementById('summary-environment').textContent = workEnvironment.options[workEnvironment.selectedIndex]?.text || 'Non spécifié';
+                
+                // Valeurs
+                const valuesContainer = document.getElementById('summary-values');
+                valuesContainer.innerHTML = '';
+                document.querySelectorAll('input[name="company-values"]:checked').forEach(checkbox => {
+                    const value = checkbox.value;
+                    const tag = document.createElement('span');
+                    tag.className = 'summary-tag';
+                    tag.textContent = checkbox.nextElementSibling.nextElementSibling.textContent;
+                    valuesContainer.appendChild(tag);
                 });
-            });
-            
-            // Fonction pour changer de section
-            function showSection(sectionNumber) {
-                // Masquer la section actuelle
-                document.getElementById(`section${currentSection}`).classList.add('hidden');
-                // Afficher la nouvelle section
-                document.getElementById(`section${sectionNumber}`).classList.remove('hidden');
-                // Mettre à jour la section actuelle
-                currentSection = sectionNumber;
-                // Mettre à jour la barre de progression
-                updateProgressBar();
-                // Mettre à jour les indicateurs
-                updateSectionIndicators();
-                // Mettre à jour les boutons
-                updateButtons();
-                // Défiler vers le haut de la section
-                document.querySelector('.questionnaire-container').scrollIntoView({ behavior: 'smooth' });
+                
+                // Formalité et autonomie
+                document.getElementById('summary-formality').textContent = `${formalitySlider.value}/10`;
+                document.getElementById('summary-autonomy').textContent = `${autonomySlider.value}/10`;
+                
+                // Taille d'équipe
+                const teamSize = document.getElementById('team-size');
+                document.getElementById('summary-team-size').textContent = teamSize.options[teamSize.selectedIndex]?.text || 'Non spécifié';
+                
+                // Organisation du travail
+                const workArrangement = document.getElementById('work-arrangement');
+                document.getElementById('summary-work-arrangement').textContent = workArrangement.options[workArrangement.selectedIndex]?.text || 'Non spécifié';
+                
+                // Soft skills
+                const softSkillsContainer = document.getElementById('summary-soft-skills');
+                softSkillsContainer.innerHTML = '';
+                softSkills.forEach(skill => {
+                    const tag = document.createElement('span');
+                    tag.className = 'summary-tag';
+                    tag.textContent = skill;
+                    softSkillsContainer.appendChild(tag);
+                });
+                
+                // Expérience vs potentiel
+                const experiencePotential = document.querySelector('input[name="experience-vs-potential"]:checked');
+                let experienceText = 'Non spécifié';
+                if (experiencePotential) {
+                    const labels = {
+                        'experience': 'Priorité à l\'expérience',
+                        'balanced': 'Équilibre expérience/potentiel',
+                        'potential': 'Priorité au potentiel'
+                    };
+                    experienceText = labels[experiencePotential.value] || 'Non spécifié';
+                }
+                document.getElementById('summary-experience-potential').textContent = experienceText;
+                
+                // Spécialisation
+                document.getElementById('summary-specialization').textContent = `${specializationSlider.value}/10`;
+                
+                // Courbe d'apprentissage
+                const learningCurve = document.getElementById('learning-curve');
+                document.getElementById('summary-learning-curve').textContent = learningCurve.options[learningCurve.selectedIndex]?.text || 'Non spécifié';
+                
+                // Compétences secondaires
+                document.getElementById('summary-additional-skills').textContent = document.getElementById('additional-skills').value || 'Aucune spécifiée';
+                
+                // Traits de personnalité
+                const personalityContainer = document.getElementById('summary-personality');
+                personalityContainer.innerHTML = '';
+                document.querySelectorAll('input[name="personality-traits"]:checked').forEach(checkbox => {
+                    const tag = document.createElement('span');
+                    tag.className = 'summary-tag';
+                    tag.textContent = checkbox.nextElementSibling.nextElementSibling.textContent;
+                    personalityContainer.appendChild(tag);
+                });
+                
+                // Rythme de travail
+                document.getElementById('summary-pace').textContent = `${paceSlider.value}/10`;
+                
+                // Dynamique d'équipe
+                const teamDynamics = document.querySelector('input[name="team-dynamics"]:checked');
+                let dynamicsText = 'Non spécifié';
+                if (teamDynamics) {
+                    const labels = {
+                        'collaborative': 'Très collaborative',
+                        'balanced': 'Équilibrée',
+                        'independent': 'Indépendante'
+                    };
+                    dynamicsText = labels[teamDynamics.value] || 'Non spécifié';
+                }
+                document.getElementById('summary-team-dynamics').textContent = dynamicsText;
+                
+                // Défis
+                document.getElementById('summary-challenges').textContent = document.getElementById('challenges').value || 'Aucun spécifié';
             }
             
-            // Fonction pour mettre à jour la barre de progression
-            function updateProgressBar() {
-                const progress = (currentSection / totalSections) * 100;
-                progressBar.style.width = `${progress}%`;
-            }
-            
-            // Fonction pour mettre à jour les indicateurs de section
-            function updateSectionIndicators() {
-                sectionIndicators.forEach(dot => {
-                    const sectionNumber = parseInt(dot.getAttribute('data-section'));
-                    if (sectionNumber === currentSection) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
+            // Soumission du formulaire
+            recruiterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simuler la soumission avec animation
+                const submitBtn = document.querySelector('.btn-submit');
+                submitBtn.innerHTML = '<span class="loading-spinner"></span>';
+                submitBtn.disabled = true;
+                
+                // Ajouter des styles dynamiques pour l'animation
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    .loading-spinner {
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        border: 3px solid rgba(255,255,255,.3);
+                        border-radius: 50%;
+                        border-top-color: #fff;
+                        animation: spin 1s ease-in-out infinite;
                     }
-                });
-            }
-            
-            // Fonction pour mettre à jour les boutons
-            function updateButtons() {
-                // Masquer le bouton Retour à la première section
-                backButton.style.display = currentSection === 1 ? 'none' : 'block';
-                
-                // Changer le texte du bouton Suivant à la dernière section
-                nextButton.textContent = currentSection === totalSections ? 'Trouver des candidats' : 'Suivant';
-            }
-            
-            // Fonction pour soumettre le formulaire
-            function submitForm() {
-                nextButton.textContent = 'Recherche en cours...';
-                nextButton.disabled = true;
+                    
+                    @keyframes spin {
+                        to { transform: rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
                 
                 // Simuler un délai de traitement
                 setTimeout(() => {
-                    // Rediriger vers la page des matches
+                    // Rediriger vers la page de matching
                     window.location.href = 'recruiter-matches.html';
                 }, 1500);
-            }
+            });
+            
+            // Animation des éléments au chargement initial
+            steps.forEach((step, index) => {
+                step.style.opacity = '0';
+                setTimeout(() => {
+                    step.style.opacity = '1';
+                }, 100 * index);
+            });
         });
     </script>
 </body>
