@@ -148,8 +148,27 @@ function getJobTypeText(type) {
     return types[type] || type;
 }
 
+// Fonction pour obtenir la couleur du type de poste
+function getJobTypeColor(type) {
+    const colors = {
+        'full-time': 'var(--primary)',
+        'part-time': '#3498db',
+        'contract': '#9b59b6', 
+        'internship': '#e67e22',
+        'remote': '#16a085'
+    };
+    return colors[type] || 'var(--primary)';
+}
+
+// Fonction pour tronquer la description
+function truncateText(text, maxLength = 150) {
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+}
+
 // Fonction pour créer une carte d'offre d'emploi
 function createJobCard(job) {
+    const typeColor = getJobTypeColor(job.type);
     return `
     <div class="job-card" data-id="${job.id}" data-category="${job.category}">
         <div class="job-card-header">
@@ -158,10 +177,10 @@ function createJobCard(job) {
                 <div class="job-card-company">${job.company}</div>
                 <div class="job-card-location"><i class="fas fa-map-marker-alt"></i> ${job.location}</div>
             </div>
-            <div class="job-card-type">${getJobTypeText(job.type)}</div>
+            <div class="job-card-type" style="background-color: ${typeColor}">${getJobTypeText(job.type)}</div>
         </div>
         <div class="job-card-body">
-            <div class="job-card-description">${job.description}</div>
+            <div class="job-card-description">${truncateText(job.description)}</div>
             ${job.salary ? `<div class="job-card-salary"><i class="fas fa-money-bill-wave"></i> ${job.salary}</div>` : ''}
         </div>
         <div class="job-card-footer">
@@ -175,7 +194,7 @@ function createJobCard(job) {
     `;
 }
 
-// Fonction pour afficher les offres d'emploi
+// Fonction pour afficher les offres d'emploi avec animation
 function displayJobs(jobs) {
     const jobsContainer = document.getElementById('jobs-container');
     
@@ -184,28 +203,56 @@ function displayJobs(jobs) {
         return;
     }
     
-    jobsContainer.innerHTML = '';
-    jobs.forEach(job => {
-        jobsContainer.innerHTML += createJobCard(job);
-    });
+    // Fade out effect before updating content
+    jobsContainer.style.opacity = '0';
     
-    // Ajouter des gestionnaires d'événements pour les boutons de candidature
-    document.querySelectorAll('.apply-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const jobId = parseInt(this.getAttribute('data-id'));
-            const job = jobsData.find(j => j.id === jobId);
-            
-            if (job.applicationUrl) {
-                window.open(job.applicationUrl, '_blank');
-            } else {
-                window.location.href = `mailto:${job.applicationEmail}?subject=Candidature pour le poste de ${job.title} chez ${job.company}&body=Bonjour,%0D%0A%0D%0AJe souhaite postuler pour le poste de ${job.title} chez ${job.company}.%0D%0A%0D%0AMerci de trouver ci-joint mon CV et ma lettre de motivation.%0D%0A%0D%0ACordialement,%0D%0A[Votre nom]`;
-            }
+    setTimeout(() => {
+        jobsContainer.innerHTML = '';
+        jobs.forEach((job, index) => {
+            jobsContainer.innerHTML += createJobCard(job);
         });
-    });
+        
+        // Fade in effect after content is updated
+        setTimeout(() => {
+            jobsContainer.style.opacity = '1';
+        }, 100);
+        
+        // Ajouter des gestionnaires d'événements pour les boutons de candidature
+        document.querySelectorAll('.apply-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const jobId = parseInt(this.getAttribute('data-id'));
+                const job = jobsData.find(j => j.id === jobId);
+                
+                // Ajouter un effet de clic
+                this.classList.add('button-click');
+                setTimeout(() => {
+                    this.classList.remove('button-click');
+                }, 200);
+                
+                if (job.applicationUrl) {
+                    window.open(job.applicationUrl, '_blank');
+                } else {
+                    window.location.href = `mailto:${job.applicationEmail}?subject=Candidature pour le poste de ${job.title} chez ${job.company}&body=Bonjour,%0D%0A%0D%0AJe souhaite postuler pour le poste de ${job.title} chez ${job.company}.%0D%0A%0D%0AMerci de trouver ci-joint mon CV et ma lettre de motivation.%0D%0A%0D%0ACordialement,%0D%0A[Votre nom]`;
+                }
+            });
+        });
+    }, 300);
 }
 
 // Initialisation de l'application
 document.addEventListener('DOMContentLoaded', function() {
+    // Ajouter des styles dynamiquement
+    const styleElement = document.createElement('style');
+    styleElement.innerHTML = `
+        .button-click {
+            transform: scale(0.95);
+        }
+        #jobs-container {
+            transition: opacity 0.3s ease;
+        }
+    `;
+    document.head.appendChild(styleElement);
+    
     // Afficher toutes les offres d'emploi au chargement
     displayJobs(jobsData);
     
@@ -217,6 +264,12 @@ document.addEventListener('DOMContentLoaded', function() {
     function filterJobs() {
         const searchTerm = searchInput.value.toLowerCase();
         const categoryValue = categoryFilter.value;
+        
+        // Ajouter un effet de clic au bouton de recherche
+        searchButton.classList.add('button-click');
+        setTimeout(() => {
+            searchButton.classList.remove('button-click');
+        }, 200);
         
         const filteredJobs = jobsData.filter(job => {
             const matchesSearch = 
@@ -252,13 +305,20 @@ document.addEventListener('DOMContentLoaded', function() {
     loadMoreButton.addEventListener('click', function() {
         clickCount++;
         
+        // Ajouter un effet de clic
+        this.classList.add('button-click');
+        setTimeout(() => {
+            this.classList.remove('button-click');
+        }, 200);
+        
         if (clickCount === 1) {
             // Ajouter un message après le premier clic
-            this.textContent = "Chargement en cours...";
+            this.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Chargement en cours...";
             setTimeout(() => {
-                this.textContent = "Aucune offre supplémentaire disponible";
+                this.innerHTML = "Aucune offre supplémentaire disponible";
                 this.disabled = true;
-                this.style.backgroundColor = "#95a5a6";
+                this.style.opacity = "0.6";
+                this.style.cursor = "not-allowed";
             }, 1500);
         }
     });
