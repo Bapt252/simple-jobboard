@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Télécharger votre CV - Nexten</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .upload-section {
+            padding: 4rem 0;
+        }
+        
+        .upload-container {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .upload-area {
+            border: 2px dashed #e2e8f0;
+            border-radius: var(--radius);
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(108, 99, 255, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .file-info {
+            display: none;
+            background-color: #f8fafc;
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+        }
+        
+        .file-name {
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .file-size {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        
+        .progress-container {
+            margin-top: 1.5rem;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary);
+            width: 0%;
+            transition: width 1s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--text);
+            text-align: right;
+        }
+        
+        .parsing-container {
+            display: none;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .parsed-data {
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .parsed-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .parsed-section h4 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+        
+        .info-item {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-label {
+            font-weight: 500;
+            width: 140px;
+            color: var(--primary-dark);
+        }
+        
+        .skill-tag {
+            display: inline-block;
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .action-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-edit {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+        
+        .btn-edit:hover {
+            background-color: rgba(108, 99, 255, 0.1);
+        }
+        
+        .btn-continue {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-continue:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .hide-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-briefcase"></i> Nexten</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Offres d'emploi</a></li>
+                    <li><a href="post-job.html">Publier une offre</a></li>
+                    <li><a href="candidate-upload.html" class="active">Espace candidat</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="upload-section">
+        <div class="container">
+            <h2>Téléchargez votre CV</h2>
+            <p class="section-description">Notre système d'intelligence artificielle va analyser votre CV et vous proposer les 10 meilleures offres d'emploi correspondant à votre profil.</p>
+            
+            <div class="upload-container">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h3>Glissez votre CV ici</h3>
+                    <p>ou <span style="color: var(--primary); text-decoration: underline; font-weight: 500;">cliquez pour parcourir</span></p>
+                    <p class="file-formats">Formats acceptés : PDF, DOCX, DOC</p>
+                    <input type="file" id="fileInput" class="hide-input" accept=".pdf,.docx,.doc">
+                </div>
+                
+                <div class="file-info" id="fileInfo">
+                    <div class="file-name" id="fileName">CV_John_Doe.pdf</div>
+                    <div class="file-size" id="fileSize">720 KB</div>
+                </div>
+                
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-text" id="progressText">0%</div>
+                </div>
+                
+                <div class="parsing-container" id="parsingContainer">
+                    <h3>Informations extraites</h3>
+                    <p>Notre IA a analysé votre CV et identifié les informations suivantes :</p>
+                    
+                    <div class="parsed-data">
+                        <div class="parsed-section">
+                            <h4>Informations personnelles</h4>
+                            <div class="info-item">
+                                <div class="info-label">Nom :</div>
+                                <div class="info-value">John Doe</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Email :</div>
+                                <div class="info-value">john.doe@example.com</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Téléphone :</div>
+                                <div class="info-value">06 12 34 56 78</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Localisation :</div>
+                                <div class="info-value">Paris, France</div>
+                            </div>
+                        </div>
+                        
+                        <div class="parsed-section">
+                            <h4>Compétences</h4>
+                            <div>
+                                <span class="skill-tag">JavaScript</span>
+                                <span class="skill-tag">React</span>
+                                <span class="skill-tag">Node.js</span>
+                                <span class="skill-tag">HTML5</span>
+                                <span class="skill-tag">CSS3</span>
+                                <span class="skill-tag">Git</span>
+                                <span class="skill-tag">TypeScript</span>
+                                <span class="skill-tag">MongoDB</span>
+                            </div>
+                        </div>
+                        
+                        <div class="parsed-section">
+                            <h4>Expérience</h4>
+                            <div class="info-item">
+                                <div class="info-label">Titre :</div>
+                                <div class="info-value">Développeur Frontend</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Entreprise :</div>
+                                <div class="info-value">TechSolutions</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Durée :</div>
+                                <div class="info-value">Jan 2020 - Présent (3 ans)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="parsed-section">
+                            <h4>Formation</h4>
+                            <div class="info-item">
+                                <div class="info-label">Diplôme :</div>
+                                <div class="info-value">Master en Informatique</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">École :</div>
+                                <div class="info-value">Université de Paris</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Année :</div>
+                                <div class="info-value">2019</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="action-btn btn-edit">Modifier les informations</button>
+                        <button class="action-btn btn-continue" id="continueBtn">Voir les offres recommandées</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Nexten - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const fileInfo = document.getElementById('fileInfo');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const parsingContainer = document.getElementById('parsingContainer');
+            const continueBtn = document.getElementById('continueBtn');
+            
+            // Click on upload area to trigger file input
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // Handle file selection
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    
+                    // Display file info
+                    fileName.textContent = file.name;
+                    fileSize.textContent = formatFileSize(file.size);
+                    fileInfo.style.display = 'block';
+                    
+                    // Show and animate progress bar
+                    progressContainer.style.display = 'block';
+                    simulateUpload();
+                }
+            });
+            
+            // Handle drag and drop
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                uploadArea.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                uploadArea.classList.remove('highlight');
+            }
+            
+            uploadArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    const file = files[0];
+                    
+                    // Display file info
+                    fileName.textContent = file.name;
+                    fileSize.textContent = formatFileSize(file.size);
+                    fileInfo.style.display = 'block';
+                    
+                    // Show and animate progress bar
+                    progressContainer.style.display = 'block';
+                    simulateUpload();
+                }
+            }
+            
+            // Format file size
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' bytes';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                else return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+            
+            // Simulate upload process
+            function simulateUpload() {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 5;
+                    progressFill.style.width = progress + '%';
+                    progressText.textContent = progress + '%';
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            // Hide progress and show parsing results
+                            progressContainer.style.display = 'none';
+                            parsingContainer.style.display = 'block';
+                            
+                            // Scroll to parsing results
+                            parsingContainer.scrollIntoView({ behavior: 'smooth' });
+                        }, 500);
+                    }
+                }, 100);
+            }
+            
+            // Continue button to recommendations page
+            continueBtn.addEventListener('click', function() {
+                window.location.href = 'candidate-matches.html';
+            });
+        });
+    </script>
+</body>
+</html>
