@@ -6,6 +6,7 @@
     <title>Publier une offre d'emploi - JobBoard</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
@@ -22,21 +23,21 @@
 
     <section class="post-job">
         <div class="container">
-            <h2>Publier une nouvelle offre d'emploi</h2>
+            <h2>Publiez votre offre d'emploi</h2>
             <form id="job-form">
                 <div class="form-group">
                     <label for="job-title">Titre du poste*</label>
-                    <input type="text" id="job-title" required>
+                    <input type="text" id="job-title" placeholder="Ex: Développeur Frontend" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="company-name">Nom de l'entreprise*</label>
-                    <input type="text" id="company-name" required>
+                    <input type="text" id="company-name" placeholder="Ex: TechSolutions" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="location">Lieu*</label>
-                    <input type="text" id="location" required>
+                    <input type="text" id="location" placeholder="Ex: Paris, France" required>
                 </div>
                 
                 <div class="form-group">
@@ -65,22 +66,22 @@
                 
                 <div class="form-group">
                     <label for="salary">Salaire (optionnel)</label>
-                    <input type="text" id="salary" placeholder="ex: 45 000 € - 60 000 € / an">
+                    <input type="text" id="salary" placeholder="Ex: 45 000 € - 60 000 € / an">
                 </div>
                 
                 <div class="form-group full-width">
                     <label for="description">Description du poste*</label>
-                    <textarea id="description" rows="10" required></textarea>
+                    <textarea id="description" rows="10" placeholder="Décrivez le poste, les responsabilités et les opportunités..." required></textarea>
                 </div>
                 
                 <div class="form-group full-width">
                     <label for="requirements">Compétences requises*</label>
-                    <textarea id="requirements" rows="5" required></textarea>
+                    <textarea id="requirements" rows="5" placeholder="Listez les compétences et l'expérience nécessaires (séparez par des virgules)..." required></textarea>
                 </div>
                 
                 <div class="form-group">
                     <label for="application-email">Email de contact*</label>
-                    <input type="email" id="application-email" required>
+                    <input type="email" id="application-email" placeholder="Ex: recrutement@entreprise.com" required>
                 </div>
                 
                 <div class="form-group">
