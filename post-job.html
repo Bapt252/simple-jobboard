@@ -207,6 +207,106 @@
             from { transform: scale(0); }
             to { transform: scale(1); }
         }
+        
+        /* Carte d'invitation au questionnaire */
+        .questionnaire-card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .questionnaire-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .questionnaire-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .questionnaire-card-icon {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(108, 99, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+        
+        .questionnaire-card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+        
+        .questionnaire-card-subtitle {
+            color: var(--text);
+            font-size: 1rem;
+        }
+        
+        .questionnaire-card-content {
+            margin-bottom: 1.5rem;
+        }
+        
+        .questionnaire-card-benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .questionnaire-card-benefit {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .questionnaire-card-benefit i {
+            color: var(--primary);
+            margin-right: 0.8rem;
+            margin-top: 0.3rem;
+        }
+        
+        .questionnaire-card-benefit-text {
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+        
+        .start-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+        }
+        
+        .start-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(108, 99, 255, 0.4);
+        }
+        
+        .start-button i {
+            margin-left: 0.8rem;
+        }
     </style>
 </head>
 <body>
@@ -236,11 +336,11 @@
             <div class="process-stepper step1">
                 <div class="process-step active">
                     <div class="process-step-circle">1</div>
-                    <div class="process-step-text">Détails de l'offre</div>
+                    <div class="process-step-text">Informations recruteur</div>
                 </div>
                 <div class="process-step">
                     <div class="process-step-circle">2</div>
-                    <div class="process-step-text">Questionnaire recruteur</div>
+                    <div class="process-step-text">Questionnaire détaillé</div>
                 </div>
                 <div class="process-step">
                     <div class="process-step-circle">3</div>
@@ -266,79 +366,52 @@
                 </div>
             </div>
             
-            <div class="form-tip">
-                <i class="fas fa-lightbulb"></i> Conseil : Plus vous ajoutez de détails, plus notre matching sera précis. N'hésitez pas à être spécifique sur les compétences requises.
+            <div class="questionnaire-card">
+                <div class="questionnaire-card-header">
+                    <div class="questionnaire-card-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div>
+                        <h3 class="questionnaire-card-title">Questionnaire recruteur amélioré</h3>
+                        <p class="questionnaire-card-subtitle">Un processus optimisé pour un matching plus précis</p>
+                    </div>
+                </div>
+                
+                <div class="questionnaire-card-content">
+                    <p>Notre questionnaire recruteur vous permet de préciser tous les aspects importants de votre recherche pour un matching optimal avec les candidats. Le processus est simple et intuitif :</p>
+                </div>
+                
+                <div class="questionnaire-card-benefits">
+                    <div class="questionnaire-card-benefit">
+                        <i class="fas fa-building"></i>
+                        <div class="questionnaire-card-benefit-text">
+                            Informations sur votre entreprise et culture
+                        </div>
+                    </div>
+                    <div class="questionnaire-card-benefit">
+                        <i class="fas fa-file-upload"></i>
+                        <div class="questionnaire-card-benefit-text">
+                            Upload de fiche de poste avec analyse IA
+                        </div>
+                    </div>
+                    <div class="questionnaire-card-benefit">
+                        <i class="fas fa-users"></i>
+                        <div class="questionnaire-card-benefit-text">
+                            Précisions sur l'environnement de travail
+                        </div>
+                    </div>
+                    <div class="questionnaire-card-benefit">
+                        <i class="fas fa-search"></i>
+                        <div class="questionnaire-card-benefit-text">
+                            Critères de recrutement spécifiques
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="recruiter-questionnaire.html" class="start-button">
+                    Commencer le questionnaire <i class="fas fa-arrow-right"></i>
+                </a>
             </div>
-            
-            <form id="job-form">
-                <div class="form-group">
-                    <label for="job-title">Titre du poste*</label>
-                    <input type="text" id="job-title" placeholder="Ex: Développeur Frontend" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="company-name">Nom de l'entreprise*</label>
-                    <input type="text" id="company-name" placeholder="Ex: TechSolutions" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="location">Lieu*</label>
-                    <input type="text" id="location" placeholder="Ex: Paris, France" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="job-type">Type de contrat*</label>
-                    <select id="job-type" required>
-                        <option value="">Sélectionner</option>
-                        <option value="full-time">CDI</option>
-                        <option value="part-time">CDD</option>
-                        <option value="contract">Freelance</option>
-                        <option value="internship">Stage</option>
-                        <option value="remote">Télétravail</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="category">Catégorie*</label>
-                    <select id="category" required>
-                        <option value="">Sélectionner</option>
-                        <option value="tech">Technologie</option>
-                        <option value="marketing">Marketing</option>
-                        <option value="design">Design</option>
-                        <option value="sales">Ventes</option>
-                        <option value="other">Autre</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="salary">Salaire (optionnel)</label>
-                    <input type="text" id="salary" placeholder="Ex: 45 000 € - 60 000 € / an">
-                </div>
-                
-                <div class="form-group full-width">
-                    <label for="description">Description du poste*</label>
-                    <textarea id="description" rows="10" placeholder="Décrivez le poste, les responsabilités et les opportunités..." required></textarea>
-                </div>
-                
-                <div class="form-group full-width">
-                    <label for="requirements">Compétences requises*</label>
-                    <textarea id="requirements" rows="5" placeholder="Listez les compétences et l'expérience nécessaires (séparez par des virgules)..." required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="application-email">Email de contact*</label>
-                    <input type="email" id="application-email" placeholder="Ex: recrutement@entreprise.com" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="application-url">URL de candidature (optionnel)</label>
-                    <input type="url" id="application-url" placeholder="https://exemple.com/postuler">
-                </div>
-                
-                <div class="form-group full-width">
-                    <button type="submit" class="btn-submit">Continuer avec le questionnaire</button>
-                </div>
-            </form>
         </div>
     </section>
 
@@ -350,40 +423,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const jobForm = document.getElementById('job-form');
             const processSteps = document.querySelectorAll('.process-step');
             const processStepper = document.querySelector('.process-stepper');
-            
-            // Ajouter des styles dynamiques pour les animations
-            const styleElement = document.createElement('style');
-            styleElement.innerHTML = `
-                .btn-submit.loading {
-                    position: relative;
-                    color: transparent;
-                }
-                
-                .btn-submit.loading::after {
-                    content: '';
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    width: 25px;
-                    height: 25px;
-                    margin: -12.5px 0 0 -12.5px;
-                    border: 3px solid rgba(255, 255, 255, 0.3);
-                    border-radius: 50%;
-                    border-top-color: #fff;
-                    animation: spin 1s ease-in-out infinite;
-                }
-                
-                @keyframes spin {
-                    to { transform: rotate(360deg); }
-                }
-            `;
-            document.head.appendChild(styleElement);
-            
-            // Focus automatiquement sur le premier champ au chargement
-            document.getElementById('job-title').focus();
             
             // Animer les étapes au chargement
             processSteps.forEach((step, index) => {
@@ -391,29 +432,6 @@
                 setTimeout(() => {
                     step.style.opacity = '1';
                 }, 100 * index);
-            });
-            
-            // Gérer la soumission du formulaire
-            jobForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                
-                // Mettre à jour le stepper
-                processStepper.classList.remove('step1');
-                processStepper.classList.add('step2');
-                processSteps[0].classList.remove('active');
-                processSteps[0].classList.add('completed');
-                processSteps[1].classList.add('active');
-                
-                // Simuler une requête réseau avec animation
-                const submitButton = document.querySelector('.btn-submit');
-                submitButton.classList.add('loading');
-                submitButton.disabled = true;
-                
-                // Simuler un délai de traitement
-                setTimeout(() => {
-                    // Rediriger vers la page de questionnaire recruteur
-                    window.location.href = "recruiter-questionnaire.html";
-                }, 1500);
             });
         });
     </script>
