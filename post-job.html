@@ -376,6 +376,107 @@
             line-height: 1.5;
         }
 
+        /* Styles pour le formulaire court */
+        .short-form {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .short-form h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+        
+        .short-form-content {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.7rem;
+            font-weight: 500;
+            color: var(--dark);
+            position: relative;
+        }
+        
+        .label-required::after {
+            content: '*';
+            color: var(--primary);
+            margin-left: 4px;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--light);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .ai-badge i {
+            margin-right: 0.5rem;
+        }
+        
+        .submit-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.9rem 1.8rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+        }
+        
+        .submit-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(108, 99, 255, 0.4);
+        }
+        
+        .submit-button i {
+            margin-left: 0.8rem;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -428,6 +529,43 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Formulaire court pour recruteurs sans poste ouvert -->
+            <div class="short-form" id="short-form">
+                <h3>Dites-nous en plus sur votre entreprise</h3>
+                <div class="short-form-content">
+                    <p>Nous avons besoin de quelques informations sur votre entreprise pour vous proposer les profils qui correspondent le mieux à votre secteur d'activité.</p>
+                </div>
+                
+                <form id="company-info-form">
+                    <div class="form-group">
+                        <label for="company-name" class="label-required">Nom de la structure</label>
+                        <input type="text" id="company-name" placeholder="Ex: TechSolutions" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-address" class="label-required">Adresse complète</label>
+                        <input type="text" id="company-address" placeholder="Ex: 123 Avenue des Champs-Élysées, 75008 Paris" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-website">Site internet</label>
+                        <input type="url" id="company-website" placeholder="Ex: https://www.example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="company-description" class="label-required">Présentation rapide</label>
+                        <textarea id="company-description" rows="5" placeholder="Décrivez brièvement votre entreprise, son activité et sa mission..." required></textarea>
+                        <div class="ai-badge" id="generate-description">
+                            <i class="fas fa-magic"></i> Générer une description
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-button">
+                        Enregistrer et continuer <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
             </div>
             
             <div class="process-stepper step1">
@@ -522,10 +660,15 @@
         document.addEventListener('DOMContentLoaded', function() {
             const optionYes = document.getElementById('option-yes');
             const optionNo = document.getElementById('option-no');
+            const shortForm = document.getElementById('short-form');
             const processSteps = document.querySelectorAll('.process-step');
             const processStepper = document.querySelector('.process-stepper');
             const parsingInfo = document.querySelector('.parsing-info');
             const questionnaireCard = document.querySelector('.questionnaire-card');
+            const companyInfoForm = document.getElementById('company-info-form');
+            const generateDescriptionBtn = document.getElementById('generate-description');
+            const companyWebsiteInput = document.getElementById('company-website');
+            const companyDescriptionInput = document.getElementById('company-description');
             
             // Masquer initialement la section stepper et les autres sections
             processStepper.style.display = 'none';
@@ -539,6 +682,9 @@
                 this.style.backgroundColor = 'rgba(108, 99, 255, 0.05)';
                 optionNo.style.borderColor = '#e2e8f0';
                 optionNo.style.backgroundColor = '#f8fafc';
+                
+                // Masquer le formulaire court s'il est visible
+                shortForm.style.display = 'none';
                 
                 // Afficher le reste du contenu avec animation
                 setTimeout(() => {
@@ -570,10 +716,90 @@
                 optionYes.style.borderColor = '#e2e8f0';
                 optionYes.style.backgroundColor = '#f8fafc';
                 
-                // Rediriger vers la page d'accueil après une courte animation
+                // Masquer les sections de recrutement
+                processStepper.style.display = 'none';
+                parsingInfo.style.display = 'none';
+                questionnaireCard.style.display = 'none';
+                
+                // Afficher le formulaire court
+                shortForm.style.display = 'block';
+                shortForm.style.opacity = '0';
+                
                 setTimeout(() => {
+                    shortForm.style.opacity = '1';
+                    shortForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+            });
+            
+            // Traitement du formulaire court
+            companyInfoForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Vérifier la validité du formulaire
+                if (!this.checkValidity()) {
+                    alert('Veuillez remplir tous les champs obligatoires.');
+                    return;
+                }
+                
+                // Animer le bouton de soumission
+                const submitButton = this.querySelector('.submit-button');
+                const originalText = submitButton.innerHTML;
+                submitButton.innerHTML = '<span class="loading-spinner"></span>';
+                submitButton.disabled = true;
+                
+                // Ajouter des styles dynamiques pour l'animation
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    .loading-spinner {
+                        display: inline-block;
+                        width: 20px;
+                        height: 20px;
+                        border: 3px solid rgba(255,255,255,.3);
+                        border-radius: 50%;
+                        border-top-color: #fff;
+                        animation: spin 1s ease-in-out infinite;
+                    }
+                    
+                    @keyframes spin {
+                        to { transform: rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                // Simuler un délai de traitement
+                setTimeout(() => {
+                    // Rediriger vers la page d'accueil
                     window.location.href = 'index.html';
-                }, 500);
+                }, 1500);
+            });
+            
+            // Simulation de génération de description d'entreprise basée sur le site web
+            generateDescriptionBtn.addEventListener('click', function() {
+                const website = companyWebsiteInput.value.trim();
+                if (!website) {
+                    alert('Veuillez entrer l\'URL de votre site web pour générer une description.');
+                    return;
+                }
+                
+                // Simuler un chargement
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération en cours...';
+                this.style.pointerEvents = 'none';
+                
+                // Simuler un délai de traitement
+                setTimeout(() => {
+                    // Générer une description fictive (dans une vraie application, cela appellerait une API)
+                    let domain = website.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+                    
+                    if (domain.includes('example.com')) {
+                        companyDescriptionInput.value = "TechSolutions est une entreprise innovante spécialisée dans le développement de solutions logicielles pour les entreprises. Fondée en 2015, elle compte aujourd'hui plus de 50 collaborateurs passionnés par la technologie et l'innovation. Avec une approche centrée sur le client, TechSolutions s'efforce de fournir des solutions sur mesure qui répondent parfaitement aux besoins spécifiques de chaque client.";
+                    } else {
+                        companyDescriptionInput.value = `Entreprise dynamique dans son secteur, ${domain} se distingue par son approche innovante et sa culture d'entreprise axée sur l'excellence. Avec une équipe talentueuse et passionnée, l'entreprise propose des produits/services de qualité qui répondent aux besoins de ses clients. Sa mission est de créer de la valeur tout en maintenant un environnement de travail stimulant pour ses collaborateurs.`;
+                    }
+                    
+                    // Réinitialiser le bouton
+                    this.innerHTML = '<i class="fas fa-magic"></i> Générer une description';
+                    this.style.pointerEvents = 'auto';
+                }, 1500);
             });
             
             // Animer les étapes au chargement
