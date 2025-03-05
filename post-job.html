@@ -307,6 +307,79 @@
         .start-button i {
             margin-left: 0.8rem;
         }
+
+        /* Question préliminaire */
+        .preliminary-question {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--primary);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .preliminary-question h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+        }
+        
+        .question-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .question-options {
+                flex-direction: column;
+            }
+        }
+        
+        .question-option {
+            flex: 1;
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-option:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            background-color: rgba(108, 99, 255, 0.05);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .question-option-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .question-option-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .question-option-desc {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -331,6 +404,30 @@
                 </div>
                 <h2>Publiez votre offre d'emploi</h2>
                 <p class="section-description">Notre intelligence artificielle analysera votre offre et vous proposera les 10 meilleurs candidats correspondant à votre besoin.</p>
+            </div>
+
+            <div class="preliminary-question">
+                <h3>Avez-vous actuellement un poste à pourvoir ?</h3>
+                <div class="question-options">
+                    <div class="question-option" id="option-yes">
+                        <div class="question-option-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="question-option-title">Oui</div>
+                        <div class="question-option-desc">
+                            Je souhaite publier une offre d'emploi et trouver des candidats correspondant à mon besoin.
+                        </div>
+                    </div>
+                    <div class="question-option" id="option-no">
+                        <div class="question-option-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div class="question-option-title">Non</div>
+                        <div class="question-option-desc">
+                            Je souhaite seulement explorer les profils disponibles ou me tenir informé.
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="process-stepper step1">
@@ -423,8 +520,61 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const optionYes = document.getElementById('option-yes');
+            const optionNo = document.getElementById('option-no');
             const processSteps = document.querySelectorAll('.process-step');
             const processStepper = document.querySelector('.process-stepper');
+            const parsingInfo = document.querySelector('.parsing-info');
+            const questionnaireCard = document.querySelector('.questionnaire-card');
+            
+            // Masquer initialement la section stepper et les autres sections
+            processStepper.style.display = 'none';
+            parsingInfo.style.display = 'none';
+            questionnaireCard.style.display = 'none';
+            
+            // Option Oui
+            optionYes.addEventListener('click', function() {
+                // Animer l'option sélectionnée
+                this.style.borderColor = 'var(--primary)';
+                this.style.backgroundColor = 'rgba(108, 99, 255, 0.05)';
+                optionNo.style.borderColor = '#e2e8f0';
+                optionNo.style.backgroundColor = '#f8fafc';
+                
+                // Afficher le reste du contenu avec animation
+                setTimeout(() => {
+                    processStepper.style.display = 'flex';
+                    parsingInfo.style.display = 'block';
+                    questionnaireCard.style.display = 'block';
+                    
+                    // Animer l'apparition
+                    processStepper.style.opacity = '0';
+                    parsingInfo.style.opacity = '0';
+                    questionnaireCard.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        processStepper.style.opacity = '1';
+                        parsingInfo.style.opacity = '1';
+                        questionnaireCard.style.opacity = '1';
+                    }, 50);
+                    
+                    // Scroll vers la section stepper
+                    processStepper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            });
+            
+            // Option Non
+            optionNo.addEventListener('click', function() {
+                // Animer l'option sélectionnée
+                this.style.borderColor = 'var(--primary)';
+                this.style.backgroundColor = 'rgba(108, 99, 255, 0.05)';
+                optionYes.style.borderColor = '#e2e8f0';
+                optionYes.style.backgroundColor = '#f8fafc';
+                
+                // Rediriger vers la page d'accueil après une courte animation
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 500);
+            });
             
             // Animer les étapes au chargement
             processSteps.forEach((step, index) => {
