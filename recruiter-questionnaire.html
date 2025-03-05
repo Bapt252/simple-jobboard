@@ -48,7 +48,7 @@
         .progress-bar-fill {
             height: 100%;
             background-color: var(--primary);
-            width: 25%;
+            width: 10%;
             transition: width 0.3s ease;
         }
         
@@ -283,90 +283,58 @@
             color: white;
         }
         
-        .ai-badge {
-            display: inline-flex;
-            align-items: center;
-            background-color: rgba(108, 99, 255, 0.1);
-            color: var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 500;
-            margin-bottom: 1rem;
-        }
-        
-        .ai-badge i {
-            margin-right: 0.5rem;
-        }
-        
-        .loading-button {
-            position: relative;
-            color: transparent !important;
-        }
-        
-        .loading-button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 1.2rem;
-            height: 1.2rem;
-            margin: -0.6rem 0 0 -0.6rem;
-            border: 0.2rem solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .tag-container {
+        .publish-later-box {
+            background-color: rgba(108, 99, 255, 0.05);
+            border: 1px dashed var(--primary);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .tag {
-            display: inline-flex;
             align-items: center;
-            background-color: #f1f5f9;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
         }
         
-        .tag-remove {
-            margin-left: 0.5rem;
-            cursor: pointer;
-            font-size: 0.8rem;
+        .publish-later-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+        
+        .publish-later-text {
+            flex-grow: 1;
+            font-size: 0.95rem;
             color: var(--text);
         }
         
-        .tag-remove:hover {
-            color: #e74c3c;
-        }
-        
-        .autofill-button {
-            background-color: transparent;
+        .publish-later-link {
             color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-            font-size: 0.9rem;
             font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            text-decoration: underline;
+        }
+        
+        .auto-fill-section {
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            padding: 1rem;
             margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         
-        .autofill-button:hover {
-            background-color: rgba(108, 99, 255, 0.1);
+        .auto-fill-section:hover {
+            background-color: #f1f5f9;
         }
         
-        .autofill-button i {
+        .auto-fill-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
             margin-right: 0.5rem;
+        }
+        
+        .auto-fill-text {
+            color: var(--text);
+            font-size: 0.9rem;
         }
     </style>
 </head>
@@ -388,26 +356,32 @@
         <div class="container">
             <div class="questionnaire-container">
                 <div class="upload-steps">
-                    <div class="upload-step active">
-                        <div class="step-number">1</div>
-                        <div class="step-title">Entreprise</div>
-                    </div>
-                    <div class="upload-step">
-                        <div class="step-number">2</div>
+                    <div class="upload-step" id="postStep">
+                        <div class="step-number"><i class="fas fa-file-alt"></i></div>
                         <div class="step-title">Poste</div>
+                    </div>
+                    <div class="upload-step active">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Questionnaire</div>
                     </div>
                     <div class="upload-step">
                         <div class="step-number">3</div>
                         <div class="step-title">Matching</div>
                     </div>
                 </div>
-                
+            
                 <div class="questionnaire-intro">
-                    <div class="ai-badge">
-                        <i class="fas fa-robot"></i> Propulsé par l'IA
+                    <h3>Complétez votre profil d'entreprise</h3>
+                    <p>Ces informations nous aideront à trouver les meilleurs candidats pour vos besoins de recrutement.</p>
+                </div>
+                
+                <div class="publish-later-box" id="publishLaterBox">
+                    <div class="publish-later-icon">
+                        <i class="fas fa-info-circle"></i>
                     </div>
-                    <h3>Décrivez votre entreprise</h3>
-                    <p>Ces informations nous aideront à trouver les candidats qui correspondent le mieux à votre culture d'entreprise.</p>
+                    <div class="publish-later-text">
+                        Vous n'avez pas encore publié d'offre d'emploi. Vous pouvez continuer à remplir votre profil et <a href="post-job.html" class="publish-later-link">publier une offre plus tard</a>.
+                    </div>
                 </div>
 
                 <div class="progress-bar-container">
@@ -436,111 +410,112 @@
                         
                         <div class="input-group">
                             <label for="companyWebsite">Site internet</label>
-                            <input type="url" id="companyWebsite" placeholder="Ex: https://www.votreentreprise.com">
-                            <button type="button" class="autofill-button" id="autofillButton">
-                                <i class="fas fa-magic"></i> Remplir automatiquement depuis le site web
-                            </button>
+                            <input type="url" id="companyWebsite" placeholder="https://example.com">
+                            <div class="auto-fill-section" id="autoFillFromWebsite">
+                                <i class="fas fa-magic auto-fill-icon"></i>
+                                <span class="auto-fill-text">Remplir automatiquement la description à partir du site web</span>
+                            </div>
                         </div>
                         
                         <div class="input-group">
-                            <label for="companyDescription">Présentation rapide de l'entreprise*</label>
-                            <textarea id="companyDescription" rows="5" placeholder="Décrivez brièvement votre entreprise, ses activités et sa culture..." required></textarea>
+                            <label for="companyDescription">Présentation rapide</label>
+                            <textarea id="companyDescription" rows="5" placeholder="Présentez brièvement votre entreprise, ses activités et sa culture..."></textarea>
                         </div>
                         
                         <div class="input-group">
-                            <label>Taille de la structure*</label>
+                            <label>Taille de structure*</label>
                             <div class="grid-options">
                                 <div class="radio-label">
                                     <input type="radio" name="companySize" value="startup" class="radio-input" id="sizeStartup">
-                                    <label for="sizeStartup">Start-up (< 10 pers.)</label>
+                                    <label for="sizeStartup">Start-up (< 10)</label>
                                 </div>
                                 <div class="radio-label">
                                     <input type="radio" name="companySize" value="tpe" class="radio-input" id="sizeTPE">
-                                    <label for="sizeTPE">TPE (< 20 pers.)</label>
+                                    <label for="sizeTPE">TPE (< 20)</label>
                                 </div>
                                 <div class="radio-label">
                                     <input type="radio" name="companySize" value="pme" class="radio-input" id="sizePME">
-                                    <label for="sizePME">PME (< 250 pers.)</label>
+                                    <label for="sizePME">PME (< 250)</label>
                                 </div>
                                 <div class="radio-label">
                                     <input type="radio" name="companySize" value="eti" class="radio-input" id="sizeETI">
-                                    <label for="sizeETI">ETI (< 5000 pers.)</label>
+                                    <label for="sizeETI">ETI (250-5000)</label>
                                 </div>
                                 <div class="radio-label">
                                     <input type="radio" name="companySize" value="group" class="radio-input" id="sizeGroup">
-                                    <label for="sizeGroup">Grand groupe</label>
+                                    <label for="sizeGroup">Grand groupe (> 5000)</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Section 2: Informations sur le recrutement -->
+                    <!-- Section 2: Informations sur le poste -->
                     <div class="form-section hidden" id="section2">
-                        <h4 class="form-section-title"><i class="fas fa-user-plus"></i> Informations sur le recrutement</h4>
+                        <h4 class="form-section-title"><i class="fas fa-briefcase"></i> Informations sur le poste</h4>
                         
                         <div class="input-group">
-                            <label>Avez-vous un poste sur lequel vous souhaitez recruter ?*</label>
+                            <label>Avez-vous un poste sur lequel vous souhaitez recruter ?</label>
                             <div class="radio-label">
-                                <input type="radio" name="hasJob" value="yes" class="radio-input" id="hasJobYes" checked>
-                                <label for="hasJobYes">Oui</label>
+                                <input type="radio" name="hasPosition" value="yes" class="radio-input" id="positionYes">
+                                <label for="positionYes">Oui</label>
                             </div>
                             <div class="radio-label">
-                                <input type="radio" name="hasJob" value="no" class="radio-input" id="hasJobNo">
-                                <label for="hasJobNo">Non, je veux juste explorer les profils</label>
+                                <input type="radio" name="hasPosition" value="no" class="radio-input" id="positionNo">
+                                <label for="positionNo">Non, je souhaite juste explorer les profils disponibles</label>
                             </div>
                         </div>
                         
-                        <div id="jobDetailsSection">
+                        <div class="conditional-section hidden" id="positionSection">
                             <div class="input-group">
-                                <label>Délai de recrutement (plusieurs choix possibles)*</label>
+                                <label>Délai de recrutement (plusieurs choix possibles)</label>
                                 <div class="grid-options">
                                     <div class="checkbox-label">
-                                        <input type="checkbox" name="hiringDeadline" value="immediate" class="checkbox-input" id="deadlineImmediate">
+                                        <input type="checkbox" name="recruitmentDeadline" value="immediate" class="checkbox-input" id="deadlineImmediate">
                                         <label for="deadlineImmediate">Immédiat</label>
                                     </div>
                                     <div class="checkbox-label">
-                                        <input type="checkbox" name="hiringDeadline" value="2weeks" class="checkbox-input" id="deadline2Weeks">
+                                        <input type="checkbox" name="recruitmentDeadline" value="2weeks" class="checkbox-input" id="deadline2Weeks">
                                         <label for="deadline2Weeks">2 semaines</label>
                                     </div>
                                     <div class="checkbox-label">
-                                        <input type="checkbox" name="hiringDeadline" value="1month" class="checkbox-input" id="deadline1Month">
+                                        <input type="checkbox" name="recruitmentDeadline" value="1month" class="checkbox-input" id="deadline1Month">
                                         <label for="deadline1Month">1 mois</label>
                                     </div>
                                     <div class="checkbox-label">
-                                        <input type="checkbox" name="hiringDeadline" value="2months" class="checkbox-input" id="deadline2Months">
+                                        <input type="checkbox" name="recruitmentDeadline" value="2months" class="checkbox-input" id="deadline2Months">
                                         <label for="deadline2Months">2 mois</label>
                                     </div>
                                     <div class="checkbox-label">
-                                        <input type="checkbox" name="hiringDeadline" value="3months" class="checkbox-input" id="deadline3Months">
+                                        <input type="checkbox" name="recruitmentDeadline" value="3months" class="checkbox-input" id="deadline3Months">
                                         <label for="deadline3Months">3 mois</label>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="input-group">
-                                <label>Pouvez-vous gérer un préavis ?*</label>
+                                <label>Pouvez-vous gérer un préavis ?</label>
                                 <div class="radio-label">
-                                    <input type="radio" name="canManageNotice" value="yes" class="radio-input" id="noticeYes">
+                                    <input type="radio" name="canHandleNotice" value="yes" class="radio-input" id="noticeYes">
                                     <label for="noticeYes">Oui</label>
                                 </div>
                                 <div class="radio-label">
-                                    <input type="radio" name="canManageNotice" value="no" class="radio-input" id="noticeNo">
+                                    <input type="radio" name="canHandleNotice" value="no" class="radio-input" id="noticeNo">
                                     <label for="noticeNo">Non</label>
                                 </div>
                                 
-                                <div class="conditional-section hidden" id="noticeDetailsSection">
-                                    <label>Durée de préavis acceptable (plusieurs choix possibles)*</label>
+                                <div class="conditional-section hidden" id="noticeSection">
+                                    <label>Durée de préavis acceptable</label>
                                     <div class="grid-options">
                                         <div class="checkbox-label">
-                                            <input type="checkbox" name="noticePeriod" value="1month" class="checkbox-input" id="notice1Month">
+                                            <input type="checkbox" name="acceptableNotice" value="1month" class="checkbox-input" id="notice1Month">
                                             <label for="notice1Month">1 mois</label>
                                         </div>
                                         <div class="checkbox-label">
-                                            <input type="checkbox" name="noticePeriod" value="2months" class="checkbox-input" id="notice2Months">
+                                            <input type="checkbox" name="acceptableNotice" value="2months" class="checkbox-input" id="notice2Months">
                                             <label for="notice2Months">2 mois</label>
                                         </div>
                                         <div class="checkbox-label">
-                                            <input type="checkbox" name="noticePeriod" value="3months" class="checkbox-input" id="notice3Months">
+                                            <input type="checkbox" name="acceptableNotice" value="3months" class="checkbox-input" id="notice3Months">
                                             <label for="notice3Months">3 mois</label>
                                         </div>
                                     </div>
@@ -548,51 +523,51 @@
                             </div>
                             
                             <div class="input-group">
-                                <label>Contexte de recrutement*</label>
+                                <label>Contexte de recrutement</label>
                                 <div class="grid-options">
                                     <div class="radio-label">
-                                        <input type="radio" name="hiringContext" value="creation" class="radio-input" id="contextCreation">
+                                        <input type="radio" name="recruitmentContext" value="creation" class="radio-input" id="contextCreation">
                                         <label for="contextCreation">Création de poste</label>
                                     </div>
                                     <div class="radio-label">
-                                        <input type="radio" name="hiringContext" value="replacement" class="radio-input" id="contextReplacement">
+                                        <input type="radio" name="recruitmentContext" value="replacement" class="radio-input" id="contextReplacement">
                                         <label for="contextReplacement">Remplacement</label>
                                     </div>
                                     <div class="radio-label">
-                                        <input type="radio" name="hiringContext" value="growth" class="radio-input" id="contextGrowth">
+                                        <input type="radio" name="recruitmentContext" value="growth" class="radio-input" id="contextGrowth">
                                         <label for="contextGrowth">Accroissement d'activité / Renfort</label>
                                     </div>
                                     <div class="radio-label">
-                                        <input type="radio" name="hiringContext" value="private" class="radio-input" id="contextPrivate">
+                                        <input type="radio" name="recruitmentContext" value="private" class="radio-input" id="contextPrivate">
                                         <label for="contextPrivate">Je ne souhaite pas communiquer</label>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="input-group">
-                                <label>Années d'expérience requises pour le poste*</label>
+                                <label>Années d'expérience requises pour le poste</label>
                                 <div class="grid-options">
                                     <div class="radio-label">
-                                        <input type="radio" name="requiredExperience" value="junior" class="radio-input" id="expJunior">
+                                        <input type="radio" name="experienceYears" value="junior" class="radio-input" id="expJunior">
                                         <label for="expJunior">Profil Junior</label>
                                     </div>
                                     <div class="radio-label">
-                                        <input type="radio" name="requiredExperience" value="2-3years" class="radio-input" id="exp2-3Years">
-                                        <label for="exp2-3Years">2 ans - 3 ans</label>
+                                        <input type="radio" name="experienceYears" value="2-3" class="radio-input" id="exp2to3">
+                                        <label for="exp2to3">2 ans - 3 ans</label>
                                     </div>
                                     <div class="radio-label">
-                                        <input type="radio" name="requiredExperience" value="5-10years" class="radio-input" id="exp5-10Years">
-                                        <label for="exp5-10Years">5 ans - 10 ans</label>
+                                        <input type="radio" name="experienceYears" value="5-10" class="radio-input" id="exp5to10">
+                                        <label for="exp5to10">5 ans - 10 ans</label>
                                     </div>
                                     <div class="radio-label">
-                                        <input type="radio" name="requiredExperience" value="10+years" class="radio-input" id="exp10PlusYears">
-                                        <label for="exp10PlusYears">10 ans et plus</label>
+                                        <input type="radio" name="experienceYears" value="10+" class="radio-input" id="exp10plus">
+                                        <label for="exp10plus">10 ans et plus</label>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="input-group">
-                                <label>La connaissance de votre secteur est-elle obligatoire ?*</label>
+                                <label>La connaissance de votre secteur est-elle obligatoire ?</label>
                                 <div class="radio-label">
                                     <input type="radio" name="sectorKnowledge" value="yes" class="radio-input" id="sectorKnowledgeYes">
                                     <label for="sectorKnowledgeYes">Oui</label>
@@ -602,10 +577,10 @@
                                     <label for="sectorKnowledgeNo">Non</label>
                                 </div>
                                 
-                                <div class="conditional-section hidden" id="sectorDetailsSection">
-                                    <label for="specificSector">Quel secteur en particulier ?*</label>
-                                    <select id="specificSector">
-                                        <option value="">Sélectionnez un secteur</option>
+                                <div class="conditional-section hidden" id="sectorSection">
+                                    <label for="requiredSector">Secteur d'activité</label>
+                                    <select id="requiredSector">
+                                        <option value="">Sélectionner un secteur</option>
                                         <option value="tech">Informatique / Tech</option>
                                         <option value="finance">Finance / Banque / Assurance</option>
                                         <option value="healthcare">Santé / Pharmaceutique</option>
@@ -616,74 +591,66 @@
                                         <option value="consulting">Conseil / Consulting</option>
                                         <option value="public">Secteur public</option>
                                         <option value="nonprofit">Associatif / ONG</option>
-                                        <option value="other">Autre</option>
                                     </select>
                                 </div>
                             </div>
                             
                             <div class="input-group">
-                                <label>Environnement de travail*</label>
+                                <label>Environnement de travail</label>
                                 <div class="grid-options">
                                     <div class="radio-label">
-                                        <input type="radio" name="workEnvironment" value="openspace" class="radio-input" id="workEnvironmentOpenspace">
-                                        <label for="workEnvironmentOpenspace">Open space</label>
+                                        <input type="radio" name="workEnvironment" value="openspace" class="radio-input" id="envOpenSpace">
+                                        <label for="envOpenSpace">Open Space</label>
                                     </div>
                                     <div class="radio-label">
-                                        <input type="radio" name="workEnvironment" value="office" class="radio-input" id="workEnvironmentOffice">
-                                        <label for="workEnvironmentOffice">Bureau</label>
+                                        <input type="radio" name="workEnvironment" value="office" class="radio-input" id="envOffice">
+                                        <label for="envOffice">Bureau fermé</label>
                                     </div>
                                     <div class="radio-label">
-                                        <input type="radio" name="workEnvironment" value="mixed" class="radio-input" id="workEnvironmentMixed">
-                                        <label for="workEnvironmentMixed">Mixte</label>
+                                        <input type="radio" name="workEnvironment" value="mixed" class="radio-input" id="envMixed">
+                                        <label for="envMixed">Mixte</label>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="input-group">
                                 <label for="teamComposition">Composition de l'équipe et rattachement interne</label>
-                                <textarea id="teamComposition" rows="3" placeholder="Ex: Équipe de 5 personnes, rattaché à un responsable / à la direction générale..."></textarea>
+                                <textarea id="teamComposition" rows="3" placeholder="Ex: Équipe de 5 personnes, rattaché à un responsable..."></textarea>
                             </div>
                             
                             <div class="input-group">
-                                <label for="evolutionPerspectives">Perspectives d'évolution</label>
-                                <textarea id="evolutionPerspectives" rows="3" placeholder="Mentionnez les possibilités d'évolution, si il y en a..."></textarea>
+                                <label for="careerProspects">Perspectives d'évolution</label>
+                                <textarea id="careerProspects" rows="3" placeholder="Mentionnez les possibilités d'évolution au sein de l'entreprise..."></textarea>
                             </div>
                             
                             <div class="input-group">
-                                <label for="salary">Rémunération*</label>
-                                <input type="text" id="salary" placeholder="Ex: 45000 - 55000 € brut annuel" required>
+                                <label for="salaryRange">Rémunération</label>
+                                <input type="text" id="salaryRange" placeholder="Ex: 45 000 € - 55 000 € brut annuel">
                             </div>
                             
                             <div class="input-group">
                                 <label for="benefits">Avantages</label>
-                                <textarea id="benefits" rows="3" placeholder="Ex: Télétravail (2j/semaine), RTT, 13e mois, tickets restaurant..."></textarea>
+                                <textarea id="benefits" rows="3" placeholder="Ex: Télétravail 2 jours/semaine, RTT, 13e mois, tickets restaurant..."></textarea>
                             </div>
                             
                             <div class="input-group">
-                                <label>Type de contrat*</label>
+                                <label>Type de contrat</label>
                                 <div class="grid-options">
-                                    <div class="radio-label">
-                                        <input type="radio" name="contractType" value="35h" class="radio-input" id="contract35h">
+                                    <div class="checkbox-label">
+                                        <input type="checkbox" name="contractType" value="35h" class="checkbox-input" id="contract35h">
                                         <label for="contract35h">35h</label>
                                     </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="contractType" value="39h" class="radio-input" id="contract39h">
+                                    <div class="checkbox-label">
+                                        <input type="checkbox" name="contractType" value="39h" class="checkbox-input" id="contract39h">
                                         <label for="contract39h">39h</label>
                                     </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="contractType" value="other" class="radio-input" id="contractOther">
-                                        <label for="contractOther">Autre</label>
+                                    <div class="checkbox-label">
+                                        <input type="checkbox" name="contractType" value="cadre" class="checkbox-input" id="contractCadre">
+                                        <label for="contractCadre">Cadre</label>
                                     </div>
-                                </div>
-                                
-                                <div class="grid-options" style="margin-top: 1rem;">
-                                    <div class="radio-label">
-                                        <input type="radio" name="employeeStatus" value="cadre" class="radio-input" id="statusCadre">
-                                        <label for="statusCadre">Cadre</label>
-                                    </div>
-                                    <div class="radio-label">
-                                        <input type="radio" name="employeeStatus" value="noncadre" class="radio-input" id="statusNonCadre">
-                                        <label for="statusNonCadre">Non-cadre</label>
+                                    <div class="checkbox-label">
+                                        <input type="checkbox" name="contractType" value="non-cadre" class="checkbox-input" id="contractNonCadre">
+                                        <label for="contractNonCadre">Non-cadre</label>
                                     </div>
                                 </div>
                             </div>
@@ -707,6 +674,27 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier si une offre a été publiée
+            function checkJobStatus() {
+                // Simuler que l'offre n'a pas été publiée
+                // En production, cela serait vérifié via une session ou un cookie
+                const jobPublished = false;
+                const publishLaterBox = document.getElementById('publishLaterBox');
+                const postStep = document.getElementById('postStep');
+                
+                if (jobPublished) {
+                    // Si l'offre a été publiée, marquer l'étape comme complétée
+                    publishLaterBox.style.display = 'none';
+                    postStep.classList.add('completed');
+                } else {
+                    // Si l'offre n'a pas été publiée, afficher la notification
+                    publishLaterBox.style.display = 'flex';
+                    postStep.classList.remove('completed');
+                }
+            }
+            
+            checkJobStatus();
+            
             // Variables de navigation
             let currentSection = 1;
             const totalSections = 2;
@@ -719,36 +707,58 @@
             updateProgressBar();
             updateButtons();
             
-            // Gestion des événements du formulaire
-            document.querySelectorAll('[name="canManageNotice"]').forEach(radio => {
+            // Gestion de l'auto-remplissage à partir du site web
+            document.getElementById('autoFillFromWebsite').addEventListener('click', function() {
+                const websiteUrl = document.getElementById('companyWebsite').value;
+                if (websiteUrl) {
+                    // Simuler l'analyse du site web
+                    document.getElementById('autoFillFromWebsite').innerHTML = '<i class="fas fa-spinner fa-spin auto-fill-icon"></i> Analyse en cours...';
+                    
+                    setTimeout(() => {
+                        // Simuler les résultats de l'analyse
+                        document.getElementById('companyDescription').value = "Notre entreprise est un leader dans son domaine, offrant des solutions innovantes à nos clients depuis plus de 10 ans. Nous sommes passionnés par la qualité et l'excellence, avec une équipe dynamique et diversifiée.";
+                        
+                        // Restaurer le bouton
+                        document.getElementById('autoFillFromWebsite').innerHTML = '<i class="fas fa-magic auto-fill-icon"></i> <span class="auto-fill-text">Remplir automatiquement la description à partir du site web</span>';
+                        
+                        // Notification de succès
+                        alert('La description a été automatiquement remplie à partir de l\'analyse du site web.');
+                    }, 1500);
+                } else {
+                    alert('Veuillez d\'abord saisir l\'URL de votre site web.');
+                }
+            });
+            
+            // Gestion des sections conditionnelles
+            document.querySelectorAll('[name="hasPosition"]').forEach(radio => {
                 radio.addEventListener('change', function() {
-                    const noticeDetailsSection = document.getElementById('noticeDetailsSection');
+                    const positionSection = document.getElementById('positionSection');
                     if (this.value === 'yes') {
-                        noticeDetailsSection.classList.remove('hidden');
+                        positionSection.classList.remove('hidden');
                     } else {
-                        noticeDetailsSection.classList.add('hidden');
+                        positionSection.classList.add('hidden');
+                    }
+                });
+            });
+            
+            document.querySelectorAll('[name="canHandleNotice"]').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const noticeSection = document.getElementById('noticeSection');
+                    if (this.value === 'yes') {
+                        noticeSection.classList.remove('hidden');
+                    } else {
+                        noticeSection.classList.add('hidden');
                     }
                 });
             });
             
             document.querySelectorAll('[name="sectorKnowledge"]').forEach(radio => {
                 radio.addEventListener('change', function() {
-                    const sectorDetailsSection = document.getElementById('sectorDetailsSection');
+                    const sectorSection = document.getElementById('sectorSection');
                     if (this.value === 'yes') {
-                        sectorDetailsSection.classList.remove('hidden');
+                        sectorSection.classList.remove('hidden');
                     } else {
-                        sectorDetailsSection.classList.add('hidden');
-                    }
-                });
-            });
-            
-            document.querySelectorAll('[name="hasJob"]').forEach(radio => {
-                radio.addEventListener('change', function() {
-                    const jobDetailsSection = document.getElementById('jobDetailsSection');
-                    if (this.value === 'yes') {
-                        jobDetailsSection.style.display = 'block';
-                    } else {
-                        jobDetailsSection.style.display = 'none';
+                        sectorSection.classList.add('hidden');
                     }
                 });
             });
@@ -761,26 +771,19 @@
             });
             
             nextButton.addEventListener('click', function() {
-                if (validateCurrentSection()) {
-                    if (currentSection < totalSections) {
-                        showSection(currentSection + 1);
-                    } else {
-                        // Formulaire terminé, rediriger vers les matches
-                        submitForm();
-                    }
+                if (currentSection < totalSections) {
+                    showSection(currentSection + 1);
                 } else {
-                    alert("Veuillez remplir tous les champs obligatoires avant de continuer.");
+                    // Formulaire terminé, rediriger vers les matches
+                    // Simuler une soumission de formulaire
+                    submitForm();
                 }
             });
             
             sectionIndicators.forEach(dot => {
                 dot.addEventListener('click', function() {
                     const sectionNumber = parseInt(this.getAttribute('data-section'));
-                    if (sectionNumber < currentSection || validateCurrentSection()) {
-                        showSection(sectionNumber);
-                    } else {
-                        alert("Veuillez remplir tous les champs obligatoires avant de continuer.");
-                    }
+                    showSection(sectionNumber);
                 });
             });
             
@@ -826,48 +829,13 @@
                 backButton.style.display = currentSection === 1 ? 'none' : 'block';
                 
                 // Changer le texte du bouton Suivant à la dernière section
-                nextButton.textContent = currentSection === totalSections ? 'Voir les candidats' : 'Suivant';
-            }
-            
-            // Fonction pour valider la section courante
-            function validateCurrentSection() {
-                const section = document.getElementById(`section${currentSection}`);
-                const requiredInputs = section.querySelectorAll('input[required], select[required], textarea[required]');
-                
-                let valid = true;
-                
-                requiredInputs.forEach(input => {
-                    if (!input.value.trim()) {
-                        valid = false;
-                        input.style.borderColor = '#ef4444';
-                    } else {
-                        input.style.borderColor = '#e2e8f0';
-                    }
-                });
-                
-                // Validation spécifique pour les boutons radio requis
-                if (currentSection === 1) {
-                    const companySize = document.querySelector('input[name="companySize"]:checked');
-                    if (!companySize) {
-                        valid = false;
-                        document.querySelectorAll('input[name="companySize"]').forEach(radio => {
-                            radio.parentNode.style.color = '#ef4444';
-                        });
-                    } else {
-                        document.querySelectorAll('input[name="companySize"]').forEach(radio => {
-                            radio.parentNode.style.color = 'inherit';
-                        });
-                    }
-                }
-                
-                return valid;
+                nextButton.textContent = currentSection === totalSections ? 'Terminer' : 'Suivant';
             }
             
             // Fonction pour soumettre le formulaire
             function submitForm() {
                 nextButton.textContent = 'Traitement en cours...';
                 nextButton.disabled = true;
-                nextButton.classList.add('loading-button');
                 
                 // Simuler un délai de traitement
                 setTimeout(() => {
@@ -875,52 +843,6 @@
                     window.location.href = 'recruiter-matches.html';
                 }, 1500);
             }
-            
-            // Autofill button functionality
-            const autofillButton = document.getElementById('autofillButton');
-            autofillButton.addEventListener('click', function() {
-                const websiteUrl = document.getElementById('companyWebsite').value;
-                
-                if (websiteUrl) {
-                    this.textContent = 'Extraction en cours...';
-                    this.disabled = true;
-                    
-                    // Simuler l'extraction de données depuis le site web
-                    setTimeout(() => {
-                        // Simulation de données extraites
-                        const companyName = document.getElementById('companyName');
-                        const companyDescription = document.getElementById('companyDescription');
-                        
-                        if (!companyName.value) {
-                            // Extraire le nom de domaine pour simuler le nom de l'entreprise
-                            try {
-                                const url = new URL(websiteUrl);
-                                let domain = url.hostname.replace('www.', '');
-                                domain = domain.split('.')[0];
-                                domain = domain.charAt(0).toUpperCase() + domain.slice(1);
-                                companyName.value = domain;
-                            } catch (e) {
-                                // En cas d'URL invalide
-                            }
-                        }
-                        
-                        if (!companyDescription.value) {
-                            companyDescription.value = "Notre entreprise est spécialisée dans le développement de solutions innovantes pour répondre aux besoins de nos clients. Nous sommes une équipe dynamique et passionnée, engagée à offrir des produits et services de haute qualité.";
-                        }
-                        
-                        this.textContent = 'Extraction réussie !';
-                        this.classList.add('btn-success');
-                        
-                        setTimeout(() => {
-                            this.textContent = 'Remplir automatiquement depuis le site web';
-                            this.classList.remove('btn-success');
-                            this.disabled = false;
-                        }, 2000);
-                    }, 1500);
-                } else {
-                    alert("Veuillez entrer l'URL du site web de votre entreprise.");
-                }
-            });
         });
     </script>
 </body>
