@@ -1,0 +1,16 @@
+# 🚫 Ignorer les fichiers sensibles
+config.py
+.env
+secrets.json
+database.sqlite
+
+# 🚫 Ignorer les fichiers générés automatiquement
+__pycache__/
+node_modules/
+venv/
+.DS_Store
+*.log
+
+# 🚫 Ignorer les fichiers temporaires et sauvegardes
+*.swp
+*.swo
