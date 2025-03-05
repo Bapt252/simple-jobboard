@@ -101,6 +101,112 @@
             font-size: 0.9rem;
             color: var(--text);
         }
+
+        /* Nouveaux styles pour le stepper */
+        .process-stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .process-stepper::before {
+            content: '';
+            position: absolute;
+            height: 3px;
+            background-color: #e2e8f0;
+            width: 100%;
+            top: 25px;
+            z-index: -1;
+        }
+        
+        .process-stepper::after {
+            content: '';
+            position: absolute;
+            height: 3px;
+            background-color: var(--primary);
+            width: 0%;
+            top: 25px;
+            z-index: -1;
+            transition: width 0.5s ease;
+        }
+        
+        .process-stepper.step1::after {
+            width: 0%;
+        }
+        
+        .process-stepper.step2::after {
+            width: 50%;
+        }
+        
+        .process-stepper.step3::after {
+            width: 100%;
+        }
+        
+        .process-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .process-step-circle {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border: 3px solid #e2e8f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--text);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .process-step-text {
+            font-weight: 500;
+            color: var(--text);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .process-step.active .process-step-circle {
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 0 5px rgba(108, 99, 255, 0.2);
+        }
+        
+        .process-step.active .process-step-circle::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary);
+            z-index: -1;
+            animation: circleAnim 0.5s forwards;
+        }
+        
+        .process-step.active .process-step-text {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .process-step.completed .process-step-circle {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        @keyframes circleAnim {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -125,6 +231,21 @@
                 </div>
                 <h2>Publiez votre offre d'emploi</h2>
                 <p class="section-description">Notre intelligence artificielle analysera votre offre et vous proposera les 10 meilleurs candidats correspondant à votre besoin.</p>
+            </div>
+            
+            <div class="process-stepper step1">
+                <div class="process-step active">
+                    <div class="process-step-circle">1</div>
+                    <div class="process-step-text">Détails de l'offre</div>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-circle">2</div>
+                    <div class="process-step-text">Questionnaire recruteur</div>
+                </div>
+                <div class="process-step">
+                    <div class="process-step-circle">3</div>
+                    <div class="process-step-text">Candidats recommandés</div>
+                </div>
             </div>
             
             <div class="parsing-info">
@@ -215,7 +336,7 @@
                 </div>
                 
                 <div class="form-group full-width">
-                    <button type="submit" class="btn-submit">Publier et voir les candidats</button>
+                    <button type="submit" class="btn-submit">Continuer avec le questionnaire</button>
                 </div>
             </form>
         </div>
@@ -230,6 +351,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const jobForm = document.getElementById('job-form');
+            const processSteps = document.querySelectorAll('.process-step');
+            const processStepper = document.querySelector('.process-stepper');
             
             // Ajouter des styles dynamiques pour les animations
             const styleElement = document.createElement('style');
@@ -262,9 +385,24 @@
             // Focus automatiquement sur le premier champ au chargement
             document.getElementById('job-title').focus();
             
+            // Animer les étapes au chargement
+            processSteps.forEach((step, index) => {
+                step.style.opacity = '0';
+                setTimeout(() => {
+                    step.style.opacity = '1';
+                }, 100 * index);
+            });
+            
             // Gérer la soumission du formulaire
             jobForm.addEventListener('submit', function(event) {
                 event.preventDefault();
+                
+                // Mettre à jour le stepper
+                processStepper.classList.remove('step1');
+                processStepper.classList.add('step2');
+                processSteps[0].classList.remove('active');
+                processSteps[0].classList.add('completed');
+                processSteps[1].classList.add('active');
                 
                 // Simuler une requête réseau avec animation
                 const submitButton = document.querySelector('.btn-submit');
@@ -273,8 +411,8 @@
                 
                 // Simuler un délai de traitement
                 setTimeout(() => {
-                    // Rediriger vers la page de recommandations de candidats
-                    window.location.href = "recruiter-matches.html";
+                    // Rediriger vers la page de questionnaire recruteur
+                    window.location.href = "recruiter-questionnaire.html";
                 }, 1500);
             });
         });
