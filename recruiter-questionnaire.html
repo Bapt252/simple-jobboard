@@ -111,14 +111,10 @@
         }
         
         .stepper.step2::after {
-            width: 33.3%;
+            width: 50%;
         }
         
         .stepper.step3::after {
-            width: 66.6%;
-        }
-        
-        .stepper.step4::after {
             width: 100%;
         }
         
@@ -250,86 +246,22 @@
             transform: translateY(-2px);
         }
         
-        /* Range sliders modernisés */
-        .range-container {
-            margin-bottom: 2rem;
+        .form-divider {
+            margin: 2rem 0;
+            border-top: 1px solid #e2e8f0;
+            position: relative;
         }
         
-        .range-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.8rem;
-        }
-        
-        .range-title {
-            font-weight: 500;
-            color: var(--dark);
-        }
-        
-        .range-value {
-            background-color: var(--primary);
-            color: white;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            min-width: 40px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        
-        .range-slider {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 8px;
-            background: #e2e8f0;
-            border-radius: 4px;
-            outline: none;
-        }
-        
-        .range-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        
-        .range-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.1);
-            box-shadow: 0 2px 8px rgba(108, 99, 255, 0.4);
-        }
-        
-        .range-slider::-moz-range-thumb {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        
-        .range-slider::-moz-range-thumb:hover {
-            transform: scale(1.1);
-            box-shadow: 0 2px 8px rgba(108, 99, 255, 0.4);
-        }
-        
-        .range-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.5rem;
-        }
-        
-        .range-label {
-            font-size: 0.85rem;
-            color: var(--text);
+        .divider-text {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            padding: 0 15px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.95rem;
         }
         
         /* Checkbox modernisés */
@@ -337,7 +269,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
         }
         
         .checkbox-item {
@@ -402,7 +334,7 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.8rem;
         }
         
         .radio-item {
@@ -478,70 +410,68 @@
             color: var(--text);
         }
         
-        /* Tags input */
-        .tags-input-container {
+        /* Info tips */
+        .info-tip {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-left: 3px solid #3498db;
+            padding: 1rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            margin-bottom: 2rem;
             display: flex;
-            flex-wrap: wrap;
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--radius);
-            background-color: var(--light);
-            min-height: 50px;
-            transition: all 0.3s ease;
+            align-items: flex-start;
         }
         
-        .tags-input-container:focus-within {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        .info-tip i {
+            color: #3498db;
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+            margin-top: 0.2rem;
         }
         
-        .tag {
-            display: flex;
-            align-items: center;
-            background-color: rgba(108, 99, 255, 0.1);
-            color: var(--primary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-        }
-        
-        .tag:hover {
-            background-color: rgba(108, 99, 255, 0.2);
-        }
-        
-        .tag-remove {
-            margin-left: 0.5rem;
-            cursor: pointer;
-            color: var(--primary);
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background-color: rgba(108, 99, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            transition: all 0.2s ease;
-        }
-        
-        .tag-remove:hover {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .tags-input {
+        .info-tip-content {
             flex: 1;
-            border: none;
-            outline: none;
-            padding: 0.4rem 0;
-            min-width: 150px;
-            background-color: transparent;
-            font-size: 1rem;
+        }
+        
+        .info-tip-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .info-tip-text {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+        
+        .ai-badge i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Conditional section */
+        .conditional-section {
+            padding: 1.5rem;
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            border-left: 3px solid var(--primary);
+            animation: fadeIn 0.5s forwards;
+            display: none;
+        }
+        
+        .conditional-section.active {
+            display: block;
         }
         
         /* Boutons navigation */
@@ -661,40 +591,6 @@
             font-size: 0.9rem;
         }
         
-        /* Info tips */
-        .info-tip {
-            background-color: rgba(52, 152, 219, 0.1);
-            border-left: 3px solid #3498db;
-            padding: 1rem;
-            border-radius: 0 var(--radius) var(--radius) 0;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        .info-tip i {
-            color: #3498db;
-            margin-right: 0.8rem;
-            font-size: 1.2rem;
-            margin-top: 0.2rem;
-        }
-        
-        .info-tip-content {
-            flex: 1;
-        }
-        
-        .info-tip-title {
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-        
-        .info-tip-text {
-            color: var(--text);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -776,150 +672,95 @@
     <section class="questionnaire-section">
         <div class="container">
             <h2 class="section-title">Questionnaire recruteur</h2>
-            <p class="section-description">Aidez-nous à mieux comprendre vos besoins pour un matching parfait avec les candidats.</p>
+            <p class="section-description">Afin d'optimiser le matching avec les candidats, veuillez nous fournir plus de détails sur votre structure et vos besoins.</p>
             
             <div class="questionnaire-container">
                 <div class="stepper step1">
                     <div class="step active">
                         <div class="step-circle">1</div>
-                        <div class="step-text">Environnement</div>
+                        <div class="step-text">Entreprise</div>
                     </div>
                     <div class="step">
                         <div class="step-circle">2</div>
-                        <div class="step-text">Compétences</div>
+                        <div class="step-text">Poste</div>
                     </div>
                     <div class="step">
                         <div class="step-circle">3</div>
-                        <div class="step-text">Personnalité</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-circle">4</div>
                         <div class="step-text">Résumé</div>
                     </div>
                 </div>
                 
                 <form id="recruiter-form">
-                    <!-- Question 1: Environnement de travail -->
+                    <!-- Question 1: Informations sur l'entreprise -->
                     <div class="question-container active" id="question1">
                         <div class="question-header">
-                            <h3 class="question-title">Environnement de travail</h3>
-                            <p class="question-description">Décrivez l'environnement de travail et la culture de votre entreprise pour trouver les candidats qui s'y adapteront le mieux.</p>
+                            <h3 class="question-title">Informations sur votre structure</h3>
+                            <p class="question-description">Ces informations nous permettront de mieux comprendre votre organisation et de présenter votre entreprise aux candidats.</p>
                         </div>
                         
                         <div class="info-tip">
                             <i class="fas fa-lightbulb"></i>
                             <div class="info-tip-content">
-                                <div class="info-tip-title">Pourquoi c'est important</div>
-                                <p class="info-tip-text">La compatibilité culturelle est un facteur clé de réussite à long terme. Les candidats qui partagent vos valeurs et s'épanouissent dans votre type d'environnement sont plus susceptibles de rester et de performer.</p>
+                                <div class="info-tip-title">Conseil</div>
+                                <p class="info-tip-text">Une description précise de votre entreprise permet aux candidats de mieux comprendre votre culture et votre environnement de travail, ce qui améliore la qualité des candidatures.</p>
                             </div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="work-environment" class="label-required">Comment décririez-vous l'environnement de travail ?</label>
-                            <select id="work-environment" required>
+                            <label for="company-name" class="label-required">Nom de la structure</label>
+                            <input type="text" id="company-name" placeholder="Ex: TechSolutions" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company-address" class="label-required">Adresse complète</label>
+                            <input type="text" id="company-address" placeholder="Ex: 123 Avenue des Champs-Élysées, 75008 Paris" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company-website">Site internet</label>
+                            <input type="url" id="company-website" placeholder="Ex: https://www.example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company-description" class="label-required">Présentation rapide</label>
+                            <textarea id="company-description" rows="5" placeholder="Décrivez brièvement votre entreprise, son activité et sa mission..." required></textarea>
+                            <div class="ai-badge" id="generate-description" style="margin-top: 0.5rem; cursor: pointer;">
+                                <i class="fas fa-magic"></i> Générer une description
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company-size" class="label-required">Taille de structure</label>
+                            <select id="company-size" required>
                                 <option value="">Sélectionnez une option</option>
-                                <option value="structured">Structuré et organisé</option>
-                                <option value="dynamic">Dynamique et en évolution rapide</option>
-                                <option value="creative">Créatif et innovant</option>
-                                <option value="collaborative">Collaboratif et axé sur l'équipe</option>
-                                <option value="autonomous">Autonome et indépendant</option>
+                                <option value="startup">Startup (moins de 10 employés)</option>
+                                <option value="tpe">TPE (moins de 20 employés)</option>
+                                <option value="pme">PME (20 à 250 employés)</option>
+                                <option value="eti">ETI (250 à 5000 employés)</option>
+                                <option value="grand-groupe">Grand groupe (plus de 5000 employés)</option>
                             </select>
                         </div>
                         
                         <div class="form-group">
-                            <label class="label-required">Quelles sont les valeurs les plus importantes dans votre entreprise ?</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="innovation">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Innovation</span>
+                            <label for="has-position" class="label-required">Avez-vous un poste sur lequel vous souhaitez recruter ?</label>
+                            <div class="radio-group">
+                                <label class="radio-item">
+                                    <input type="radio" name="has-position" value="yes" class="custom-radio" required>
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <span class="radio-label">Oui</span>
+                                        <span class="radio-description">Je souhaite publier une offre d'emploi spécifique</span>
+                                    </div>
                                 </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="excellence">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Excellence</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="integrity">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Intégrité</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="collaboration">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Collaboration</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="customer-focus">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Focus client</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="diversity">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Diversité</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="work-life-balance">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Équilibre vie pro/perso</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="company-values" value="accountability">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Responsabilité</span>
+                                <label class="radio-item">
+                                    <input type="radio" name="has-position" value="no" class="custom-radio">
+                                    <span class="radio-checkmark"></span>
+                                    <div class="radio-content">
+                                        <span class="radio-label">Non</span>
+                                        <span class="radio-description">Je souhaite juste explorer les profils disponibles</span>
+                                    </div>
                                 </label>
                             </div>
-                        </div>
-                        
-                        <div class="range-container">
-                            <div class="range-header">
-                                <span class="range-title">Degré de formalité dans l'environnement de travail</span>
-                                <span class="range-value" id="formality-value">5</span>
-                            </div>
-                            <input type="range" min="1" max="10" value="5" class="range-slider" id="formality-slider">
-                            <div class="range-labels">
-                                <span class="range-label">Décontracté</span>
-                                <span class="range-label">Équilibré</span>
-                                <span class="range-label">Formel</span>
-                            </div>
-                        </div>
-                        
-                        <div class="range-container">
-                            <div class="range-header">
-                                <span class="range-title">Niveau d'autonomie attendu</span>
-                                <span class="range-value" id="autonomy-value">5</span>
-                            </div>
-                            <input type="range" min="1" max="10" value="5" class="range-slider" id="autonomy-slider">
-                            <div class="range-labels">
-                                <span class="range-label">Encadrement régulier</span>
-                                <span class="range-label">Mixte</span>
-                                <span class="range-label">Très autonome</span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="team-size">Taille de l'équipe directe</label>
-                            <select id="team-size">
-                                <option value="">Sélectionnez une option</option>
-                                <option value="solo">Travail en solo</option>
-                                <option value="small">Petite équipe (2-5 personnes)</option>
-                                <option value="medium">Équipe moyenne (6-15 personnes)</option>
-                                <option value="large">Grande équipe (16-30 personnes)</option>
-                                <option value="very-large">Très grande équipe (31+ personnes)</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="work-arrangement" class="label-required">Organisation du travail</label>
-                            <select id="work-arrangement" required>
-                                <option value="">Sélectionnez une option</option>
-                                <option value="fully-remote">100% télétravail</option>
-                                <option value="hybrid-flexible">Hybride flexible</option>
-                                <option value="hybrid-fixed">Hybride avec jours fixes</option>
-                                <option value="mainly-office">Principalement au bureau</option>
-                                <option value="fully-office">100% au bureau</option>
-                            </select>
                         </div>
                         
                         <div class="form-navigation">
@@ -928,290 +769,381 @@
                         </div>
                     </div>
                     
-                    <!-- Question 2: Compétences et expérience -->
+                    <!-- Question 2: Informations sur le poste -->
                     <div class="question-container" id="question2">
                         <div class="question-header">
-                            <h3 class="question-title">Compétences et expérience</h3>
-                            <p class="question-description">Précisez les compétences et l'expérience que vous recherchez au-delà des exigences techniques de base.</p>
+                            <h3 class="question-title">Informations sur le poste</h3>
+                            <p class="question-description">Précisez les détails du poste pour lequel vous recrutez. Ces informations sont essentielles pour trouver les meilleurs candidats.</p>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="soft-skills" class="label-required">Quelles soft skills sont les plus importantes pour ce poste ?</label>
-                            <div class="tags-input-container" id="soft-skills-container">
-                                <input type="text" class="tags-input" id="soft-skills-input" placeholder="Tapez et appuyez sur Entrée...">
-                                <input type="hidden" id="soft-skills" required>
+                        <div id="no-position-message" style="display: none;">
+                            <div class="info-tip" style="background-color: rgba(108, 99, 255, 0.1); border-left-color: var(--primary);">
+                                <i class="fas fa-info-circle" style="color: var(--primary);"></i>
+                                <div class="info-tip-content">
+                                    <div class="info-tip-title">Exploration des profils</div>
+                                    <p class="info-tip-text">Vous avez indiqué ne pas avoir de poste spécifique à pourvoir. Vous pourrez explorer les profils disponibles et être contacté lorsqu'un candidat correspond à votre secteur d'activité.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="preferred-sectors" class="label-required">Secteurs d'activité privilégiés</label>
+                                <select id="preferred-sectors" multiple size="5" required style="height: auto;">
+                                    <option value="tech">Technologie</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="healthcare">Santé</option>
+                                    <option value="retail">Commerce</option>
+                                    <option value="manufacturing">Industrie</option>
+                                    <option value="education">Éducation</option>
+                                    <option value="hospitality">Hôtellerie/Restauration</option>
+                                    <option value="consulting">Conseil</option>
+                                    <option value="media">Médias et Communication</option>
+                                    <option value="construction">Construction/BTP</option>
+                                </select>
+                                <p class="form-help" style="font-size: 0.85rem; color: var(--text); margin-top: 0.5rem;">Maintenez Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs secteurs.</p>
+                            </div>
+                            
+                            <div class="form-navigation">
+                                <button type="button" class="nav-btn btn-prev" id="prev2a"><i class="fas fa-arrow-left"></i> Précédent</button>
+                                <button type="button" class="nav-btn btn-next" id="next2a">Suivant <i class="fas fa-arrow-right"></i></button>
                             </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label class="label-required">Quelle est l'importance de l'expérience passée par rapport au potentiel ?</label>
-                            <div class="radio-group">
-                                <label class="radio-item">
-                                    <input type="radio" name="experience-vs-potential" value="experience" class="custom-radio" required>
-                                    <span class="radio-checkmark"></span>
-                                    <div class="radio-content">
-                                        <span class="radio-label">Priorité à l'expérience</span>
-                                        <span class="radio-description">Nous recherchons quelqu'un qui a déjà fait ses preuves dans un rôle similaire.</span>
-                                    </div>
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="experience-vs-potential" value="balanced" class="custom-radio">
-                                    <span class="radio-checkmark"></span>
-                                    <div class="radio-content">
-                                        <span class="radio-label">Équilibre expérience/potentiel</span>
-                                        <span class="radio-description">Nous valorisons l'expérience mais sommes ouverts aux talents prometteurs.</span>
-                                    </div>
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="experience-vs-potential" value="potential" class="custom-radio">
-                                    <span class="radio-checkmark"></span>
-                                    <div class="radio-content">
-                                        <span class="radio-label">Priorité au potentiel</span>
-                                        <span class="radio-description">Nous préférons quelqu'un avec du potentiel que nous pourrons former.</span>
-                                    </div>
-                                </label>
+                        <div id="position-details" class="conditional-section active">
+                            <div class="form-group">
+                                <label for="recruitment-deadline" class="label-required">Délai de recrutement</label>
+                                <select id="recruitment-deadline" required>
+                                    <option value="">Sélectionnez une option</option>
+                                    <option value="immediate">Immédiat</option>
+                                    <option value="2-weeks">2 semaines</option>
+                                    <option value="1-month">1 mois</option>
+                                    <option value="2-months">2 mois</option>
+                                    <option value="3-months">3 mois</option>
+                                </select>
                             </div>
-                        </div>
-                        
-                        <div class="range-container">
-                            <div class="range-header">
-                                <span class="range-title">Niveau de spécialisation recherché</span>
-                                <span class="range-value" id="specialization-value">5</span>
+                            
+                            <div class="form-group">
+                                <label for="notice-period" class="label-required">Pouvez-vous gérer un préavis ?</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="notice-period" value="1-month" class="custom-radio" required>
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">Oui, 1 mois</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="notice-period" value="2-months" class="custom-radio">
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">Oui, 2 mois</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="notice-period" value="3-months" class="custom-radio">
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">Oui, 3 mois</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="notice-period" value="no" class="custom-radio">
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">Non</span>
+                                    </label>
+                                </div>
                             </div>
-                            <input type="range" min="1" max="10" value="5" class="range-slider" id="specialization-slider">
-                            <div class="range-labels">
-                                <span class="range-label">Généraliste</span>
-                                <span class="range-label">Équilibré</span>
-                                <span class="range-label">Expert spécialisé</span>
+                            
+                            <div class="form-group">
+                                <label for="recruitment-context" class="label-required">Contexte de recrutement</label>
+                                <select id="recruitment-context" required>
+                                    <option value="">Sélectionnez une option</option>
+                                    <option value="new-position">Création de poste</option>
+                                    <option value="replacement">Remplacement</option>
+                                    <option value="growth">Accroissement d'activité / Renfort</option>
+                                    <option value="not-specified">Je ne souhaite pas communiquer</option>
+                                </select>
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="learning-curve" class="label-required">Quelle est la courbe d'apprentissage pour ce poste ?</label>
-                            <select id="learning-curve" required>
-                                <option value="">Sélectionnez une option</option>
-                                <option value="quick">Rapide (1-2 semaines)</option>
-                                <option value="moderate">Modérée (1-2 mois)</option>
-                                <option value="steep">Importante (3-6 mois)</option>
-                                <option value="very-steep">Très importante (6+ mois)</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="additional-skills">Y a-t-il des compétences secondaires qui seraient un plus ?</label>
-                            <textarea id="additional-skills" rows="3" placeholder="Décrivez toutes compétences additionnelles qui seraient appréciées..."></textarea>
-                        </div>
-                        
-                        <div class="form-navigation">
-                            <button type="button" class="nav-btn btn-prev" id="prev2"><i class="fas fa-arrow-left"></i> Précédent</button>
-                            <button type="button" class="nav-btn btn-next" id="next2">Suivant <i class="fas fa-arrow-right"></i></button>
+                            
+                            <div class="form-group">
+                                <label for="experience-required" class="label-required">Années d'expérience requises pour le poste</label>
+                                <select id="experience-required" required>
+                                    <option value="">Sélectionnez une option</option>
+                                    <option value="junior">Profil Junior (0-2 ans)</option>
+                                    <option value="2-3-years">2-3 ans</option>
+                                    <option value="3-5-years">3-5 ans</option>
+                                    <option value="5-10-years">5-10 ans</option>
+                                    <option value="10-plus-years">10 ans et plus</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="sector-knowledge" class="label-required">La connaissance de votre secteur est-elle obligatoire ?</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="sector-knowledge" value="yes" class="custom-radio" required>
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">Oui</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="sector-knowledge" value="no" class="custom-radio">
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">Non</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div id="sector-knowledge-details" style="display: none;">
+                                <div class="form-group">
+                                    <label for="specific-sector" class="label-required">Secteur d'activité requis</label>
+                                    <select id="specific-sector" required>
+                                        <option value="">Sélectionnez un secteur</option>
+                                        <option value="technology">Technologie</option>
+                                        <option value="finance">Finance/Banque/Assurance</option>
+                                        <option value="healthcare">Santé/Pharmaceutique</option>
+                                        <option value="retail">Commerce/Distribution</option>
+                                        <option value="manufacturing">Industrie/Production</option>
+                                        <option value="construction">BTP/Construction</option>
+                                        <option value="education">Éducation/Formation</option>
+                                        <option value="hospitality">Hôtellerie/Restauration/Tourisme</option>
+                                        <option value="media">Médias/Communication</option>
+                                        <option value="logistics">Transport/Logistique</option>
+                                        <option value="consulting">Conseil/Études</option>
+                                        <option value="energy">Énergie/Environnement</option>
+                                        <option value="public">Secteur public/Administration</option>
+                                        <option value="legal">Juridique</option>
+                                        <option value="real-estate">Immobilier</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="work-environment" class="label-required">Environnement de travail</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="work-environment" value="open-space">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Open space</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="work-environment" value="private-office">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Bureau fermé</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="work-environment" value="flex-office">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Flex office</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="work-environment" value="shared-space">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Espace partagé</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="work-environment" value="remote">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Télétravail</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="team-composition">Composition de l'équipe et rattachement interne</label>
+                                <textarea id="team-composition" rows="3" placeholder="Ex: Équipe de 5 personnes, rattaché à un responsable de service. Rattaché à la direction générale..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="career-opportunities">Perspectives d'évolution</label>
+                                <textarea id="career-opportunities" rows="3" placeholder="Décrivez les possibilités d'évolution au sein de votre entreprise..."></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="salary">Rémunération</label>
+                                <input type="text" id="salary" placeholder="Ex: 45 000 € - 60 000 € / an">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="benefits">Avantages</label>
+                                <div class="checkbox-group">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="benefits" value="remote-work">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Télétravail</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="benefits" value="rtt">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">RTT</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="benefits" value="13th-month">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">13ème mois</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="benefits" value="profit-sharing">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Participation/Intéressement</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="benefits" value="meal-vouchers">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Tickets restaurant</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="benefits" value="health-insurance">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Mutuelle</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="benefits" value="transport">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Transport pris en charge</span>
+                                    </label>
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" class="custom-checkbox" name="benefits" value="flexible-hours">
+                                        <span class="checkmark"></span>
+                                        <span class="checkbox-label">Horaires flexibles</span>
+                                    </label>
+                                </div>
+                                <input type="text" id="other-benefits" placeholder="Autres avantages..." style="margin-top: 0.5rem;">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="contract-type" class="label-required">Type de contrat</label>
+                                <div class="radio-group">
+                                    <label class="radio-item">
+                                        <input type="radio" name="contract-type" value="35h-non-cadre" class="custom-radio" required>
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">35h, non-cadre</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="contract-type" value="35h-cadre" class="custom-radio">
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">35h, cadre</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="contract-type" value="39h-non-cadre" class="custom-radio">
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">39h, non-cadre</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="contract-type" value="39h-cadre" class="custom-radio">
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">39h, cadre</span>
+                                    </label>
+                                    <label class="radio-item">
+                                        <input type="radio" name="contract-type" value="forfait-jour" class="custom-radio">
+                                        <span class="radio-checkmark"></span>
+                                        <span class="radio-label">Forfait jour</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-navigation">
+                                <button type="button" class="nav-btn btn-prev" id="prev2"><i class="fas fa-arrow-left"></i> Précédent</button>
+                                <button type="button" class="nav-btn btn-next" id="next2">Suivant <i class="fas fa-arrow-right"></i></button>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- Question 3: Personnalité et adaptation -->
+                    <!-- Question 3: Résumé et validation -->
                     <div class="question-container" id="question3">
                         <div class="question-header">
-                            <h3 class="question-title">Personnalité et adaptation</h3>
-                            <p class="question-description">Précisez quel type de personnalité et de mode de travail s'intégrerait le mieux dans votre équipe.</p>
-                        </div>
-                        
-                        <div class="info-tip">
-                            <i class="fas fa-lightbulb"></i>
-                            <div class="info-tip-content">
-                                <div class="info-tip-title">Conseil</div>
-                                <p class="info-tip-text">La diversité des personnalités enrichit une équipe, mais certains traits peuvent mieux correspondre à des rôles spécifiques. Soyez honnête sur la culture existante pour assurer une bonne intégration.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="label-required">Quel type de personnalité s'intègrerait le mieux dans l'équipe ?</label>
-                            <div class="checkbox-group">
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="analytical">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Analytique</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="creative">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Créatif</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="detail-oriented">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Méthodique</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="adaptable">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Adaptable</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="team-player">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Esprit d'équipe</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="independent">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Indépendant</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="proactive">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Proactif</span>
-                                </label>
-                                <label class="checkbox-item">
-                                    <input type="checkbox" class="custom-checkbox" name="personality-traits" value="organized">
-                                    <span class="checkmark"></span>
-                                    <span class="checkbox-label">Organisé</span>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="range-container">
-                            <div class="range-header">
-                                <span class="range-title">Rythme de travail attendu</span>
-                                <span class="range-value" id="pace-value">5</span>
-                            </div>
-                            <input type="range" min="1" max="10" value="5" class="range-slider" id="pace-slider">
-                            <div class="range-labels">
-                                <span class="range-label">Méthodique</span>
-                                <span class="range-label">Équilibré</span>
-                                <span class="range-label">Rapide</span>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="label-required">Quelle est la dynamique d'équipe idéale pour ce poste ?</label>
-                            <div class="radio-group">
-                                <label class="radio-item">
-                                    <input type="radio" name="team-dynamics" value="collaborative" class="custom-radio" required>
-                                    <span class="radio-checkmark"></span>
-                                    <div class="radio-content">
-                                        <span class="radio-label">Très collaborative</span>
-                                        <span class="radio-description">Le travail implique une collaboration constante et une communication régulière.</span>
-                                    </div>
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="team-dynamics" value="balanced" class="custom-radio">
-                                    <span class="radio-checkmark"></span>
-                                    <div class="radio-content">
-                                        <span class="radio-label">Équilibrée</span>
-                                        <span class="radio-description">Un mélange de travail d'équipe et de travail individuel.</span>
-                                    </div>
-                                </label>
-                                <label class="radio-item">
-                                    <input type="radio" name="team-dynamics" value="independent" class="custom-radio">
-                                    <span class="radio-checkmark"></span>
-                                    <div class="radio-content">
-                                        <span class="radio-label">Indépendante</span>
-                                        <span class="radio-description">Le travail est principalement individuel avec des points de coordination.</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="challenges">Quels défis ou difficultés le candidat pourrait-il rencontrer dans ce poste ?</label>
-                            <textarea id="challenges" rows="3" placeholder="Décrivez les défis potentiels..."></textarea>
-                        </div>
-                        
-                        <div class="form-navigation">
-                            <button type="button" class="nav-btn btn-prev" id="prev3"><i class="fas fa-arrow-left"></i> Précédent</button>
-                            <button type="button" class="nav-btn btn-next" id="next3">Suivant <i class="fas fa-arrow-right"></i></button>
-                        </div>
-                    </div>
-                    
-                    <!-- Question 4: Résumé et validation -->
-                    <div class="question-container" id="question4">
-                        <div class="question-header">
-                            <h3 class="question-title">Résumé de vos préférences</h3>
-                            <p class="question-description">Vérifiez les informations que vous avez fournies et confirmez pour améliorer le matching avec les candidats.</p>
+                            <h3 class="question-title">Récapitulatif de vos informations</h3>
+                            <p class="question-description">Vérifiez les informations que vous avez fournies avant de finaliser.</p>
                         </div>
                         
                         <div class="summary-section">
                             <div class="summary-block">
-                                <h4 class="summary-title"><i class="fas fa-building"></i> Environnement de travail</h4>
+                                <h4 class="summary-title"><i class="fas fa-building"></i> Informations sur votre structure</h4>
                                 <div class="summary-item">
-                                    <div class="summary-label">Environnement :</div>
-                                    <div class="summary-value" id="summary-environment"></div>
+                                    <div class="summary-label">Nom :</div>
+                                    <div class="summary-value" id="summary-company-name"></div>
                                 </div>
                                 <div class="summary-item">
-                                    <div class="summary-label">Valeurs :</div>
-                                    <div class="summary-value">
-                                        <div class="summary-tags" id="summary-values"></div>
-                                    </div>
+                                    <div class="summary-label">Adresse :</div>
+                                    <div class="summary-value" id="summary-company-address"></div>
                                 </div>
                                 <div class="summary-item">
-                                    <div class="summary-label">Formalité :</div>
-                                    <div class="summary-value" id="summary-formality"></div>
+                                    <div class="summary-label">Site web :</div>
+                                    <div class="summary-value" id="summary-company-website"></div>
                                 </div>
                                 <div class="summary-item">
-                                    <div class="summary-label">Autonomie :</div>
-                                    <div class="summary-value" id="summary-autonomy"></div>
+                                    <div class="summary-label">Présentation :</div>
+                                    <div class="summary-value" id="summary-company-description"></div>
                                 </div>
                                 <div class="summary-item">
-                                    <div class="summary-label">Taille d'équipe :</div>
-                                    <div class="summary-value" id="summary-team-size"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Organisation :</div>
-                                    <div class="summary-value" id="summary-work-arrangement"></div>
+                                    <div class="summary-label">Taille :</div>
+                                    <div class="summary-value" id="summary-company-size"></div>
                                 </div>
                             </div>
                             
-                            <div class="summary-block">
-                                <h4 class="summary-title"><i class="fas fa-graduation-cap"></i> Compétences et expérience</h4>
-                                <div class="summary-item">
-                                    <div class="summary-label">Soft skills :</div>
-                                    <div class="summary-value">
-                                        <div class="summary-tags" id="summary-soft-skills"></div>
+                            <div id="summary-no-position" style="display: none;">
+                                <div class="summary-block">
+                                    <h4 class="summary-title"><i class="fas fa-search"></i> Exploration des profils</h4>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Secteurs privilégiés :</div>
+                                        <div class="summary-value" id="summary-preferred-sectors"></div>
                                     </div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Expérience/Potentiel :</div>
-                                    <div class="summary-value" id="summary-experience-potential"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Spécialisation :</div>
-                                    <div class="summary-value" id="summary-specialization"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Courbe d'apprentissage :</div>
-                                    <div class="summary-value" id="summary-learning-curve"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Compétences secondaires :</div>
-                                    <div class="summary-value" id="summary-additional-skills"></div>
                                 </div>
                             </div>
                             
-                            <div class="summary-block">
-                                <h4 class="summary-title"><i class="fas fa-user"></i> Personnalité et adaptation</h4>
-                                <div class="summary-item">
-                                    <div class="summary-label">Traits de personnalité :</div>
-                                    <div class="summary-value">
-                                        <div class="summary-tags" id="summary-personality"></div>
+                            <div id="summary-position-details">
+                                <div class="summary-block">
+                                    <h4 class="summary-title"><i class="fas fa-briefcase"></i> Informations sur le poste</h4>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Délai de recrutement :</div>
+                                        <div class="summary-value" id="summary-recruitment-deadline"></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Préavis :</div>
+                                        <div class="summary-value" id="summary-notice-period"></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Contexte :</div>
+                                        <div class="summary-value" id="summary-recruitment-context"></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Expérience requise :</div>
+                                        <div class="summary-value" id="summary-experience-required"></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Connaissance du secteur :</div>
+                                        <div class="summary-value" id="summary-sector-knowledge"></div>
+                                    </div>
+                                    <div class="summary-item" id="summary-specific-sector-container" style="display: none;">
+                                        <div class="summary-label">Secteur requis :</div>
+                                        <div class="summary-value" id="summary-specific-sector"></div>
                                     </div>
                                 </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Rythme de travail :</div>
-                                    <div class="summary-value" id="summary-pace"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Dynamique d'équipe :</div>
-                                    <div class="summary-value" id="summary-team-dynamics"></div>
-                                </div>
-                                <div class="summary-item">
-                                    <div class="summary-label">Défis :</div>
-                                    <div class="summary-value" id="summary-challenges"></div>
+                                
+                                <div class="summary-block">
+                                    <h4 class="summary-title"><i class="fas fa-users"></i> Environnement et conditions</h4>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Environnement :</div>
+                                        <div class="summary-value" id="summary-work-environment"></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Équipe :</div>
+                                        <div class="summary-value" id="summary-team-composition"></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Évolution :</div>
+                                        <div class="summary-value" id="summary-career-opportunities"></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Rémunération :</div>
+                                        <div class="summary-value" id="summary-salary"></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Avantages :</div>
+                                        <div class="summary-value" id="summary-benefits"></div>
+                                    </div>
+                                    <div class="summary-item">
+                                        <div class="summary-label">Type de contrat :</div>
+                                        <div class="summary-value" id="summary-contract-type"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="form-navigation">
-                            <button type="button" class="nav-btn btn-prev" id="prev4"><i class="fas fa-arrow-left"></i> Précédent</button>
+                            <button type="button" class="nav-btn btn-prev" id="prev3"><i class="fas fa-arrow-left"></i> Précédent</button>
                             <button type="submit" class="nav-btn btn-submit">Terminer <i class="fas fa-check"></i></button>
                         </div>
                     </div>
@@ -1237,43 +1169,69 @@
             // Boutons de navigation
             const next1Btn = document.getElementById('next1');
             const next2Btn = document.getElementById('next2');
-            const next3Btn = document.getElementById('next3');
+            const next2aBtn = document.getElementById('next2a');
             const prev2Btn = document.getElementById('prev2');
+            const prev2aBtn = document.getElementById('prev2a');
             const prev3Btn = document.getElementById('prev3');
-            const prev4Btn = document.getElementById('prev4');
             
-            // Sliders et leurs valeurs
-            const formalitySlider = document.getElementById('formality-slider');
-            const formalityValue = document.getElementById('formality-value');
-            const autonomySlider = document.getElementById('autonomy-slider');
-            const autonomyValue = document.getElementById('autonomy-value');
-            const specializationSlider = document.getElementById('specialization-slider');
-            const specializationValue = document.getElementById('specialization-value');
-            const paceSlider = document.getElementById('pace-slider');
-            const paceValue = document.getElementById('pace-value');
+            // Éléments conditionnels
+            const hasPositionRadios = document.getElementsByName('has-position');
+            const positionDetails = document.getElementById('position-details');
+            const noPositionMessage = document.getElementById('no-position-message');
+            const summaryPositionDetails = document.getElementById('summary-position-details');
+            const summaryNoPosition = document.getElementById('summary-no-position');
             
-            // Tags input pour soft skills
-            const softSkillsInput = document.getElementById('soft-skills-input');
-            const softSkillsContainer = document.getElementById('soft-skills-container');
-            const softSkillsHidden = document.getElementById('soft-skills');
-            let softSkills = [];
+            // Éléments secteur requis
+            const sectorKnowledgeRadios = document.getElementsByName('sector-knowledge');
+            const sectorKnowledgeDetails = document.getElementById('sector-knowledge-details');
+            const summarySectorContainer = document.getElementById('summary-specific-sector-container');
+            
+            // Élément de génération d'une description
+            const generateDescriptionBtn = document.getElementById('generate-description');
+            const companyWebsiteInput = document.getElementById('company-website');
+            const companyDescriptionInput = document.getElementById('company-description');
             
             // Fonction pour naviguer entre les questions
             function navigateToQuestion(currentIndex, targetIndex) {
                 // Vérification de la validité du formulaire pour la section actuelle
-                const currentInputs = questionContainers[currentIndex - 1].querySelectorAll('input[required], select[required], textarea[required]');
-                let isValid = true;
-                
-                currentInputs.forEach(input => {
-                    if (input.type === 'checkbox' || input.type === 'radio') {
-                        const name = input.name;
-                        const checked = document.querySelector(`input[name="${name}"]:checked`);
-                        if (!checked) isValid = false;
-                    } else if (!input.value.trim()) {
-                        isValid = false;
+                const currentInputs = questionContainers[currentIndex - 1].querySelectorAll('input[required]:not([type="radio"]), select[required], textarea[required]');
+                const currentRadios = {};
+                questionContainers[currentIndex - 1].querySelectorAll('input[type="radio"][required]').forEach(radio => {
+                    if (!currentRadios[radio.name]) {
+                        currentRadios[radio.name] = false;
+                    }
+                    if (radio.checked) {
+                        currentRadios[radio.name] = true;
                     }
                 });
                 
+                let isValid = true;
+                
+                // Vérifier les inputs classiques
+                currentInputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.style.borderColor = '#e53e3e';
+                    } else {
+                        input.style.borderColor = '#e2e8f0';
+                    }
+                });
+                
+                // Vérifier les boutons radio
+                Object.keys(currentRadios).forEach(name => {
+                    if (!currentRadios[name]) {
+                        isValid = false;
+                        questionContainers[currentIndex - 1].querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                            radio.closest('.radio-item').style.borderColor = '#e53e3e';
+                        });
+                    } else {
+                        questionContainers[currentIndex - 1].querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                            radio.closest('.radio-item').style.borderColor = '#e2e8f0';
+                        });
+                    }
+                });
+                
+                // Si le formulaire n'est pas valide, ne pas continuer
                 if (!isValid && targetIndex > currentIndex) {
                     alert('Veuillez remplir tous les champs obligatoires avant de continuer.');
                     return;
@@ -1300,7 +1258,7 @@
                 });
                 
                 // Si nous allons au résumé, mettons à jour les valeurs
-                if (targetIndex === 4) {
+                if (targetIndex === 3) {
                     updateSummary();
                 }
                 
@@ -1314,169 +1272,159 @@
                 questionContainers[targetIndex - 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
             
+            // Gérer l'affichage conditionnel des détails du poste
+            hasPositionRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'yes') {
+                        positionDetails.classList.add('active');
+                        noPositionMessage.style.display = 'none';
+                    } else {
+                        positionDetails.classList.remove('active');
+                        noPositionMessage.style.display = 'block';
+                    }
+                });
+            });
+            
+            // Gérer l'affichage conditionnel des détails du secteur requis
+            sectorKnowledgeRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'yes') {
+                        sectorKnowledgeDetails.style.display = 'block';
+                    } else {
+                        sectorKnowledgeDetails.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Simulation de génération de description d'entreprise basée sur le site web
+            generateDescriptionBtn.addEventListener('click', function() {
+                const website = companyWebsiteInput.value.trim();
+                if (!website) {
+                    alert('Veuillez entrer l\'URL de votre site web pour générer une description.');
+                    return;
+                }
+                
+                // Simuler un chargement
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération en cours...';
+                this.style.pointerEvents = 'none';
+                
+                // Simuler un délai de traitement
+                setTimeout(() => {
+                    // Générer une description fictive (dans une vraie application, cela appellerait une API)
+                    let domain = website.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+                    
+                    if (domain.includes('example.com')) {
+                        companyDescriptionInput.value = "TechSolutions est une entreprise innovante spécialisée dans le développement de solutions logicielles pour les entreprises. Fondée en 2015, elle compte aujourd'hui plus de 50 collaborateurs passionnés par la technologie et l'innovation. Avec une approche centrée sur le client, TechSolutions s'efforce de fournir des solutions sur mesure qui répondent parfaitement aux besoins spécifiques de chaque client.";
+                    } else {
+                        companyDescriptionInput.value = `Entreprise dynamique dans son secteur, ${domain} se distingue par son approche innovante et sa culture d'entreprise axée sur l'excellence. Avec une équipe talentueuse et passionnée, l'entreprise propose des produits/services de qualité qui répondent aux besoins de ses clients. Sa mission est de créer de la valeur tout en maintenant un environnement de travail stimulant pour ses collaborateurs.`;
+                    }
+                    
+                    // Réinitialiser le bouton
+                    this.innerHTML = '<i class="fas fa-magic"></i> Générer une description';
+                    this.style.pointerEvents = 'auto';
+                }, 1500);
+            });
+            
             // Gestionnaires d'événements pour les boutons de navigation
             next1Btn.addEventListener('click', () => navigateToQuestion(1, 2));
             next2Btn.addEventListener('click', () => navigateToQuestion(2, 3));
-            next3Btn.addEventListener('click', () => navigateToQuestion(3, 4));
+            next2aBtn.addEventListener('click', () => navigateToQuestion(2, 3));
             prev2Btn.addEventListener('click', () => navigateToQuestion(2, 1));
+            prev2aBtn.addEventListener('click', () => navigateToQuestion(2, 1));
             prev3Btn.addEventListener('click', () => navigateToQuestion(3, 2));
-            prev4Btn.addEventListener('click', () => navigateToQuestion(4, 3));
-            
-            // Gestionnaires d'événements pour les sliders
-            formalitySlider.addEventListener('input', function() {
-                formalityValue.textContent = this.value;
-            });
-            
-            autonomySlider.addEventListener('input', function() {
-                autonomyValue.textContent = this.value;
-            });
-            
-            specializationSlider.addEventListener('input', function() {
-                specializationValue.textContent = this.value;
-            });
-            
-            paceSlider.addEventListener('input', function() {
-                paceValue.textContent = this.value;
-            });
-            
-            // Fonction pour créer un tag
-            function createTag(label) {
-                const tag = document.createElement('div');
-                tag.className = 'tag';
-                tag.textContent = label;
-                
-                const closeBtn = document.createElement('span');
-                closeBtn.className = 'tag-remove';
-                closeBtn.innerHTML = '&times;';
-                closeBtn.addEventListener('click', function() {
-                    softSkillsContainer.removeChild(tag);
-                    softSkills = softSkills.filter(skill => skill !== label);
-                    softSkillsHidden.value = softSkills.join(',');
-                });
-                
-                tag.appendChild(closeBtn);
-                return tag;
-            }
-            
-            // Gestion des tags pour les soft skills
-            softSkillsInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && this.value.trim() !== '') {
-                    e.preventDefault();
-                    
-                    const value = this.value.trim();
-                    if (softSkills.includes(value)) return;
-                    
-                    softSkills.push(value);
-                    softSkillsContainer.insertBefore(createTag(value), softSkillsInput);
-                    softSkillsHidden.value = softSkills.join(',');
-                    this.value = '';
-                }
-            });
-            
-            // Suggestions de soft skills
-            const softSkillsSuggestions = [
-                'Communication', 'Travail d\'équipe', 'Résolution de problèmes', 
-                'Adaptabilité', 'Gestion du temps', 'Leadership', 'Créativité',
-                'Pensée critique', 'Écoute active', 'Négociation', 'Empathie'
-            ];
-            
-            // Ajout de quelques suggestions initiales de soft skills
-            softSkillsSuggestions.slice(0, 3).forEach(skill => {
-                softSkills.push(skill);
-                softSkillsContainer.insertBefore(createTag(skill), softSkillsInput);
-            });
-            softSkillsHidden.value = softSkills.join(',');
             
             // Fonction pour mettre à jour le résumé
             function updateSummary() {
-                // Environnement de travail
-                const workEnvironment = document.getElementById('work-environment');
-                document.getElementById('summary-environment').textContent = workEnvironment.options[workEnvironment.selectedIndex]?.text || 'Non spécifié';
+                // Informations sur l'entreprise
+                document.getElementById('summary-company-name').textContent = document.getElementById('company-name').value || 'Non spécifié';
+                document.getElementById('summary-company-address').textContent = document.getElementById('company-address').value || 'Non spécifié';
+                document.getElementById('summary-company-website').textContent = document.getElementById('company-website').value || 'Non spécifié';
+                document.getElementById('summary-company-description').textContent = document.getElementById('company-description').value || 'Non spécifié';
                 
-                // Valeurs
-                const valuesContainer = document.getElementById('summary-values');
-                valuesContainer.innerHTML = '';
-                document.querySelectorAll('input[name="company-values"]:checked').forEach(checkbox => {
-                    const value = checkbox.value;
-                    const tag = document.createElement('span');
-                    tag.className = 'summary-tag';
-                    tag.textContent = checkbox.nextElementSibling.nextElementSibling.textContent;
-                    valuesContainer.appendChild(tag);
-                });
+                const companySize = document.getElementById('company-size');
+                document.getElementById('summary-company-size').textContent = companySize.options[companySize.selectedIndex]?.text || 'Non spécifié';
                 
-                // Formalité et autonomie
-                document.getElementById('summary-formality').textContent = `${formalitySlider.value}/10`;
-                document.getElementById('summary-autonomy').textContent = `${autonomySlider.value}/10`;
+                // Vérifier si un poste est à pourvoir
+                const hasPosition = document.querySelector('input[name="has-position"]:checked')?.value;
                 
-                // Taille d'équipe
-                const teamSize = document.getElementById('team-size');
-                document.getElementById('summary-team-size').textContent = teamSize.options[teamSize.selectedIndex]?.text || 'Non spécifié';
-                
-                // Organisation du travail
-                const workArrangement = document.getElementById('work-arrangement');
-                document.getElementById('summary-work-arrangement').textContent = workArrangement.options[workArrangement.selectedIndex]?.text || 'Non spécifié';
-                
-                // Soft skills
-                const softSkillsContainer = document.getElementById('summary-soft-skills');
-                softSkillsContainer.innerHTML = '';
-                softSkills.forEach(skill => {
-                    const tag = document.createElement('span');
-                    tag.className = 'summary-tag';
-                    tag.textContent = skill;
-                    softSkillsContainer.appendChild(tag);
-                });
-                
-                // Expérience vs potentiel
-                const experiencePotential = document.querySelector('input[name="experience-vs-potential"]:checked');
-                let experienceText = 'Non spécifié';
-                if (experiencePotential) {
-                    const labels = {
-                        'experience': 'Priorité à l\'expérience',
-                        'balanced': 'Équilibre expérience/potentiel',
-                        'potential': 'Priorité au potentiel'
-                    };
-                    experienceText = labels[experiencePotential.value] || 'Non spécifié';
+                if (hasPosition === 'no') {
+                    summaryPositionDetails.style.display = 'none';
+                    summaryNoPosition.style.display = 'block';
+                    
+                    // Secteurs privilégiés
+                    const preferredSectors = document.getElementById('preferred-sectors');
+                    const selectedSectors = Array.from(preferredSectors.selectedOptions).map(option => option.text);
+                    document.getElementById('summary-preferred-sectors').textContent = selectedSectors.join(', ') || 'Non spécifié';
+                } else {
+                    summaryPositionDetails.style.display = 'block';
+                    summaryNoPosition.style.display = 'none';
+                    
+                    // Informations sur le poste
+                    const recruitmentDeadline = document.getElementById('recruitment-deadline');
+                    document.getElementById('summary-recruitment-deadline').textContent = recruitmentDeadline.options[recruitmentDeadline.selectedIndex]?.text || 'Non spécifié';
+                    
+                    const noticePeriod = document.querySelector('input[name="notice-period"]:checked');
+                    let noticeText = 'Non spécifié';
+                    if (noticePeriod) {
+                        if (noticePeriod.value === 'no') {
+                            noticeText = 'Non';
+                        } else if (noticePeriod.value === '1-month') {
+                            noticeText = 'Oui, 1 mois';
+                        } else if (noticePeriod.value === '2-months') {
+                            noticeText = 'Oui, 2 mois';
+                        } else if (noticePeriod.value === '3-months') {
+                            noticeText = 'Oui, 3 mois';
+                        }
+                    }
+                    document.getElementById('summary-notice-period').textContent = noticeText;
+                    
+                    const recruitmentContext = document.getElementById('recruitment-context');
+                    document.getElementById('summary-recruitment-context').textContent = recruitmentContext.options[recruitmentContext.selectedIndex]?.text || 'Non spécifié';
+                    
+                    const experienceRequired = document.getElementById('experience-required');
+                    document.getElementById('summary-experience-required').textContent = experienceRequired.options[experienceRequired.selectedIndex]?.text || 'Non spécifié';
+                    
+                    const sectorKnowledge = document.querySelector('input[name="sector-knowledge"]:checked')?.value;
+                    document.getElementById('summary-sector-knowledge').textContent = sectorKnowledge === 'yes' ? 'Oui' : 'Non';
+                    
+                    if (sectorKnowledge === 'yes') {
+                        summarySectorContainer.style.display = 'flex';
+                        const specificSector = document.getElementById('specific-sector');
+                        document.getElementById('summary-specific-sector').textContent = specificSector.options[specificSector.selectedIndex]?.text || 'Non spécifié';
+                    } else {
+                        summarySectorContainer.style.display = 'none';
+                    }
+                    
+                    // Environnement et conditions
+                    const workEnvironment = Array.from(document.querySelectorAll('input[name="work-environment"]:checked')).map(cb => cb.nextElementSibling.nextElementSibling.textContent);
+                    document.getElementById('summary-work-environment').textContent = workEnvironment.join(', ') || 'Non spécifié';
+                    
+                    document.getElementById('summary-team-composition').textContent = document.getElementById('team-composition').value || 'Non spécifié';
+                    document.getElementById('summary-career-opportunities').textContent = document.getElementById('career-opportunities').value || 'Non spécifié';
+                    document.getElementById('summary-salary').textContent = document.getElementById('salary').value || 'Non spécifié';
+                    
+                    const benefits = Array.from(document.querySelectorAll('input[name="benefits"]:checked')).map(cb => cb.nextElementSibling.nextElementSibling.textContent);
+                    const otherBenefits = document.getElementById('other-benefits').value;
+                    if (otherBenefits) benefits.push(otherBenefits);
+                    document.getElementById('summary-benefits').textContent = benefits.join(', ') || 'Non spécifié';
+                    
+                    const contractType = document.querySelector('input[name="contract-type"]:checked');
+                    let contractText = 'Non spécifié';
+                    if (contractType) {
+                        if (contractType.value === '35h-non-cadre') {
+                            contractText = '35h, non-cadre';
+                        } else if (contractType.value === '35h-cadre') {
+                            contractText = '35h, cadre';
+                        } else if (contractType.value === '39h-non-cadre') {
+                            contractText = '39h, non-cadre';
+                        } else if (contractType.value === '39h-cadre') {
+                            contractText = '39h, cadre';
+                        } else if (contractType.value === 'forfait-jour') {
+                            contractText = 'Forfait jour';
+                        }
+                    }
+                    document.getElementById('summary-contract-type').textContent = contractText;
                 }
-                document.getElementById('summary-experience-potential').textContent = experienceText;
-                
-                // Spécialisation
-                document.getElementById('summary-specialization').textContent = `${specializationSlider.value}/10`;
-                
-                // Courbe d'apprentissage
-                const learningCurve = document.getElementById('learning-curve');
-                document.getElementById('summary-learning-curve').textContent = learningCurve.options[learningCurve.selectedIndex]?.text || 'Non spécifié';
-                
-                // Compétences secondaires
-                document.getElementById('summary-additional-skills').textContent = document.getElementById('additional-skills').value || 'Aucune spécifiée';
-                
-                // Traits de personnalité
-                const personalityContainer = document.getElementById('summary-personality');
-                personalityContainer.innerHTML = '';
-                document.querySelectorAll('input[name="personality-traits"]:checked').forEach(checkbox => {
-                    const tag = document.createElement('span');
-                    tag.className = 'summary-tag';
-                    tag.textContent = checkbox.nextElementSibling.nextElementSibling.textContent;
-                    personalityContainer.appendChild(tag);
-                });
-                
-                // Rythme de travail
-                document.getElementById('summary-pace').textContent = `${paceSlider.value}/10`;
-                
-                // Dynamique d'équipe
-                const teamDynamics = document.querySelector('input[name="team-dynamics"]:checked');
-                let dynamicsText = 'Non spécifié';
-                if (teamDynamics) {
-                    const labels = {
-                        'collaborative': 'Très collaborative',
-                        'balanced': 'Équilibrée',
-                        'independent': 'Indépendante'
-                    };
-                    dynamicsText = labels[teamDynamics.value] || 'Non spécifié';
-                }
-                document.getElementById('summary-team-dynamics').textContent = dynamicsText;
-                
-                // Défis
-                document.getElementById('summary-challenges').textContent = document.getElementById('challenges').value || 'Aucun spécifié';
             }
             
             // Soumission du formulaire
