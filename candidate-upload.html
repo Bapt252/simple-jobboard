@@ -170,6 +170,68 @@
         .hide-input {
             display: none;
         }
+        
+        .upload-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        
+        .upload-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+            text-align: center;
+            position: relative;
+        }
+        
+        .upload-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            right: -40%;
+            width: 80%;
+            height: 2px;
+            background-color: #e2e8f0;
+        }
+        
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .step-title {
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .upload-step.active .step-number {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .upload-step.active .step-title {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .upload-step.completed .step-number {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -178,7 +240,7 @@
             <h1><i class="fas fa-briefcase"></i> Nexten</h1>
             <nav>
                 <ul>
-                    <li><a href="index.html">Offres d'emploi</a></li>
+                    <li><a href="index.html">Accueil</a></li>
                     <li><a href="post-job.html">Publier une offre</a></li>
                     <li><a href="candidate-upload.html" class="active">Espace candidat</a></li>
                 </ul>
@@ -192,6 +254,21 @@
             <p class="section-description">Notre système d'intelligence artificielle va analyser votre CV et vous proposer les 10 meilleures offres d'emploi correspondant à votre profil.</p>
             
             <div class="upload-container">
+                <div class="upload-steps">
+                    <div class="upload-step active">
+                        <div class="step-number">1</div>
+                        <div class="step-title">Upload CV</div>
+                    </div>
+                    <div class="upload-step">
+                        <div class="step-number">2</div>
+                        <div class="step-title">Questionnaire</div>
+                    </div>
+                    <div class="upload-step">
+                        <div class="step-number">3</div>
+                        <div class="step-title">Matching</div>
+                    </div>
+                </div>
+                
                 <div class="upload-area" id="uploadArea">
                     <i class="fas fa-cloud-upload-alt upload-icon"></i>
                     <h3>Glissez votre CV ici</h3>
@@ -286,7 +363,7 @@
                     
                     <div class="action-buttons">
                         <button class="action-btn btn-edit">Modifier les informations</button>
-                        <button class="action-btn btn-continue" id="continueBtn">Voir les offres recommandées</button>
+                        <button class="action-btn btn-continue" id="continueBtn">Compléter le questionnaire</button>
                     </div>
                 </div>
             </div>
@@ -311,6 +388,7 @@
             const progressText = document.getElementById('progressText');
             const parsingContainer = document.getElementById('parsingContainer');
             const continueBtn = document.getElementById('continueBtn');
+            const uploadSteps = document.querySelectorAll('.upload-step');
             
             // Click on upload area to trigger file input
             uploadArea.addEventListener('click', function() {
@@ -401,6 +479,10 @@
                             progressContainer.style.display = 'none';
                             parsingContainer.style.display = 'block';
                             
+                            // Update steps
+                            uploadSteps[0].classList.remove('active');
+                            uploadSteps[0].classList.add('completed');
+                            
                             // Scroll to parsing results
                             parsingContainer.scrollIntoView({ behavior: 'smooth' });
                         }, 500);
@@ -408,9 +490,9 @@
                 }, 100);
             }
             
-            // Continue button to recommendations page
+            // Continue button to questionnaire page
             continueBtn.addEventListener('click', function() {
-                window.location.href = 'candidate-matches.html';
+                window.location.href = 'candidate-questionnaire.html';
             });
         });
     </script>
