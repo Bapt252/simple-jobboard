@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobBoard - Trouvez votre prochain emploi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-briefcase"></i> JobBoard</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Offres d'emploi</a></li>
+                    <li><a href="post-job.html">Publier une offre</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Trouvez votre emploi idéal</h2>
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Rechercher par titre, entreprise ou compétence">
+                <select id="category-filter">
+                    <option value="">Toutes catégories</option>
+                    <option value="tech">Technologie</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="design">Design</option>
+                    <option value="sales">Ventes</option>
+                    <option value="other">Autre</option>
+                </select>
+                <button id="search-button"><i class="fas fa-search"></i> Rechercher</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="job-listings">
+        <div class="container">
+            <h2>Offres d'emploi récentes</h2>
+            <div id="jobs-container"></div>
+        </div>
+    </section>
+
+    <div class="pagination">
+        <div class="container">
+            <button id="load-more">Voir plus d'offres</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 JobBoard - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
