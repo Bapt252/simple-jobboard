@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=places&callback=initAutocomplete" defer></script>
     <style>
         /* Styles principaux modernisés */
         .questionnaire-section {
@@ -1535,6 +1536,40 @@
         // Configuration de PDF.js
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
         
+        // Fonction pour initialiser l'autocomplete Google Maps Places
+        function initAutocomplete() {
+            // Autocomplete pour l'adresse de l'entreprise
+            const addressInput = document.getElementById('company-address');
+            if (addressInput) {
+                const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+                    types: ['address'],
+                    componentRestrictions: { country: ['fr'] }  // Limiter aux adresses françaises
+                });
+                
+                // Enregistrer l'adresse complète lorsqu'un lieu est sélectionné
+                autocomplete.addListener('place_changed', function() {
+                    const place = autocomplete.getPlace();
+                    if (!place.geometry) {
+                        // L'utilisateur a appuyé sur entrée sans sélectionner de suggestion
+                        return;
+                    }
+                    
+                    // Sauvegarder les coordonnées et l'adresse formatée pour une utilisation ultérieure
+                    const formattedAddress = place.formatted_address;
+                    const lat = place.geometry.location.lat();
+                    const lng = place.geometry.location.lng();
+                    
+                    // Stocker les données de géolocalisation dans des attributs de données
+                    addressInput.dataset.formattedAddress = formattedAddress;
+                    addressInput.dataset.lat = lat;
+                    addressInput.dataset.lng = lng;
+                    
+                    console.log('Adresse sélectionnée:', formattedAddress);
+                    console.log('Coordonnées:', lat, lng);
+                });
+            }
+        }
+        
         document.addEventListener('DOMContentLoaded', function() {
             // Références aux éléments
             const recruiterForm = document.getElementById('recruiter-form');
@@ -2398,8 +2433,11 @@
             // Fonction pour mettre à jour le résumé
             function updateSummary() {
                 // Informations sur l'entreprise
+                const companyAddressInput = document.getElementById('company-address');
+                const formattedAddress = companyAddressInput.dataset.formattedAddress || companyAddressInput.value;
+                
                 document.getElementById('summary-company-name').textContent = document.getElementById('company-name').value || 'Non spécifié';
-                document.getElementById('summary-company-address').textContent = document.getElementById('company-address').value || 'Non spécifié';
+                document.getElementById('summary-company-address').textContent = formattedAddress || 'Non spécifié';
                 document.getElementById('summary-company-website').textContent = document.getElementById('company-website').value || 'Non spécifié';
                 document.getElementById('summary-company-description').textContent = document.getElementById('company-description').value || 'Non spécifié';
                 
@@ -2478,6 +2516,39 @@
             // Soumission du formulaire
             recruiterForm.addEventListener('submit', function(e) {
                 e.preventDefault();
+                
+                // Récupérer les données d'adresse et de géolocalisation
+                const companyAddressInput = document.getElementById('company-address');
+                const companyName = document.getElementById('company-name').value;
+                const companyAddress = companyAddressInput.value;
+                const formattedAddress = companyAddressInput.dataset.formattedAddress || companyAddress;
+                const lat = companyAddressInput.dataset.lat;
+                const lng = companyAddressInput.dataset.lng;
+                
+                // Récupérer les autres données du formulaire
+                const companyWebsite = document.getElementById('company-website').value;
+                const companyDescription = document.getElementById('company-description').value;
+                const jobTitle = document.getElementById('job-title').value;
+                
+                // Créer un objet avec toutes les données du formulaire
+                const formData = {
+                    company: {
+                        name: companyName,
+                        address: companyAddress,
+                        formattedAddress: formattedAddress,
+                        location: lat && lng ? { lat: parseFloat(lat), lng: parseFloat(lng) } : null,
+                        website: companyWebsite,
+                        description: companyDescription
+                    },
+                    job: {
+                        title: jobTitle,
+                        // Ajouter d'autres champs si nécessaire
+                    }
+                };
+                
+                // Sauvegarder les données dans localStorage pour utilisation future
+                localStorage.setItem('recruiterFormData', JSON.stringify(formData));
+                console.log('Données du formulaire sauvegardées:', formData);
                 
                 // Simuler la soumission avec animation
                 const submitBtn = document.querySelector('.btn-submit');

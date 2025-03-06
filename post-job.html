@@ -6,6 +6,7 @@
     <title>Publier une offre d'emploi - Nexten</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=places&callback=initAutocomplete" defer></script>
 </head>
 <body>
     <header>
@@ -190,15 +191,23 @@
                 <script>
                     document.getElementById('startQuestionnaireBtn').addEventListener('click', function(e) {
                         // Initialiser les données de l'entreprise dans localStorage pour le questionnaire
+                        const companyAddressInput = document.getElementById('company-address');
                         const companyName = document.getElementById('company-name')?.value || '';
-                        const companyAddress = document.getElementById('company-address')?.value || '';
+                        const companyAddress = companyAddressInput?.value || '';
                         const companyWebsite = document.getElementById('company-website')?.value || '';
                         const companyDescription = document.getElementById('company-description')?.value || '';
                         
-                        // Création des données de l'entreprise
+                        // Récupérer les données de géolocalisation si disponibles
+                        const formattedAddress = companyAddressInput?.dataset?.formattedAddress || companyAddress;
+                        const lat = companyAddressInput?.dataset?.lat || null;
+                        const lng = companyAddressInput?.dataset?.lng || null;
+                        
+                        // Création des données de l'entreprise avec géolocalisation
                         const companyData = {
                             name: companyName,
                             address: companyAddress,
+                            formattedAddress: formattedAddress,
+                            location: lat && lng ? { lat: parseFloat(lat), lng: parseFloat(lng) } : null,
                             website: companyWebsite, 
                             description: companyDescription,
                             dataFromPostJob: true
@@ -220,6 +229,40 @@
     </footer>
 
     <script>
+        // Fonction pour initialiser l'autocomplete Google Maps Places
+        function initAutocomplete() {
+            // Autocomplete pour l'adresse de l'entreprise
+            const addressInput = document.getElementById('company-address');
+            if (addressInput) {
+                const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+                    types: ['address'],
+                    componentRestrictions: { country: ['fr'] }  // Limiter aux adresses françaises
+                });
+                
+                // Enregistrer l'adresse complète lorsqu'un lieu est sélectionné
+                autocomplete.addListener('place_changed', function() {
+                    const place = autocomplete.getPlace();
+                    if (!place.geometry) {
+                        // L'utilisateur a appuyé sur entrée sans sélectionner de suggestion
+                        return;
+                    }
+                    
+                    // Sauvegarder les coordonnées et l'adresse formatée pour une utilisation ultérieure
+                    const formattedAddress = place.formatted_address;
+                    const lat = place.geometry.location.lat();
+                    const lng = place.geometry.location.lng();
+                    
+                    // Stocker les données de géolocalisation dans des attributs de données
+                    addressInput.dataset.formattedAddress = formattedAddress;
+                    addressInput.dataset.lat = lat;
+                    addressInput.dataset.lng = lng;
+                    
+                    console.log('Adresse sélectionnée:', formattedAddress);
+                    console.log('Coordonnées:', lat, lng);
+                });
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const optionYes = document.getElementById('option-yes');
             const optionNo = document.getElementById('option-no');
