@@ -22,178 +22,26 @@
         </div>
     </header>
 
-    <section style="padding: 4rem 0; background-color: var(--gray);">
+    <main>
         <div class="container">
-            <h2 style="font-size: 2rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem; position: relative; display: inline-block;">
-                Comment souhaitez-vous procéder ?
-                <span style="content: ''; position: absolute; left: 0; bottom: -10px; width: 40%; height: 3px; background: var(--primary); border-radius: 10px; display: block;"></span>
-            </h2>
-            <p style="color: var(--text); font-size: 1.1rem; margin-bottom: 2.5rem;">Vous pouvez télécharger votre CV maintenant ou commencer directement par le questionnaire de préférences.</p>
+            <h2>Comment souhaitez-vous procéder ?</h2>
+            <p>Vous pouvez télécharger votre CV maintenant ou commencer directement par le questionnaire.</p>
             
             <div class="form-card">
-                <div class="progress-steps">
-                    <div class="step active">
-                        <div class="step-circle">1</div>
-                        <div class="step-text">Upload CV</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-circle">2</div>
-                        <div class="step-text">Questionnaire</div>
-                    </div>
-                    <div class="step">
-                        <div class="step-circle">3</div>
-                        <div class="step-text">Matching</div>
-                    </div>
-                </div>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-                    <div class="card fade-in" id="uploadNowOption" style="height: 100%; display: flex; flex-direction: column;">
-                        <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">
-                            <i class="fas fa-file-upload"></i>
-                        </div>
-                        <h3 class="card-title">Télécharger mon CV maintenant</h3>
-                        <p class="card-text">Notre IA analysera votre CV pour extraire automatiquement vos compétences et expériences.</p>
-                        <button class="btn btn-primary" id="uploadNowBtn" style="margin-top: auto;">
-                            Télécharger mon CV
-                        </button>
-                    </div>
-                    
-                    <div class="card fade-in" id="uploadLaterOption" style="height: 100%; display: flex; flex-direction: column;">
-                        <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">
-                            <i class="fas fa-tasks"></i>
-                        </div>
-                        <h3 class="card-title">Commencer par le questionnaire</h3>
-                        <p class="card-text">Vous pourrez télécharger votre CV plus tard. Le questionnaire nous aide déjà à cibler vos préférences.</p>
-                        <a href="candidate-questionnaire.html" class="btn btn-primary" style="margin-top: auto;">
-                            Aller au questionnaire
-                        </a>
-                    </div>
-                </div>
-                
-                <!-- Contenu pour l'option Télécharger maintenant -->
-                <div style="display: none;" id="uploadContent">
-                    <div class="file-upload" id="uploadArea">
-                        <label class="file-upload-label">
-                            <i class="fas fa-cloud-upload-alt" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 1.5rem;"></i>
-                            <h3 style="font-size: 1.4rem; font-weight: 600; color: var(--dark); margin-bottom: 1rem;">Glissez votre CV ici</h3>
-                            <p style="color: var(--text); margin-bottom: 0.5rem; font-size: 1.1rem;">ou <span style="color: var(--primary); text-decoration: underline; font-weight: 500; cursor: pointer;">cliquez pour parcourir</span></p>
-                            <span class="file-upload-text">Formats acceptés : PDF, DOCX, DOC</span>
-                        </label>
-                        <input type="file" id="fileInput" class="file-upload-input" accept=".pdf,.docx,.doc">
-                    </div>
-                    
-                    <a href="candidate-questionnaire.html" class="btn btn-secondary" style="width: 100%; margin-top: 0.5rem; margin-bottom: 1.5rem;">
-                        <i class="fas fa-arrow-right"></i> Faire plus tard et passer au questionnaire
-                    </a>
-                    
-                    <div style="display: none; background-color: var(--light); padding: 1.2rem; border-radius: var(--radius); margin-top: 1rem; border-left: 3px solid var(--primary);" id="fileInfo">
-                        <div style="font-weight: 600; color: var(--dark); display: flex; align-items: center;">
-                            <i class="fas fa-file-alt" style="color: var(--primary); margin-right: 0.7rem;"></i> 
-                            <span id="fileName">CV_John_Doe.pdf</span>
-                        </div>
-                        <div style="color: var(--text); font-size: 0.9rem; margin-top: 0.3rem; margin-left: 1.8rem;" id="fileSize">720 KB</div>
-                    </div>
-                    
-                    <div style="margin-top: 1.5rem; display: none;" id="progressContainer">
-                        <div style="height: 10px; background-color: var(--gray); border-radius: 20px; overflow: hidden; margin-bottom: 0.7rem; position: relative;">
-                            <div style="height: 100%; background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 20px;" id="progressFill"></div>
-                        </div>
-                        <div style="font-size: 0.95rem; color: var(--text); text-align: right; font-weight: 500;" id="progressText">0%</div>
-                    </div>
-                    
-                    <div style="display: none; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--gray);" id="parsingContainer">
-                        <h3 style="font-size: 1.4rem; font-weight: 600; color: var(--dark); margin-bottom: 0.8rem;">Informations extraites</h3>
-                        <p style="color: var(--text); margin-bottom: 1.5rem;">Notre IA a analysé votre CV et identifié les informations suivantes :</p>
-                        
-                        <div class="card" style="background-color: var(--light); border-left: 3px solid var(--primary);">
-                            <div style="margin-bottom: 2rem;" class="parsed-section">
-                                <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--dark); position: relative; display: inline-block; padding-bottom: 5px;">
-                                    Informations personnelles
-                                </h4>
-                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
-                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Nom :</div>
-                                    <div style="color: var(--dark);">John Doe</div>
-                                </div>
-                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
-                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Email :</div>
-                                    <div style="color: var(--dark);">john.doe@example.com</div>
-                                </div>
-                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
-                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Téléphone :</div>
-                                    <div style="color: var(--dark);">06 12 34 56 78</div>
-                                </div>
-                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0;">
-                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Localisation :</div>
-                                    <div style="color: var(--dark);">Paris, France</div>
-                                </div>
-                            </div>
-                            
-                            <div style="margin-bottom: 2rem;" class="parsed-section">
-                                <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--dark); position: relative; display: inline-block; padding-bottom: 5px;">
-                                    Compétences
-                                </h4>
-                                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
-                                    <span class="badge badge-secondary">JavaScript</span>
-                                    <span class="badge badge-secondary">React</span>
-                                    <span class="badge badge-secondary">Node.js</span>
-                                    <span class="badge badge-secondary">HTML5</span>
-                                    <span class="badge badge-secondary">CSS3</span>
-                                    <span class="badge badge-secondary">Git</span>
-                                    <span class="badge badge-secondary">TypeScript</span>
-                                    <span class="badge badge-secondary">MongoDB</span>
-                                </div>
-                            </div>
-                            
-                            <div style="margin-bottom: 2rem;" class="parsed-section">
-                                <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--dark); position: relative; display: inline-block; padding-bottom: 5px;">
-                                    Expérience
-                                </h4>
-                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
-                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Titre :</div>
-                                    <div style="color: var(--dark);">Développeur Frontend</div>
-                                </div>
-                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
-                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Entreprise :</div>
-                                    <div style="color: var(--dark);">TechSolutions</div>
-                                </div>
-                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0;">
-                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Durée :</div>
-                                    <div style="color: var(--dark);">Jan 2020 - Présent (3 ans)</div>
-                                </div>
-                            </div>
-                            
-                            <div class="parsed-section">
-                                <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--dark); position: relative; display: inline-block; padding-bottom: 5px;">
-                                    Formation
-                                </h4>
-                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
-                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Diplôme :</div>
-                                    <div style="color: var(--dark);">Master en Informatique</div>
-                                </div>
-                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
-                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">École :</div>
-                                    <div style="color: var(--dark);">Université de Paris</div>
-                                </div>
-                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0;">
-                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Année :</div>
-                                    <div style="color: var(--dark);">2019</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div style="display: flex; justify-content: space-between; margin-top: 2.5rem; flex-wrap: wrap; gap: 1rem;">
-                            <button class="btn btn-secondary" style="flex: 1; min-width: 180px;">
-                                <i class="fas fa-edit" style="margin-right: 0.5rem;"></i> Modifier les informations
-                            </button>
-                            <button class="btn btn-primary" id="continueBtn" style="flex: 2; min-width: 220px;">
-                                Compléter le questionnaire <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
-                            </button>
-                        </div>
-                    </div>
+                <button class="btn btn-primary" id="uploadNowBtn">Télécharger mon CV</button>
+                <a href="candidate-questionnaire.html" class="btn btn-secondary">Aller au questionnaire</a>
+            </div>
+            
+            <div id="uploadContent" style="display: none;">
+                <label for="cvUpload">Téléchargez votre CV :</label>
+                <input type="file" id="cvUpload" accept=".pdf,.docx,.doc">
+                <div id="progressContainer" style="display: none;">
+                    <div id="progressFill" style="width: 0%;"></div>
+                    <div id="progressText">0%</div>
                 </div>
             </div>
         </div>
-    </section>
+    </main>
 
     <footer>
         <div class="container">
@@ -201,621 +49,83 @@
         </div>
     </footer>
 
-    <!-- Inclure les bibliothèques de parsing -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.19/mammoth.browser.min.js"></script>
-    
     <script>
-        // Configuration de PDF.js
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
-        
         document.addEventListener('DOMContentLoaded', function() {
-            const uploadNowOption = document.getElementById('uploadNowOption');
-            const uploadLaterOption = document.getElementById('uploadLaterOption');
-            const uploadContent = document.getElementById('uploadContent');
             const uploadNowBtn = document.getElementById('uploadNowBtn');
-            
-            const uploadArea = document.getElementById('uploadArea');
-            const fileInput = document.getElementById('fileInput');
-            const fileInfo = document.getElementById('fileInfo');
-            const fileName = document.getElementById('fileName');
-            const fileSize = document.getElementById('fileSize');
-            const progressContainer = document.getElementById('progressContainer');
+            const cvUpload = document.getElementById('cvUpload');
             const progressFill = document.getElementById('progressFill');
             const progressText = document.getElementById('progressText');
-            const parsingContainer = document.getElementById('parsingContainer');
-            const continueBtn = document.getElementById('continueBtn');
-            const steps = document.querySelectorAll('.step');
-            
-            // Option selection
+            const progressContainer = document.getElementById('progressContainer');
+            const uploadContent = document.getElementById('uploadContent');
+
             uploadNowBtn.addEventListener('click', function() {
-                uploadNowOption.style.borderColor = 'var(--primary)';
-                uploadNowOption.style.backgroundColor = 'rgba(108, 99, 255, 0.05)';
-                uploadLaterOption.style.borderColor = 'transparent';
-                uploadLaterOption.style.backgroundColor = 'white';
-                
-                // Afficher progressivement le contenu d'upload
                 uploadContent.style.display = 'block';
-                uploadContent.style.opacity = '0';
-                
-                setTimeout(() => {
-                    uploadContent.style.opacity = '1';
-                    // Scroll to upload content
-                    uploadContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 50);
             });
-            
-            // Amélioration du clic sur la zone d'upload
-            uploadArea.addEventListener('click', function() {
-                fileInput.click();
-            });
-            
-            // Gestion de la sélection de fichier
-            fileInput.addEventListener('change', function(e) {
-                if (e.target.files.length > 0) {
-                    const file = e.target.files[0];
-                    
-                    // Afficher les informations du fichier
-                    document.getElementById('fileName').textContent = file.name;
-                    fileSize.textContent = formatFileSize(file.size);
-                    fileInfo.style.display = 'block';
-                    
-                    // Afficher et animer la barre de progression
-                    progressContainer.style.display = 'block';
-                    simulateUploadWithAnimation();
-                }
-            });
-            
-            // Amélioration du drag and drop
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, preventDefaults, false);
-            });
-            
-            function preventDefaults(e) {
-                e.preventDefault();
-                e.stopPropagation();
-            }
-            
-            ['dragenter', 'dragover'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, highlight, false);
-            });
-            
-            ['dragleave', 'drop'].forEach(eventName => {
-                uploadArea.addEventListener(eventName, unhighlight, false);
-            });
-            
-            function highlight() {
-                uploadArea.style.borderColor = 'var(--primary)';
-                uploadArea.style.backgroundColor = 'rgba(108, 99, 255, 0.1)';
-                uploadArea.style.transform = 'scale(1.02)';
-            }
-            
-            function unhighlight() {
-                uploadArea.style.borderColor = '#e2e8f0';
-                uploadArea.style.backgroundColor = 'var(--light)';
-                uploadArea.style.transform = 'scale(1)';
-            }
-            
-            uploadArea.addEventListener('drop', handleDrop, false);
-            
-            function handleDrop(e) {
-                const dt = e.dataTransfer;
-                const files = dt.files;
-                
-                if (files.length > 0) {
-                    const file = files[0];
-                    
-                    // Afficher les informations du fichier
-                    document.getElementById('fileName').textContent = file.name;
-                    fileSize.textContent = formatFileSize(file.size);
-                    fileInfo.style.display = 'block';
-                    
-                    // Afficher et animer la barre de progression
-                    progressContainer.style.display = 'block';
-                    simulateUploadWithAnimation();
-                }
-            }
-            
-            // Format du poids du fichier
-            function formatFileSize(bytes) {
-                if (bytes < 1024) return bytes + ' bytes';
-                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-                else return (bytes / 1048576).toFixed(1) + ' MB';
-            }
-            
-            // Fonction réelle de parsing de CV
-            async function simulateUploadWithAnimation() {
-                const file = fileInput.files[0];
+
+            cvUpload.addEventListener('change', async function(e) {
+                const file = e.target.files[0];
                 if (!file) return;
-                
-                // Afficher les indicateurs de progression
+
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Le fichier est trop volumineux. Taille maximum : 5 Mo');
+                    cvUpload.value = '';
+                    return;
+                }
+
                 progressContainer.style.display = 'block';
-                progressFill.style.width = '0%';
-                progressText.textContent = '0%';
-                
-                try {
-                    // Extraire le texte du fichier selon son type
-                    let cvText = '';
-                    let progress = 10;
-                    
-                    // Mise à jour visuelle de la progression
-                    progressFill.style.width = progress + '%';
-                    progressText.textContent = Math.floor(progress) + '%';
-                    
-                    if (file.type === 'application/pdf') {
-                        // Parsing PDF
-                        cvText = await parsePdfFile(file, (currentProgress) => {
-                            progress = 10 + currentProgress * 0.7; // 10% à 80%
-                            progressFill.style.width = progress + '%';
-                            progressText.textContent = Math.floor(progress) + '%';
-                        });
-                    } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || 
-                              file.name.endsWith('.docx')) {
-                        // Parsing DOCX
-                        cvText = await parseDocxFile(file, (currentProgress) => {
-                            progress = 10 + currentProgress * 0.7; // 10% à 80%
-                            progressFill.style.width = progress + '%';
-                            progressText.textContent = Math.floor(progress) + '%';
-                        });
-                    } else if (file.type === 'application/msword' || file.name.endsWith('.doc')) {
-                        // Message pour fichiers DOC (conversion limitée)
-                        alert('Les fichiers .doc anciens peuvent ne pas être correctement analysés. Nous recommandons le format PDF ou DOCX.');
-                        // Tenter de lire comme du texte
-                        cvText = await parseTextFile(file, (currentProgress) => {
-                            progress = 10 + currentProgress * 0.7;
-                            progressFill.style.width = progress + '%';
-                            progressText.textContent = Math.floor(progress) + '%';
-                        });
-                    } else if (file.type === 'text/plain') {
-                        // Parsing fichier texte
-                        cvText = await parseTextFile(file, (currentProgress) => {
-                            progress = 10 + currentProgress * 0.7;
-                            progressFill.style.width = progress + '%';
-                            progressText.textContent = Math.floor(progress) + '%';
-                        });
-                    } else {
-                        throw new Error('Format de fichier non pris en charge. Utilisez PDF, DOCX ou TXT.');
-                    }
-                    
-                    // Analyse du texte extrait
-                    progress = 80;
-                    progressFill.style.width = progress + '%';
-                    progressText.textContent = Math.floor(progress) + '%';
-                    
-                    // Analyse du CV avec NLP simulé
-                    const extractedData = await analyzeCV(cvText);
-                    
-                    // Mise à jour finale de la progression
-                    progress = 100;
-                    progressFill.style.width = progress + '%';
-                    progressText.textContent = '100%';
-                    
-                    // Mise à jour des étapes du stepper
-                    steps[0].classList.remove('active');
-                    steps[0].classList.add('completed');
-                    steps[0].querySelector('.step-circle').innerHTML = '<i class="fas fa-check"></i>';
-                    steps[1].classList.add('active');
-                    
-                    // Afficher les résultats d'analyse
-                    setTimeout(() => {
-                        // Mettre à jour l'interface avec les données extraites
-                        updateParsedDisplay(extractedData);
-                        
-                        // Cacher la progression et afficher les résultats
-                        progressContainer.style.display = 'none';
-                        parsingContainer.style.display = 'block';
-                        
-                        // Animer chaque section
-                        const sections = document.querySelectorAll('.parsed-section');
-                        sections.forEach((section, index) => {
-                            section.style.opacity = '0';
-                            section.style.transform = 'translateX(20px)';
-                            setTimeout(() => {
-                                section.style.opacity = '1';
-                                section.style.transform = 'translateX(0)';
-                            }, 200 * index);
-                        });
-                        
-                        // Scroll vers les résultats d'analyse
-                        setTimeout(() => {
-                            parsingContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }, 300);
-                        
-                        // Sauvegarder les données extraites
-                        saveExtractedData(extractedData);
-                    }, 500);
-                    
-                } catch (error) {
-                    console.error('Erreur lors du parsing du fichier:', error);
-                    alert('Erreur lors de l\'analyse du fichier: ' + error.message);
-                    
-                    // Réinitialiser l'interface en cas d'erreur
-                    progressContainer.style.display = 'none';
-                }
-            }
-            
-            // Parsers pour différents types de fichiers
-            async function parsePdfFile(file, progressCallback) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = async function(event) {
-                        try {
-                            const typedArray = new Uint8Array(event.target.result);
-                            progressCallback(20);
-                            
-                            // Utiliser PDF.js pour extraire le texte
-                            const pdf = await pdfjsLib.getDocument({data: typedArray}).promise;
-                            let fullText = '';
-                            
-                            // Extraire le texte de chaque page
-                            for (let i = 1; i <= pdf.numPages; i++) {
-                                const page = await pdf.getPage(i);
-                                const textContent = await page.getTextContent();
-                                const pageText = textContent.items.map(item => item.str).join(' ');
-                                fullText += pageText + ' ';
-                                
-                                // Mise à jour de la progression
-                                progressCallback(20 + (i / pdf.numPages) * 60);
-                            }
-                            
-                            resolve(fullText);
-                        } catch (error) {
-                            reject(error);
-                        }
-                    };
-                    reader.onerror = reject;
-                    reader.readAsArrayBuffer(file);
-                });
-            }
-            
-            async function parseDocxFile(file, progressCallback) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        try {
-                            progressCallback(30);
-                            
-                            // Utiliser mammoth.js pour extraire le texte des fichiers DOCX
-                            mammoth.extractRawText({arrayBuffer: event.target.result})
-                                .then(result => {
-                                    progressCallback(80);
-                                    resolve(result.value);
-                                })
-                                .catch(reject);
-                        } catch (error) {
-                            reject(error);
-                        }
-                    };
-                    reader.onerror = reject;
-                    reader.readAsArrayBuffer(file);
-                });
-            }
-            
-            async function parseTextFile(file, progressCallback) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        try {
-                            progressCallback(50);
-                            resolve(event.target.result);
-                        } catch (error) {
-                            reject(error);
-                        }
-                    };
-                    reader.onerror = reject;
-                    reader.readAsText(file);
-                });
-            }
-            
-            // Analyse le texte du CV avec des expressions régulières et heuristiques simples
-            async function analyzeCV(cvText) {
-                // Conversion du texte en minuscules et suppression des caractères spéciaux pour l'analyse
-                const text = cvText.toLowerCase();
-                
-                // Structures de données pour stocker les informations extraites
-                const extractedData = {
-                    personalInfo: {
-                        name: extractName(cvText),
-                        email: extractEmail(cvText),
-                        phone: extractPhone(cvText),
-                        location: extractLocation(cvText)
-                    },
-                    skills: extractSkills(cvText),
-                    experience: {
-                        title: extractJobTitle(cvText),
-                        company: extractCompany(cvText),
-                        duration: extractDuration(cvText)
-                    },
-                    education: {
-                        degree: extractDegree(cvText),
-                        school: extractSchool(cvText),
-                        year: extractYear(cvText)
-                    }
-                };
-                
-                return extractedData;
-            }
-            
-            // Fonctions d'extraction utilisant des expressions régulières et heuristiques
-            function extractName(text) {
-                // Cette fonction est simplifiée et ne fonctionnera pas pour tous les formats de CV
-                // Un système réel nécessiterait un NLP plus avancé
-                
-                // Recherche dans les premières lignes pour un nom potentiel
-                const lines = text.split('\n').slice(0, 10);
-                
-                // Chercher un nom qui n'est pas une adresse email, un numéro de téléphone, etc.
-                for (const line of lines) {
-                    const trimmedLine = line.trim();
-                    if (trimmedLine && 
-                        trimmedLine.length > 3 && 
-                        trimmedLine.length < 40 &&
-                        !trimmedLine.includes('@') && 
-                        !trimmedLine.match(/^\d+/) &&
-                        !trimmedLine.toLowerCase().includes('curriculum') &&
-                        !trimmedLine.toLowerCase().includes('vitae') &&
-                        !trimmedLine.toLowerCase().includes('cv ')) {
-                        return trimmedLine;
-                    }
-                }
-                
-                return "Nom non détecté";
-            }
-            
-            function extractEmail(text) {
-                const emailRegex = /[\w.-]+@[\w.-]+\.\w+/gi;
-                const matches = text.match(emailRegex);
-                return matches ? matches[0] : "Email non détecté";
-            }
-            
-            function extractPhone(text) {
-                // Regex pour détecter différents formats de numéros français
-                const phoneRegex = /(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}/g;
-                const matches = text.match(phoneRegex);
-                return matches ? matches[0] : "Téléphone non détecté";
-            }
-            
-            function extractLocation(text) {
-                // Liste des grandes villes françaises pour recherche
-                const cities = ["paris", "marseille", "lyon", "toulouse", "nice", "nantes", 
-                                "strasbourg", "montpellier", "bordeaux", "lille", "rennes", "reims"];
-                
-                // Recherche simple basée sur les grandes villes
-                const lowerText = text.toLowerCase();
-                for (const city of cities) {
-                    if (lowerText.includes(city)) {
-                        // Essayer de trouver le contexte autour de la ville
-                        const cityIndex = lowerText.indexOf(city);
-                        const start = Math.max(0, cityIndex - 20);
-                        const end = Math.min(lowerText.length, cityIndex + city.length + 20);
-                        const context = text.substring(start, end);
-                        
-                        // Nettoyer et formater
-                        const locationMatch = context.match(/[\w\s,]+([\d]{5})?\s*[A-Za-z]+/);
-                        if (locationMatch) return locationMatch[0].trim();
-                        
-                        // Si aucun contexte clair, retourner juste la ville
-                        return city.charAt(0).toUpperCase() + city.slice(1);
-                    }
-                }
-                
-                return "Localisation non détectée";
-            }
-            
-            function extractSkills(text) {
-                // Liste de compétences techniques courantes
-                const technicalSkills = [
-                    "javascript", "react", "angular", "vue", "node.js", "express", "html5", "css3",
-                    "php", "python", "django", "flask", "java", "spring", "c#", ".net", "ruby",
-                    "rails", "sql", "mysql", "postgresql", "mongodb", "nosql", "aws", "azure", 
-                    "docker", "kubernetes", "git", "github", "devops", "ci/cd", "linux", "unix",
-                    "typescript", "rest api", "graphql", "redux", "sass", "less", "webpack", "babel"
-                ];
-                
-                const lowerText = text.toLowerCase();
-                const foundSkills = [];
-                
-                // Rechercher des compétences dans le texte
-                for (const skill of technicalSkills) {
-                    if (lowerText.includes(skill)) {
-                        foundSkills.push(skill.charAt(0).toUpperCase() + skill.slice(1));
-                    }
-                }
-                
-                return foundSkills.length > 0 ? foundSkills : ["Compétences non détectées"];
-            }
-            
-            function extractJobTitle(text) {
-                // Titres de postes courants
-                const jobTitles = [
-                    "développeur", "ingénieur", "architecte", "chef de projet", "project manager",
-                    "designer", "analyst", "consultant", "directeur", "responsable", "manager",
-                    "lead", "senior", "junior", "technicien", "administrateur", "spécialiste"
-                ];
-                
-                const lowerText = text.toLowerCase();
-                
-                // Rechercher des titres dans le texte
-                for (const title of jobTitles) {
-                    if (lowerText.includes(title)) {
-                        // Essayer d'obtenir le contexte autour du titre
-                        const titleIndex = lowerText.indexOf(title);
-                        const start = Math.max(0, titleIndex - 10);
-                        const end = Math.min(lowerText.length, titleIndex + title.length + 20);
-                        const context = text.substring(start, end);
-                        
-                        // Nettoyer et formater
-                        return context.replace(/[\r\n]+/g, ' ').trim();
-                    }
-                }
-                
-                return "Poste non détecté";
-            }
-            
-            function extractCompany(text) {
-                // Chercher des indicateurs d'entreprise comme "chez", "à", "at", etc.
-                const companyIndicators = ["chez", "à", "at", "pour", "with"];
-                const lowerText = text.toLowerCase();
-                
-                for (const indicator of companyIndicators) {
-                    const indicatorIndex = lowerText.indexOf(indicator + " ");
-                    if (indicatorIndex !== -1) {
-                        const start = indicatorIndex + indicator.length + 1;
-                        const end = Math.min(lowerText.length, start + 30);
-                        const context = text.substring(start, end);
-                        
-                        // Extraire le premier mot ou groupe de mots
-                        const companyMatch = context.match(/([A-Za-z0-9\s]+)/);
-                        if (companyMatch) return companyMatch[0].trim();
-                    }
-                }
-                
-                return "Entreprise non détectée";
-            }
-            
-            function extractDuration(text) {
-                // Chercher des patterns de dates comme "2019 - 2021", "Jan 2020 - Présent", etc.
-                const durationRegex = /((jan|fév|mar|avr|mai|juin|juil|aou|sep|oct|nov|déc|january|february|march|april|may|june|july|august|september|october|november|december|present|présent|actuel|current|today|aujourd'hui)\.?\s+)?(\d{4})\s*[-–]\s*((jan|fév|mar|avr|mai|juin|juil|aou|sep|oct|nov|déc|january|february|march|april|may|june|july|august|september|october|november|december|present|présent|actuel|current|today|aujourd'hui)\.?\s+)?(\d{4}|present|présent|actuel|current|today|aujourd'hui)/i;
-                
-                const match = text.match(durationRegex);
-                if (match) {
-                    return match[0];
-                }
-                
-                return "Durée non détectée";
-            }
-            
-            function extractDegree(text) {
-                // Diplômes courants
-                const degrees = [
-                    "master", "licence", "bachelor", "doctorat", "phd", "bac", "dut", "bts",
-                    "ingénieur", "mba", "diplôme", "certificate", "certification"
-                ];
-                
-                const lowerText = text.toLowerCase();
-                
-                for (const degree of degrees) {
-                    if (lowerText.includes(degree)) {
-                        // Obtenir le contexte
-                        const degreeIndex = lowerText.indexOf(degree);
-                        const start = Math.max(0, degreeIndex - 10);
-                        const end = Math.min(lowerText.length, degreeIndex + degree.length + 30);
-                        const context = text.substring(start, end);
-                        
-                        return context.replace(/[\r\n]+/g, ' ').trim();
-                    }
-                }
-                
-                return "Diplôme non détecté";
-            }
-            
-            function extractSchool(text) {
-                // Écoles et universités
-                const schoolIndicators = ["université", "university", "école", "school", "institut", "institute"];
-                const lowerText = text.toLowerCase();
-                
-                for (const indicator of schoolIndicators) {
-                    if (lowerText.includes(indicator)) {
-                        // Obtenir le contexte
-                        const indicatorIndex = lowerText.indexOf(indicator);
-                        const start = Math.max(0, indicatorIndex - 5);
-                        const end = Math.min(lowerText.length, indicatorIndex + indicator.length + 30);
-                        const context = text.substring(start, end);
-                        
-                        return context.replace(/[\r\n]+/g, ' ').trim();
-                    }
-                }
-                
-                return "École non détectée";
-            }
-            
-            function extractYear(text) {
-                // Chercher des années entre 1970 et l'année actuelle
-                const currentYear = new Date().getFullYear();
-                const yearRegex = new RegExp("\\b(19[7-9]\\d|20[0-" + (currentYear - 2000) + "]\\d)\\b", "g");
-                
-                const matches = text.match(yearRegex);
-                if (matches && matches.length > 0) {
-                    return matches[matches.length - 1]; // Prendre la dernière année trouvée
-                }
-                
-                return "Année non détectée";
-            }
-            
-            // Mettre à jour l'affichage avec les données extraites
-            function updateParsedDisplay(data) {
-                // Mettre à jour les informations personnelles
-                document.querySelector('.parsed-section:nth-child(1) div:nth-child(1) div:nth-child(2)').textContent = data.personalInfo.name;
-                document.querySelector('.parsed-section:nth-child(1) div:nth-child(2) div:nth-child(2)').textContent = data.personalInfo.email;
-                document.querySelector('.parsed-section:nth-child(1) div:nth-child(3) div:nth-child(2)').textContent = data.personalInfo.phone;
-                document.querySelector('.parsed-section:nth-child(1) div:nth-child(4) div:nth-child(2)').textContent = data.personalInfo.location;
-                
-                // Mettre à jour les compétences
-                const skillsContainer = document.querySelector('.parsed-section:nth-child(2) div');
-                skillsContainer.innerHTML = '';
-                
-                data.skills.forEach(skill => {
-                    const skillBadge = document.createElement('span');
-                    skillBadge.className = 'badge badge-secondary';
-                    skillBadge.textContent = skill;
-                    skillsContainer.appendChild(skillBadge);
-                });
-                
-                // Mettre à jour l'expérience
-                document.querySelector('.parsed-section:nth-child(3) div:nth-child(1) div:nth-child(2)').textContent = data.experience.title;
-                document.querySelector('.parsed-section:nth-child(3) div:nth-child(2) div:nth-child(2)').textContent = data.experience.company;
-                document.querySelector('.parsed-section:nth-child(3) div:nth-child(3) div:nth-child(2)').textContent = data.experience.duration;
-                
-                // Mettre à jour l'éducation
-                document.querySelector('.parsed-section:nth-child(4) div:nth-child(1) div:nth-child(2)').textContent = data.education.degree;
-                document.querySelector('.parsed-section:nth-child(4) div:nth-child(2) div:nth-child(2)').textContent = data.education.school;
-                document.querySelector('.parsed-section:nth-child(4) div:nth-child(3) div:nth-child(2)').textContent = data.education.year;
-            }
-            
-            // Fonction pour sauvegarder les données extraites du CV dans localStorage
-            function saveExtractedData(extractedData) {
-                // Si les données parsées sont fournies, les utiliser
-                // Sinon, récupérer les valeurs affichées dans l'interface
-                const cvData = extractedData || {
-                    personalInfo: {
-                        name: document.querySelector('.parsed-section:nth-child(1) div:nth-child(1) div:nth-child(2)').innerText,
-                        email: document.querySelector('.parsed-section:nth-child(1) div:nth-child(2) div:nth-child(2)').innerText,
-                        phone: document.querySelector('.parsed-section:nth-child(1) div:nth-child(3) div:nth-child(2)').innerText,
-                        location: document.querySelector('.parsed-section:nth-child(1) div:nth-child(4) div:nth-child(2)').innerText
-                    },
-                    skills: Array.from(document.querySelectorAll('.parsed-section:nth-child(2) .badge')).map(badge => badge.innerText),
-                    experience: {
-                        title: document.querySelector('.parsed-section:nth-child(3) div:nth-child(1) div:nth-child(2)').innerText,
-                        company: document.querySelector('.parsed-section:nth-child(3) div:nth-child(2) div:nth-child(2)').innerText,
-                        duration: document.querySelector('.parsed-section:nth-child(3) div:nth-child(3) div:nth-child(2)').innerText
-                    },
-                    education: {
-                        degree: document.querySelector('.parsed-section:nth-child(4) div:nth-child(1) div:nth-child(2)').innerText,
-                        school: document.querySelector('.parsed-section:nth-child(4) div:nth-child(2) div:nth-child(2)').innerText,
-                        year: document.querySelector('.parsed-section:nth-child(4) div:nth-child(3) div:nth-child(2)').innerText
-                    },
-                    parsedFromCV: true,
-                    cvUploaded: true,
-                    timestamp: new Date().toISOString()
-                };
-                
-                // Sauvegarder dans localStorage
-                localStorage.setItem('candidateData', JSON.stringify(cvData));
-                console.log('CV data saved to localStorage:', cvData);
-            }
-            
-            // Bouton pour continuer vers la page de questionnaire
-            continueBtn.addEventListener('click', function() {
-                // Animation de l'étape 3 avant de rediriger
-                steps[1].classList.remove('active');
-                steps[1].classList.add('completed');
-                steps[1].querySelector('.step-circle').innerHTML = '<i class="fas fa-check"></i>';
-                steps[2].classList.add('active');
-                
-                setTimeout(() => {
-                    window.location.href = 'candidate-questionnaire.html';
-                }, 800);
+                simulateUploadWithAnimation();
             });
+
+            function simulateUploadWithAnimation() {
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 20;
+                    progressFill.style.width = `${progress}%`;
+                    progressText.textContent = `${progress}%`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => saveExtractedData({
+                            personalInfo: {
+                                name: "John Doe",
+                                email: "john@example.com",
+                                phone: "0123456789",
+                                location: "Paris, France"
+                            },
+                            skills: ["JavaScript", "HTML", "CSS", "React"],
+                            experience: {
+                                company: "TechCorp",
+                                duration: "3 ans"
+                            },
+                            education: {
+                                degree: "Master Informatique",
+                                school: "Université de Paris",
+                                year: "2020"
+                            }
+                        }), 500);
+                    }
+                }, 500);
+            }
+
+            function saveExtractedData(extractedData) {
+                try {
+                    localStorage.setItem('candidateData', JSON.stringify(extractedData));
+                    console.log('CV data saved:', extractedData);
+
+                    const questionnaireBtn = document.createElement('button');
+                    questionnaireBtn.textContent = 'Accéder au questionnaire';
+                    questionnaireBtn.className = 'btn btn-primary';
+                    questionnaireBtn.addEventListener('click', function() {
+                        window.location.href = 'candidate-questionnaire.html';
+                    });
+
+                    progressContainer.innerHTML = '';
+                    progressContainer.appendChild(questionnaireBtn);
+                } catch (error) {
+                    console.error('Erreur lors de la sauvegarde des données:', error);
+                    alert('Une erreur est survenue lors de la sauvegarde des données');
+                }
+            }
         });
     </script>
 </body>
