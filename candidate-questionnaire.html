@@ -3,55 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Questionnaire candidat - Nexten</title>
+    <title>Questionnaire de préférences - Nexten</title>
     <link rel="stylesheet" href="styles.css">
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        .cv-data-summary {
-            margin: 20px 0;
-            padding: 20px;
-            background-color: #f5f9ff;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        /* Styles spécifiques pour le questionnaire */
+        .form-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
         }
-
-        .cv-data-summary h3 {
-            color: #2c6ecb;
-            margin-bottom: 10px;
+        
+        .form-steps::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--gray);
+            z-index: 1;
         }
-
-        .cv-data-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 15px;
+        
+        .form-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
         }
-
-        .cv-data-section {
+        
+        .step-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-color: white;
-            padding: 15px;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-        }
-
-        .cv-data-section h4 {
-            color: #2c6ecb;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-
-        .cv-data-item {
-            margin-bottom: 6px;
-        }
-
-        .cv-data-label {
+            border: 2px solid var(--gray);
+            margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #555;
+            color: var(--text);
         }
-
-        .cv-data-value {
-            color: #333;
+        
+        .form-step.active .step-circle {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .form-step.completed .step-circle {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.85rem;
+            color: var(--text);
+            text-align: center;
+        }
+        
+        .form-step.active .step-label {
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .form-step-content {
+            display: none;
+        }
+        
+        .form-step-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        }
+        
+        .tags-input-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0.5rem;
+            border: 1px solid var(--gray);
+            border-radius: var(--radius);
+            gap: 0.5rem;
+            min-height: 50px;
+            background-color: white;
+        }
+        
+        .tags-input-container:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.5rem;
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            border-radius: 30px;
+            font-size: 0.9rem;
+        }
+        
+        .tag .remove-tag {
+            cursor: pointer;
+            margin-left: 0.3rem;
+            font-size: 1.1rem;
+        }
+        
+        .tags-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 0.5rem 0;
+            min-width: 150px;
+        }
+        
+        .info-card {
+            padding: 1rem;
+            background-color: rgba(108, 99, 255, 0.1);
+            border-left: 3px solid var(--primary);
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+        }
+        
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 0.5rem;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .step-description {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -64,190 +197,457 @@
                     <li><a href="index.html">Accueil</a></li>
                     <li><a href="post-job.html">Publier une offre</a></li>
                     <li><a href="candidate-upload.html" class="active">Espace candidat</a></li>
+                    <li><a href="recruiter-dashboard.html">Espace recruteur</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <section>
+    <section style="padding: 4rem 0; background-color: var(--gray);">
         <div class="container">
-            <h2>Complétez votre profil</h2>
-            <p>Nous avons analysé votre CV. Vérifiez et complétez les informations ci-dessous.</p>
+            <h2 style="font-size: 2rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem; position: relative; display: inline-block;">
+                Questionnaire de préférences
+                <span style="content: ''; position: absolute; left: 0; bottom: -10px; width: 40%; height: 3px; background: var(--primary); border-radius: 10px; display: block;"></span>
+            </h2>
+            <p style="color: var(--text); font-size: 1.1rem; margin-bottom: 2.5rem;">Dites-nous ce que vous recherchez pour nous permettre de trouver les meilleures opportunités.</p>
+            
+            <div class="form-card">
+                <div class="progress-steps">
+                    <div class="step completed">
+                        <div class="step-circle"><i class="fas fa-check"></i></div>
+                        <div class="step-text">Upload CV</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-circle">2</div>
+                        <div class="step-text">Questionnaire</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-text">Matching</div>
+                    </div>
+                </div>
+                
+                <!-- Formulaire par étapes -->
+                <div id="questionnaireForm">
+                    <!-- Étapes du formulaire -->
+                    <div class="form-steps">
+                        <div class="form-step active" data-step="1">
+                            <div class="step-circle">1</div>
+                            <div class="step-label">Préférences<br>professionnelles</div>
+                        </div>
+                        <div class="form-step" data-step="2">
+                            <div class="step-circle">2</div>
+                            <div class="step-label">Compétences<br>et qualifications</div>
+                        </div>
+                        <div class="form-step" data-step="3">
+                            <div class="step-circle">3</div>
+                            <div class="step-label">Disponibilité</div>
+                        </div>
+                        <div class="form-step" data-step="4">
+                            <div class="step-circle">4</div>
+                            <div class="step-label">Informations<br>complémentaires</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Message d'infos pré-remplies si CV téléchargé -->
+                    <div id="prefilled-message" class="info-card" style="display: none;">
+                        <div style="display: flex; align-items: flex-start;">
+                            <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 0.8rem; margin-top: 0.2rem;"></i>
+                            <div>
+                                <h4 style="font-weight: 600; margin-bottom: 0.5rem; color: var(--dark);">
+                                    Informations pré-remplies depuis votre CV
+                                </h4>
+                                <p style="color: var(--text);">
+                                    Certains champs ont été automatiquement remplis avec les informations extraites de votre CV. 
+                                    Vous pouvez les modifier si nécessaire.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-            <form id="candidateForm">
-                <label for="fullName">Nom Prénom</label>
-                <input type="text" id="fullName">
-
-                <label for="email">Email</label>
-                <input type="email" id="email">
-
-                <label for="phone">Téléphone</label>
-                <input type="text" id="phone">
-
-                <label for="address">Adresse</label>
-                <input type="text" id="address">
-
-                <label>Compétences</label>
-                <div id="skillsContainer" class="tag-container"></div>
-
-                <label for="company">Entreprise actuelle</label>
-                <input type="text" id="company">
-
-                <label for="jobDuration">Durée d'expérience</label>
-                <input type="text" id="jobDuration">
-
-                <label for="degree">Diplôme</label>
-                <input type="text" id="degree">
-
-                <label for="school">École</label>
-                <input type="text" id="school">
-
-                <label for="graduationYear">Année d'obtention</label>
-                <input type="text" id="graduationYear">
-
-                <button type="submit">Valider</button>
-            </form>
-
-            <div id="cvDataSummarySection"></div>
+                    <!-- Étape 1: Préférences professionnelles -->
+                    <div class="form-step-content active" id="step-1">
+                        <h3 class="form-section-title">Préférences professionnelles</h3>
+                        <p class="step-description">Parlez-nous de vos attentes pour votre prochain poste</p>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="preferredRole">Poste recherché</label>
+                            <input type="text" id="preferredRole" class="form-control" placeholder="Ex: Développeur Front-end, Product Manager...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="contractType">Type de contrat</label>
+                            <select id="contractType" class="form-control">
+                                <option value="">Sélectionner...</option>
+                                <option value="CDI">CDI</option>
+                                <option value="CDD">CDD</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Stage">Stage</option>
+                                <option value="Alternance">Alternance</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="location">Localisation souhaitée</label>
+                            <input type="text" id="location" class="form-control" placeholder="Ex: Paris, Bordeaux, Lyon...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="remotePreference">Préférence de travail</label>
+                            <select id="remotePreference" class="form-control">
+                                <option value="">Sélectionner...</option>
+                                <option value="Sur site">Sur site</option>
+                                <option value="Hybride">Hybride</option>
+                                <option value="100% télétravail">100% télétravail</option>
+                                <option value="Peu importe">Peu importe</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="salaryExpectation">Prétentions salariales (K€)</label>
+                            <input type="text" id="salaryExpectation" class="form-control" placeholder="Ex: 45, 50-60...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="startDate">Date de disponibilité</label>
+                            <input type="date" id="startDate" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 2: Compétences et qualifications -->
+                    <div class="form-step-content" id="step-2">
+                        <h3 class="form-section-title">Compétences et qualifications</h3>
+                        <p class="step-description">Précisez vos compétences techniques et non techniques</p>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="technicalSkills">Compétences techniques</label>
+                            <div class="tags-input-container" id="technicalSkills-container">
+                                <input type="text" class="tags-input" id="technicalSkills-input" placeholder="Saisir et appuyer sur Entrée...">
+                            </div>
+                            <small style="display: block; margin-top: 0.3rem; color: var(--text);">Appuyez sur Entrée ou virgule pour ajouter</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="softSkills">Soft skills</label>
+                            <div class="tags-input-container" id="softSkills-container">
+                                <input type="text" class="tags-input" id="softSkills-input" placeholder="Saisir et appuyer sur Entrée...">
+                            </div>
+                            <small style="display: block; margin-top: 0.3rem; color: var(--text);">Appuyez sur Entrée ou virgule pour ajouter</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="languages">Langues parlées</label>
+                            <div class="tags-input-container" id="languages-container">
+                                <input type="text" class="tags-input" id="languages-input" placeholder="Saisir et appuyer sur Entrée...">
+                            </div>
+                            <small style="display: block; margin-top: 0.3rem; color: var(--text);">Appuyez sur Entrée ou virgule pour ajouter</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="certifications">Certifications</label>
+                            <div class="tags-input-container" id="certifications-container">
+                                <input type="text" class="tags-input" id="certifications-input" placeholder="Saisir et appuyer sur Entrée...">
+                            </div>
+                            <small style="display: block; margin-top: 0.3rem; color: var(--text);">Appuyez sur Entrée ou virgule pour ajouter</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 3: Disponibilité -->
+                    <div class="form-step-content" id="step-3">
+                        <h3 class="form-section-title">Disponibilité</h3>
+                        <p class="step-description">Informations sur votre disponibilité</p>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="interviewAvailability">Disponibilité pour entretiens</label>
+                            <input type="text" id="interviewAvailability" class="form-control" placeholder="Ex: En semaine après 18h, le mardi toute la journée...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="noticePeriod">Préavis actuel (en jours)</label>
+                            <input type="number" id="noticePeriod" class="form-control" placeholder="Ex: 30, 60, 90...">
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="relocateWilling">
+                                <label class="form-label" for="relocateWilling" style="margin-bottom: 0;">Êtes-vous prêt à déménager ?</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Étape 4: Informations complémentaires -->
+                    <div class="form-step-content" id="step-4">
+                        <h3 class="form-section-title">Informations complémentaires</h3>
+                        <p class="step-description">Partagez avec nous ce qui vous motive</p>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="motivation">Qu'est-ce qui vous motive dans votre recherche ?</label>
+                            <textarea id="motivation" class="form-control" rows="4" placeholder="Décrivez vos motivations pour changer de poste ou entreprise..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="strengths">Vos points forts</label>
+                            <textarea id="strengths" class="form-control" rows="4" placeholder="Décrivez vos principales qualités et atouts..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="challenges">Un défi professionnel que vous avez relevé</label>
+                            <textarea id="challenges" class="form-control" rows="4" placeholder="Décrivez un challenge professionnel significatif..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="additionalInfo">Informations complémentaires</label>
+                            <textarea id="additionalInfo" class="form-control" rows="4" placeholder="Toute autre information que vous souhaitez partager..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Boutons de navigation -->
+                    <div class="navigation-buttons">
+                        <button id="prevBtn" class="btn btn-secondary" disabled>
+                            <i class="fas fa-arrow-left" style="margin-right: 0.5rem;"></i> Précédent
+                        </button>
+                        <button id="nextBtn" class="btn btn-primary">
+                            Suivant <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
+    <footer>
+        <div class="container">
+            <p>© 2025 Nexten - Tous droits réservés</p>
+        </div>
+    </footer>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const candidateDataString = localStorage.getItem('candidateData');
-            if (candidateDataString) {
-                try {
-                    const candidateData = JSON.parse(candidateDataString);
-                    prefillFormWithCVData(candidateData);
-                } catch (error) {
-                    console.error('Erreur lors de la récupération des données:', error);
+            // Référence aux éléments du formulaire
+            const formSteps = document.querySelectorAll('.form-step');
+            const formContents = document.querySelectorAll('.form-step-content');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            // Référence aux champs de formulaire
+            const preferredRoleInput = document.getElementById('preferredRole');
+            const locationInput = document.getElementById('location');
+            const prefilledMessage = document.getElementById('prefilled-message');
+            
+            let currentStep = 1;
+            const totalSteps = formSteps.length;
+            
+            // Récupérer les données du candidat depuis localStorage
+            const savedData = localStorage.getItem('candidateData');
+            let candidateData = null;
+            
+            if (savedData) {
+                candidateData = JSON.parse(savedData);
+                
+                // Afficher le message de pré-remplissage si des données ont été extraites du CV
+                if (candidateData.parsedFromCV) {
+                    prefilledMessage.style.display = 'block';
+                    
+                    // Pré-remplir les champs avec les données extraites
+                    if (candidateData.experience && candidateData.experience.title) {
+                        preferredRoleInput.value = candidateData.experience.title;
+                    }
+                    
+                    if (candidateData.personalInfo && candidateData.personalInfo.location) {
+                        locationInput.value = candidateData.personalInfo.location;
+                    }
+                    
+                    // Pré-remplir les compétences techniques
+                    if (candidateData.skills && candidateData.skills.length > 0) {
+                        setTimeout(() => {
+                            candidateData.skills.forEach(skill => {
+                                if (skill !== "Compétences non détectées") {
+                                    addTag('technicalSkills', skill);
+                                }
+                            });
+                        }, 500);
+                    }
                 }
+            }
+            
+            // Fonctions pour la navigation entre les étapes
+            function goToStep(step) {
+                // Masquer l'étape actuelle et afficher la nouvelle
+                document.querySelector(`.form-step-content.active`).classList.remove('active');
+                document.querySelector(`#step-${step}`).classList.add('active');
+                
+                // Mettre à jour l'état des étapes dans l'indicateur de progression
+                formSteps.forEach((formStep, index) => {
+                    const stepNum = index + 1;
+                    
+                    formStep.classList.remove('active', 'completed');
+                    
+                    if (stepNum === step) {
+                        formStep.classList.add('active');
+                    } else if (stepNum < step) {
+                        formStep.classList.add('completed');
+                        formStep.querySelector('.step-circle').innerHTML = '<i class="fas fa-check"></i>';
+                    } else {
+                        formStep.querySelector('.step-circle').textContent = stepNum;
+                    }
+                });
+                
+                // Mettre à jour l'état des boutons
+                prevBtn.disabled = step === 1;
+                
+                if (step === totalSteps) {
+                    nextBtn.textContent = 'Soumettre';
+                    nextBtn.innerHTML = 'Soumettre <i class="fas fa-check" style="margin-left: 0.5rem;"></i>';
+                } else {
+                    nextBtn.textContent = 'Suivant';
+                    nextBtn.innerHTML = 'Suivant <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>';
+                }
+                
+                // Faire défiler vers le haut
+                window.scrollTo(0, 0);
+                
+                // Mettre à jour l'étape courante
+                currentStep = step;
+            }
+            
+            // Gestion des événements pour les boutons de navigation
+            prevBtn.addEventListener('click', function() {
+                if (currentStep > 1) {
+                    goToStep(currentStep - 1);
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentStep < totalSteps) {
+                    // Collecter et sauvegarder les données du formulaire
+                    saveFormData();
+                    
+                    // Passer à l'étape suivante
+                    goToStep(currentStep + 1);
+                } else {
+                    // C'est la dernière étape, soumettre le formulaire
+                    submitForm();
+                }
+            });
+            
+            // Fonctions pour les champs de tags
+            function setupTagsInput(fieldId) {
+                const container = document.getElementById(`${fieldId}-container`);
+                const input = document.getElementById(`${fieldId}-input`);
+                
+                input.addEventListener('keydown', function(e) {
+                    if ((e.key === 'Enter' || e.key === ',') && this.value.trim()) {
+                        e.preventDefault();
+                        addTag(fieldId, this.value.trim());
+                        this.value = '';
+                    }
+                });
+            }
+            
+            function addTag(fieldId, text) {
+                const container = document.getElementById(`${fieldId}-container`);
+                
+                // Vérifier si le tag existe déjà
+                const existingTags = container.querySelectorAll('.tag');
+                for (let i = 0; i < existingTags.length; i++) {
+                    if (existingTags[i].getAttribute('data-value').toLowerCase() === text.toLowerCase()) {
+                        return; // Le tag existe déjà, ne pas l'ajouter
+                    }
+                }
+                
+                const tag = document.createElement('div');
+                tag.className = 'tag';
+                tag.setAttribute('data-value', text);
+                tag.innerHTML = text + ' <span class="remove-tag">&times;</span>';
+                
+                tag.querySelector('.remove-tag').addEventListener('click', function() {
+                    container.removeChild(tag);
+                });
+                
+                container.insertBefore(tag, document.getElementById(`${fieldId}-input`));
+            }
+            
+            // Configurer les champs de tags
+            setupTagsInput('technicalSkills');
+            setupTagsInput('softSkills');
+            setupTagsInput('languages');
+            setupTagsInput('certifications');
+            
+            // Fonction pour collecter les données du formulaire
+            function getFormData() {
+                // Récupérer les valeurs des champs de l'étape actuelle
+                const formData = {
+                    jobPreferences: {
+                        preferredRole: document.getElementById('preferredRole').value,
+                        contractType: document.getElementById('contractType').value,
+                        location: document.getElementById('location').value,
+                        remotePreference: document.getElementById('remotePreference').value,
+                        salaryExpectation: document.getElementById('salaryExpectation').value,
+                        startDate: document.getElementById('startDate').value
+                    },
+                    skills: {
+                        technicalSkills: getTagsValues('technicalSkills'),
+                        softSkills: getTagsValues('softSkills'),
+                        languages: getTagsValues('languages'),
+                        certifications: getTagsValues('certifications')
+                    },
+                    availability: {
+                        interviewAvailability: document.getElementById('interviewAvailability').value,
+                        noticePeriod: document.getElementById('noticePeriod').value,
+                        relocateWilling: document.getElementById('relocateWilling').checked
+                    },
+                    additional: {
+                        motivation: document.getElementById('motivation').value,
+                        strengths: document.getElementById('strengths').value,
+                        challenges: document.getElementById('challenges').value,
+                        additionalInfo: document.getElementById('additionalInfo').value
+                    }
+                };
+                
+                return formData;
+            }
+            
+            // Fonction pour obtenir les valeurs des tags
+            function getTagsValues(fieldId) {
+                const container = document.getElementById(`${fieldId}-container`);
+                const tags = container.querySelectorAll('.tag');
+                return Array.from(tags).map(tag => tag.getAttribute('data-value'));
+            }
+            
+            // Fonction pour sauvegarder les données du formulaire
+            function saveFormData() {
+                const formData = getFormData();
+                
+                // Récupérer les données existantes ou créer un nouvel objet
+                let savedData = localStorage.getItem('candidateData');
+                let candidateData = savedData ? JSON.parse(savedData) : {};
+                
+                // Mettre à jour les données du questionnaire
+                candidateData.questionnaire = formData;
+                
+                // Sauvegarder les données mises à jour
+                localStorage.setItem('candidateData', JSON.stringify(candidateData));
+            }
+            
+            // Fonction pour soumettre le formulaire
+            function submitForm() {
+                // Sauvegarder les données finales
+                saveFormData();
+                
+                // Récupérer toutes les données
+                let candidateData = JSON.parse(localStorage.getItem('candidateData'));
+                
+                // Marquer le questionnaire comme complété
+                candidateData.questionnaireCompleted = true;
+                candidateData.timestamp = new Date().toISOString();
+                
+                // Sauvegarder l'état final
+                localStorage.setItem('candidateData', JSON.stringify(candidateData));
+                
+                // Rediriger vers la page de confirmation
+                window.location.href = 'candidate-confirmation.html';
             }
         });
-
-        function prefillFormWithCVData(data) {
-            if (!data) return;
-
-            if (data.personalInfo) {
-                setValue('fullName', data.personalInfo.name);
-                setValue('email', data.personalInfo.email);
-                setValue('phone', data.personalInfo.phone);
-                setValue('address', data.personalInfo.location);
-            }
-
-            if (data.skills && data.skills.length > 0) {
-                const skillsContainer = document.getElementById('skillsContainer');
-                skillsContainer.innerHTML = '';
-                data.skills.forEach(skill => addSkillTag(skill));
-            }
-
-            if (data.experience) {
-                setValue('company', data.experience.company);
-                setValue('jobDuration', data.experience.duration);
-            }
-
-            if (data.education) {
-                setValue('degree', data.education.degree);
-                setValue('school', data.education.school);
-                setValue('graduationYear', data.education.year);
-            }
-
-            createDataSummarySection(data);
-        }
-
-        function setValue(elementId, value) {
-            const element = document.getElementById(elementId);
-            if (element && value) {
-                element.value = value;
-            }
-        }
-
-        function addSkillTag(skill) {
-            const skillsContainer = document.getElementById('skillsContainer');
-            if (!skillsContainer) return;
-
-            const existingTags = skillsContainer.querySelectorAll('.tag');
-            for (let i = 0; i < existingTags.length; i++) {
-                if (existingTags[i].textContent.trim() === skill) {
-                    return;
-                }
-            }
-
-            const tag = document.createElement('div');
-            tag.className = 'tag';
-            tag.textContent = skill;
-
-            const closeBtn = document.createElement('span');
-            closeBtn.className = 'tag-close';
-            closeBtn.textContent = '×';
-            closeBtn.onclick = () => tag.remove();
-
-            tag.appendChild(closeBtn);
-            skillsContainer.appendChild(tag);
-        }
-
-        function createDataSummarySection(data) {
-            let summarySection = document.getElementById('cvDataSummarySection');
-            if (!summarySection) {
-                summarySection = document.createElement('div');
-                summarySection.id = 'cvDataSummarySection';
-                summarySection.className = 'cv-data-summary';
-
-                const title = document.createElement('h3');
-                title.textContent = 'Données extraites de votre CV';
-                summarySection.appendChild(title);
-
-                const description = document.createElement('p');
-                description.textContent = 'Veuillez vérifier et compléter les informations extraites.';
-                summarySection.appendChild(description);
-
-                const container = document.querySelector('.container');
-                container.appendChild(summarySection);
-            }
-
-            while (summarySection.children.length > 2) {
-                summarySection.removeChild(summarySection.lastChild);
-            }
-
-            const dataList = document.createElement('div');
-            dataList.className = 'cv-data-list';
-
-            if (data.personalInfo) {
-                const personalInfoSection = createDataSection('Informations personnelles');
-                addDataItem(personalInfoSection, 'Nom', data.personalInfo.name);
-                addDataItem(personalInfoSection, 'Email', data.personalInfo.email);
-                addDataItem(personalInfoSection, 'Téléphone', data.personalInfo.phone);
-                addDataItem(personalInfoSection, 'Adresse', data.personalInfo.location);
-                dataList.appendChild(personalInfoSection);
-            }
-
-            summarySection.appendChild(dataList);
-        }
-
-        function createDataSection(title) {
-            const section = document.createElement('div');
-            section.className = 'cv-data-section';
-
-            const sectionTitle = document.createElement('h4');
-            sectionTitle.textContent = title;
-            section.appendChild(sectionTitle);
-
-            return section;
-        }
-
-        function addDataItem(section, label, value) {
-            const item = document.createElement('div');
-            item.className = 'cv-data-item';
-
-            const itemLabel = document.createElement('span');
-            itemLabel.textContent = label + ': ';
-            const itemValue = document.createElement('span');
-            itemValue.textContent = value;
-
-            item.appendChild(itemLabel);
-            item.appendChild(itemValue);
-            section.appendChild(item);
-        }
     </script>
 </body>
 </html>
