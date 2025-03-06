@@ -6,706 +6,6 @@
     <title>Télécharger votre CV - Nexten</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Styles principaux modernisés */
-        .upload-section {
-            padding: 4rem 0;
-            background-color: var(--gray);
-        }
-        
-        .upload-container {
-            background-color: white;
-            padding: 2.5rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            max-width: 800px;
-            margin: 0 auto;
-            transition: all 0.4s ease;
-        }
-        
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1rem;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -10px;
-            width: 40%;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 10px;
-        }
-        
-        .section-description {
-            color: var(--text);
-            font-size: 1.1rem;
-            margin-bottom: 2.5rem;
-        }
-        
-        /* Nouvelle barre d'étapes modernisée */
-        .stepper {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 3rem;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .stepper::before {
-            content: '';
-            position: absolute;
-            height: 3px;
-            background-color: #e2e8f0;
-            width: 100%;
-            top: 25px;
-            z-index: -1;
-        }
-        
-        .stepper::after {
-            content: '';
-            position: absolute;
-            height: 3px;
-            background-color: var(--primary);
-            width: 0%;
-            top: 25px;
-            z-index: -1;
-            transition: width 0.5s ease;
-        }
-        
-        .stepper.step1::after {
-            width: 0%;
-        }
-        
-        .stepper.step2::after {
-            width: 50%;
-        }
-        
-        .stepper.step3::after {
-            width: 100%;
-        }
-        
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .step-circle {
-            width: 50px;
-            height: 50px;
-            background-color: white;
-            border: 3px solid #e2e8f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 12px;
-            font-weight: 600;
-            color: var(--text);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .step-text {
-            font-weight: 500;
-            color: var(--text);
-            transition: all 0.3s ease;
-        }
-        
-        .step.active .step-circle {
-            border-color: var(--primary);
-            color: white;
-            box-shadow: 0 0 0 5px rgba(108, 99, 255, 0.2);
-        }
-        
-        .step.active .step-circle::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: var(--primary);
-            z-index: -1;
-            animation: circleAnim 0.5s forwards;
-        }
-        
-        .step.active .step-text {
-            color: var(--primary);
-            font-weight: 600;
-        }
-        
-        .step.completed .step-circle {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-        
-        .step.completed .step-circle i {
-            animation: fadeIn 0.5s forwards;
-        }
-        
-        /* Cards d'options modernisées */
-        .option-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .option-card {
-            background-color: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
-            padding: 2rem;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .option-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 0;
-            background-color: var(--primary);
-            transition: height 0.4s ease;
-        }
-        
-        .option-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .option-card:hover::before {
-            height: 100%;
-        }
-        
-        .option-card.selected {
-            border-color: var(--primary);
-            background-color: rgba(108, 99, 255, 0.05);
-        }
-        
-        .option-icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-            transition: transform 0.3s ease;
-        }
-        
-        .option-card:hover .option-icon {
-            transform: scale(1.1);
-        }
-        
-        .option-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.8rem;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .option-description {
-            color: var(--text);
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-        
-        .option-btn {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.9rem 1.5rem;
-            border-radius: 30px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
-            align-self: flex-start;
-        }
-        
-        .option-btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(108, 99, 255, 0.4);
-        }
-        
-        /* Zone de drag & drop modernisée */
-        .upload-content {
-            display: none;
-            animation: fadeIn 0.5s forwards;
-        }
-        
-        .upload-area {
-            border: 2px dashed #e2e8f0;
-            border-radius: 20px;
-            padding: 3rem;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            background-color: #f8fafc;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .upload-area:hover {
-            border-color: var(--primary);
-            background-color: rgba(108, 99, 255, 0.05);
-        }
-        
-        .upload-area.highlight {
-            border-color: var(--primary);
-            background-color: rgba(108, 99, 255, 0.1);
-            transform: scale(1.02);
-        }
-        
-        .upload-area.dragging {
-            border-color: var(--primary);
-            background-color: rgba(108, 99, 255, 0.15);
-            transform: scale(1.03);
-        }
-        
-        .upload-icon {
-            font-size: 3.5rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-        
-        .upload-area:hover .upload-icon {
-            transform: translateY(-10px);
-        }
-        
-        .upload-area h3 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-        
-        .upload-area p {
-            color: var(--text);
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-        
-        .file-formats {
-            color: var(--text);
-            font-size: 0.9rem;
-            opacity: 0.7;
-            margin-top: 1rem;
-        }
-        
-        .browse-text {
-            color: var(--primary);
-            text-decoration: underline;
-            font-weight: 500;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        
-        .browse-text:hover {
-            color: var(--primary-dark);
-        }
-        
-        .hide-input {
-            display: none;
-        }
-        
-        /* Bouton "Faire plus tard" modernisé */
-        .do-it-later-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            background-color: #f8fafc;
-            color: var(--text);
-            border: 1px solid #e2e8f0;
-            padding: 1rem;
-            border-radius: var(--radius);
-            margin-top: 0.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-        
-        .do-it-later-btn:hover {
-            background-color: #e2e8f0;
-            color: var(--dark);
-            transform: translateY(-2px);
-        }
-        
-        .do-it-later-btn i {
-            margin-right: 0.5rem;
-        }
-        
-        /* Affichage des informations de fichier modernisé */
-        .file-info {
-            display: none;
-            background-color: #f8fafc;
-            padding: 1.2rem;
-            border-radius: var(--radius);
-            margin-top: 1rem;
-            border-left: 3px solid var(--primary);
-            animation: slideIn 0.5s forwards;
-        }
-        
-        .file-name {
-            font-weight: 600;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-        }
-        
-        .file-name i {
-            color: var(--primary);
-            margin-right: 0.7rem;
-        }
-        
-        .file-size {
-            color: var(--text);
-            font-size: 0.9rem;
-            margin-top: 0.3rem;
-            margin-left: 1.8rem;
-        }
-        
-        /* Barre de progression modernisée */
-        .progress-container {
-            margin-top: 1.5rem;
-            display: none;
-            animation: fadeIn 0.5s forwards;
-        }
-        
-        .progress-bar {
-            height: 10px;
-            background-color: #e2e8f0;
-            border-radius: 20px;
-            overflow: hidden;
-            margin-bottom: 0.7rem;
-            position: relative;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            width: 0%;
-            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 20px;
-            position: relative;
-        }
-        
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
-            animation: shine 1.5s infinite;
-            border-radius: 20px;
-        }
-        
-        .progress-text {
-            font-size: 0.95rem;
-            color: var(--text);
-            text-align: right;
-            font-weight: 500;
-        }
-        
-        /* Section d'analyse du CV */
-        .parsing-container {
-            display: none;
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid #e2e8f0;
-            animation: fadeIn 0.5s forwards;
-        }
-        
-        .parsing-container h3 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.8rem;
-        }
-        
-        .parsed-data {
-            background-color: #f8fafc;
-            border-radius: var(--radius);
-            padding: 1.8rem;
-            margin-top: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            border-left: 3px solid var(--primary);
-        }
-        
-        .parsed-section {
-            margin-bottom: 2rem;
-            animation: slideInRight 0.5s forwards;
-        }
-        
-        .parsed-section:last-child {
-            margin-bottom: 0;
-        }
-        
-        .parsed-section h4 {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--dark);
-            position: relative;
-            display: inline-block;
-            padding-bottom: 5px;
-        }
-        
-        .parsed-section h4::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-            border-radius: 10px;
-        }
-        
-        .parsed-section:hover h4::after {
-            transform: scaleX(1);
-        }
-        
-        .info-item {
-            display: flex;
-            margin-bottom: 0.8rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed #e2e8f0;
-        }
-        
-        .info-item:last-child {
-            border-bottom: none;
-        }
-        
-        .info-label {
-            font-weight: 500;
-            width: 140px;
-            color: var(--primary-dark);
-        }
-        
-        .info-value {
-            color: var(--dark);
-        }
-        
-        .skill-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .skill-tag {
-            display: inline-block;
-            background-color: rgba(108, 99, 255, 0.1);
-            color: var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        
-        .skill-tag:hover {
-            background-color: var(--primary);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
-        }
-        
-        /* Boutons d'action modernisés */
-        .action-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 2.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        
-        .action-btn {
-            padding: 0.9rem 1.8rem;
-            border-radius: 30px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .btn-edit {
-            background-color: white;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-            flex: 1;
-            min-width: 180px;
-        }
-        
-        .btn-edit:hover {
-            background-color: rgba(108, 99, 255, 0.1);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.2);
-        }
-        
-        .btn-edit i {
-            margin-right: 0.5rem;
-        }
-        
-        .btn-continue {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            flex: 2;
-            min-width: 220px;
-            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
-        }
-        
-        .btn-continue:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(108, 99, 255, 0.4);
-        }
-        
-        .btn-continue i {
-            margin-left: 0.5rem;
-        }
-        
-        /* Animations améliorées */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes circleAnim {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
-        
-        @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        /* Responsive design */
-        @media (max-width: 768px) {
-            .upload-section {
-                padding: 3rem 0;
-            }
-            
-            .upload-container {
-                padding: 1.5rem;
-            }
-            
-            .stepper {
-                margin-bottom: 2rem;
-            }
-            
-            .step-circle {
-                width: 40px;
-                height: 40px;
-                font-size: 0.9rem;
-            }
-            
-            .step-text {
-                font-size: 0.9rem;
-            }
-            
-            .option-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .upload-area {
-                padding: 2rem;
-            }
-            
-            .upload-icon {
-                font-size: 2.5rem;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .action-btn {
-                width: 100%;
-                margin-bottom: 1rem;
-            }
-        }
-        
-        /* Animation d'arrière-plan subtile */
-        .upload-container {
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .upload-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(108, 99, 255, 0.03) 0%,
-                rgba(0, 194, 203, 0.03) 25%,
-                rgba(108, 99, 255, 0.03) 50%,
-                rgba(0, 194, 203, 0.03) 75%,
-                rgba(108, 99, 255, 0.03) 100%
-            );
-            transform: rotate(30deg);
-            z-index: 0;
-        }
-        
-        .upload-container > * {
-            position: relative;
-            z-index: 1;
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -716,18 +16,22 @@
                     <li><a href="index.html">Accueil</a></li>
                     <li><a href="post-job.html">Publier une offre</a></li>
                     <li><a href="candidate-upload.html" class="active">Espace candidat</a></li>
+                    <li><a href="recruiter-dashboard.html">Espace recruteur</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <section class="upload-section">
+    <section style="padding: 4rem 0; background-color: var(--gray);">
         <div class="container">
-            <h2 class="section-title">Comment souhaitez-vous procéder ?</h2>
-            <p class="section-description">Vous pouvez télécharger votre CV maintenant ou commencer directement par le questionnaire de préférences.</p>
+            <h2 style="font-size: 2rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem; position: relative; display: inline-block;">
+                Comment souhaitez-vous procéder ?
+                <span style="content: ''; position: absolute; left: 0; bottom: -10px; width: 40%; height: 3px; background: var(--primary); border-radius: 10px; display: block;"></span>
+            </h2>
+            <p style="color: var(--text); font-size: 1.1rem; margin-bottom: 2.5rem;">Vous pouvez télécharger votre CV maintenant ou commencer directement par le questionnaire de préférences.</p>
             
-            <div class="upload-container">
-                <div class="stepper step1">
+            <div class="form-card">
+                <div class="progress-steps">
                     <div class="step active">
                         <div class="step-circle">1</div>
                         <div class="step-text">Upload CV</div>
@@ -742,131 +46,148 @@
                     </div>
                 </div>
                 
-                <div class="option-cards">
-                    <div class="option-card" id="uploadNowOption">
-                        <div class="option-icon">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="card fade-in" id="uploadNowOption" style="height: 100%; display: flex; flex-direction: column;">
+                        <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">
                             <i class="fas fa-file-upload"></i>
                         </div>
-                        <h3 class="option-title">Télécharger mon CV maintenant</h3>
-                        <p class="option-description">Notre IA analysera votre CV pour extraire automatiquement vos compétences et expériences.</p>
-                        <button class="option-btn" id="uploadNowBtn">
+                        <h3 class="card-title">Télécharger mon CV maintenant</h3>
+                        <p class="card-text">Notre IA analysera votre CV pour extraire automatiquement vos compétences et expériences.</p>
+                        <button class="btn btn-primary" id="uploadNowBtn" style="margin-top: auto;">
                             Télécharger mon CV
                         </button>
                     </div>
                     
-                    <div class="option-card" id="uploadLaterOption">
-                        <div class="option-icon">
+                    <div class="card fade-in" id="uploadLaterOption" style="height: 100%; display: flex; flex-direction: column;">
+                        <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">
                             <i class="fas fa-tasks"></i>
                         </div>
-                        <h3 class="option-title">Commencer par le questionnaire</h3>
-                        <p class="option-description">Vous pourrez télécharger votre CV plus tard. Le questionnaire nous aide déjà à cibler vos préférences.</p>
-                        <a href="candidate-questionnaire.html" class="option-btn">
+                        <h3 class="card-title">Commencer par le questionnaire</h3>
+                        <p class="card-text">Vous pourrez télécharger votre CV plus tard. Le questionnaire nous aide déjà à cibler vos préférences.</p>
+                        <a href="candidate-questionnaire.html" class="btn btn-primary" style="margin-top: auto;">
                             Aller au questionnaire
                         </a>
                     </div>
                 </div>
                 
                 <!-- Contenu pour l'option Télécharger maintenant -->
-                <div class="upload-content" id="uploadContent">
-                    <div class="upload-area" id="uploadArea">
-                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                        <h3>Glissez votre CV ici</h3>
-                        <p>ou <span class="browse-text">cliquez pour parcourir</span></p>
-                        <p class="file-formats">Formats acceptés : PDF, DOCX, DOC</p>
-                        <input type="file" id="fileInput" class="hide-input" accept=".pdf,.docx,.doc">
+                <div style="display: none;" id="uploadContent">
+                    <div class="file-upload" id="uploadArea">
+                        <label class="file-upload-label">
+                            <i class="fas fa-cloud-upload-alt" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 1.5rem;"></i>
+                            <h3 style="font-size: 1.4rem; font-weight: 600; color: var(--dark); margin-bottom: 1rem;">Glissez votre CV ici</h3>
+                            <p style="color: var(--text); margin-bottom: 0.5rem; font-size: 1.1rem;">ou <span style="color: var(--primary); text-decoration: underline; font-weight: 500; cursor: pointer;">cliquez pour parcourir</span></p>
+                            <span class="file-upload-text">Formats acceptés : PDF, DOCX, DOC</span>
+                        </label>
+                        <input type="file" id="fileInput" class="file-upload-input" accept=".pdf,.docx,.doc">
                     </div>
                     
-                    <a href="candidate-questionnaire.html" class="do-it-later-btn">
+                    <a href="candidate-questionnaire.html" class="btn btn-secondary" style="width: 100%; margin-top: 0.5rem; margin-bottom: 1.5rem;">
                         <i class="fas fa-arrow-right"></i> Faire plus tard et passer au questionnaire
                     </a>
                     
-                    <div class="file-info" id="fileInfo">
-                        <div class="file-name"><i class="fas fa-file-alt"></i> <span id="fileName">CV_John_Doe.pdf</span></div>
-                        <div class="file-size" id="fileSize">720 KB</div>
+                    <div style="display: none; background-color: var(--light); padding: 1.2rem; border-radius: var(--radius); margin-top: 1rem; border-left: 3px solid var(--primary);" id="fileInfo">
+                        <div style="font-weight: 600; color: var(--dark); display: flex; align-items: center;">
+                            <i class="fas fa-file-alt" style="color: var(--primary); margin-right: 0.7rem;"></i> 
+                            <span id="fileName">CV_John_Doe.pdf</span>
+                        </div>
+                        <div style="color: var(--text); font-size: 0.9rem; margin-top: 0.3rem; margin-left: 1.8rem;" id="fileSize">720 KB</div>
                     </div>
                     
-                    <div class="progress-container" id="progressContainer">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill"></div>
+                    <div style="margin-top: 1.5rem; display: none;" id="progressContainer">
+                        <div style="height: 10px; background-color: var(--gray); border-radius: 20px; overflow: hidden; margin-bottom: 0.7rem; position: relative;">
+                            <div style="height: 100%; background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%); width: 0%; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 20px;" id="progressFill"></div>
                         </div>
-                        <div class="progress-text" id="progressText">0%</div>
+                        <div style="font-size: 0.95rem; color: var(--text); text-align: right; font-weight: 500;" id="progressText">0%</div>
                     </div>
                     
-                    <div class="parsing-container" id="parsingContainer">
-                        <h3>Informations extraites</h3>
-                        <p>Notre IA a analysé votre CV et identifié les informations suivantes :</p>
+                    <div style="display: none; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--gray);" id="parsingContainer">
+                        <h3 style="font-size: 1.4rem; font-weight: 600; color: var(--dark); margin-bottom: 0.8rem;">Informations extraites</h3>
+                        <p style="color: var(--text); margin-bottom: 1.5rem;">Notre IA a analysé votre CV et identifié les informations suivantes :</p>
                         
-                        <div class="parsed-data">
-                            <div class="parsed-section">
-                                <h4>Informations personnelles</h4>
-                                <div class="info-item">
-                                    <div class="info-label">Nom :</div>
-                                    <div class="info-value">John Doe</div>
+                        <div class="card" style="background-color: var(--light); border-left: 3px solid var(--primary);">
+                            <div style="margin-bottom: 2rem;" class="parsed-section">
+                                <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--dark); position: relative; display: inline-block; padding-bottom: 5px;">
+                                    Informations personnelles
+                                </h4>
+                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
+                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Nom :</div>
+                                    <div style="color: var(--dark);">John Doe</div>
                                 </div>
-                                <div class="info-item">
-                                    <div class="info-label">Email :</div>
-                                    <div class="info-value">john.doe@example.com</div>
+                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
+                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Email :</div>
+                                    <div style="color: var(--dark);">john.doe@example.com</div>
                                 </div>
-                                <div class="info-item">
-                                    <div class="info-label">Téléphone :</div>
-                                    <div class="info-value">06 12 34 56 78</div>
+                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
+                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Téléphone :</div>
+                                    <div style="color: var(--dark);">06 12 34 56 78</div>
                                 </div>
-                                <div class="info-item">
-                                    <div class="info-label">Localisation :</div>
-                                    <div class="info-value">Paris, France</div>
+                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0;">
+                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Localisation :</div>
+                                    <div style="color: var(--dark);">Paris, France</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 2rem;" class="parsed-section">
+                                <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--dark); position: relative; display: inline-block; padding-bottom: 5px;">
+                                    Compétences
+                                </h4>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;">
+                                    <span class="badge badge-secondary">JavaScript</span>
+                                    <span class="badge badge-secondary">React</span>
+                                    <span class="badge badge-secondary">Node.js</span>
+                                    <span class="badge badge-secondary">HTML5</span>
+                                    <span class="badge badge-secondary">CSS3</span>
+                                    <span class="badge badge-secondary">Git</span>
+                                    <span class="badge badge-secondary">TypeScript</span>
+                                    <span class="badge badge-secondary">MongoDB</span>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 2rem;" class="parsed-section">
+                                <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--dark); position: relative; display: inline-block; padding-bottom: 5px;">
+                                    Expérience
+                                </h4>
+                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
+                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Titre :</div>
+                                    <div style="color: var(--dark);">Développeur Frontend</div>
+                                </div>
+                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
+                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Entreprise :</div>
+                                    <div style="color: var(--dark);">TechSolutions</div>
+                                </div>
+                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0;">
+                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Durée :</div>
+                                    <div style="color: var(--dark);">Jan 2020 - Présent (3 ans)</div>
                                 </div>
                             </div>
                             
                             <div class="parsed-section">
-                                <h4>Compétences</h4>
-                                <div class="skill-tags">
-                                    <span class="skill-tag">JavaScript</span>
-                                    <span class="skill-tag">React</span>
-                                    <span class="skill-tag">Node.js</span>
-                                    <span class="skill-tag">HTML5</span>
-                                    <span class="skill-tag">CSS3</span>
-                                    <span class="skill-tag">Git</span>
-                                    <span class="skill-tag">TypeScript</span>
-                                    <span class="skill-tag">MongoDB</span>
+                                <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--dark); position: relative; display: inline-block; padding-bottom: 5px;">
+                                    Formation
+                                </h4>
+                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
+                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Diplôme :</div>
+                                    <div style="color: var(--dark);">Master en Informatique</div>
                                 </div>
-                            </div>
-                            
-                            <div class="parsed-section">
-                                <h4>Expérience</h4>
-                                <div class="info-item">
-                                    <div class="info-label">Titre :</div>
-                                    <div class="info-value">Développeur Frontend</div>
+                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0; border-bottom: 1px dashed var(--gray);">
+                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">École :</div>
+                                    <div style="color: var(--dark);">Université de Paris</div>
                                 </div>
-                                <div class="info-item">
-                                    <div class="info-label">Entreprise :</div>
-                                    <div class="info-value">TechSolutions</div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-label">Durée :</div>
-                                    <div class="info-value">Jan 2020 - Présent (3 ans)</div>
-                                </div>
-                            </div>
-                            
-                            <div class="parsed-section">
-                                <h4>Formation</h4>
-                                <div class="info-item">
-                                    <div class="info-label">Diplôme :</div>
-                                    <div class="info-value">Master en Informatique</div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-label">École :</div>
-                                    <div class="info-value">Université de Paris</div>
-                                </div>
-                                <div class="info-item">
-                                    <div class="info-label">Année :</div>
-                                    <div class="info-value">2019</div>
+                                <div style="display: flex; margin-bottom: 0.8rem; padding: 0.5rem 0;">
+                                    <div style="font-weight: 500; width: 140px; color: var(--primary-dark);">Année :</div>
+                                    <div style="color: var(--dark);">2019</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="action-buttons">
-                            <button class="action-btn btn-edit"><i class="fas fa-edit"></i> Modifier les informations</button>
-                            <button class="action-btn btn-continue" id="continueBtn">Compléter le questionnaire <i class="fas fa-arrow-right"></i></button>
+                        <div style="display: flex; justify-content: space-between; margin-top: 2.5rem; flex-wrap: wrap; gap: 1rem;">
+                            <button class="btn btn-secondary" style="flex: 1; min-width: 180px;">
+                                <i class="fas fa-edit" style="margin-right: 0.5rem;"></i> Modifier les informations
+                            </button>
+                            <button class="btn btn-primary" id="continueBtn" style="flex: 2; min-width: 220px;">
+                                Compléter le questionnaire <i class="fas fa-arrow-right" style="margin-left: 0.5rem;"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -898,12 +219,13 @@
             const parsingContainer = document.getElementById('parsingContainer');
             const continueBtn = document.getElementById('continueBtn');
             const steps = document.querySelectorAll('.step');
-            const stepper = document.querySelector('.stepper');
             
-            // Option selection avec animation améliorée
+            // Option selection
             uploadNowBtn.addEventListener('click', function() {
-                uploadNowOption.classList.add('selected');
-                uploadLaterOption.classList.remove('selected');
+                uploadNowOption.style.borderColor = 'var(--primary)';
+                uploadNowOption.style.backgroundColor = 'rgba(108, 99, 255, 0.05)';
+                uploadLaterOption.style.borderColor = 'transparent';
+                uploadLaterOption.style.backgroundColor = 'white';
                 
                 // Afficher progressivement le contenu d'upload
                 uploadContent.style.display = 'block';
@@ -911,7 +233,7 @@
                 
                 setTimeout(() => {
                     uploadContent.style.opacity = '1';
-                    // Scroll to upload content avec animation douce
+                    // Scroll to upload content
                     uploadContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 50);
             });
@@ -921,12 +243,12 @@
                 fileInput.click();
             });
             
-            // Gestion de la sélection de fichier améliorée
+            // Gestion de la sélection de fichier
             fileInput.addEventListener('change', function(e) {
                 if (e.target.files.length > 0) {
                     const file = e.target.files[0];
                     
-                    // Afficher les informations du fichier avec animation
+                    // Afficher les informations du fichier
                     document.getElementById('fileName').textContent = file.name;
                     fileSize.textContent = formatFileSize(file.size);
                     fileInfo.style.display = 'block';
@@ -956,11 +278,15 @@
             });
             
             function highlight() {
-                uploadArea.classList.add('dragging');
+                uploadArea.style.borderColor = 'var(--primary)';
+                uploadArea.style.backgroundColor = 'rgba(108, 99, 255, 0.1)';
+                uploadArea.style.transform = 'scale(1.02)';
             }
             
             function unhighlight() {
-                uploadArea.classList.remove('dragging');
+                uploadArea.style.borderColor = '#e2e8f0';
+                uploadArea.style.backgroundColor = 'var(--light)';
+                uploadArea.style.transform = 'scale(1)';
             }
             
             uploadArea.addEventListener('drop', handleDrop, false);
@@ -990,7 +316,7 @@
                 else return (bytes / 1048576).toFixed(1) + ' MB';
             }
             
-            // Simulation améliorée du processus d'upload
+            // Simulation du processus d'upload
             function simulateUploadWithAnimation() {
                 let progress = 0;
                 const interval = setInterval(() => {
@@ -1012,8 +338,6 @@
                         clearInterval(interval);
                         
                         // Passer à l'étape 2 dans le stepper
-                        stepper.classList.remove('step1');
-                        stepper.classList.add('step2');
                         steps[0].classList.remove('active');
                         steps[0].classList.add('completed');
                         steps[0].querySelector('.step-circle').innerHTML = '<i class="fas fa-check"></i>';
@@ -1023,10 +347,10 @@
                             // Cacher la progression et afficher les résultats d'analyse
                             progressContainer.style.display = 'none';
                             
-                            // Afficher les résultats d'analyse avec délai pour animation
+                            // Afficher les résultats d'analyse
                             parsingContainer.style.display = 'block';
                             
-                            // Animer chaque section d'analyse séquentiellement
+                            // Animer chaque section
                             const sections = document.querySelectorAll('.parsed-section');
                             sections.forEach((section, index) => {
                                 section.style.opacity = '0';
@@ -1037,7 +361,7 @@
                                 }, 200 * index);
                             });
                             
-                            // Scroll vers les résultats d'analyse avec animation
+                            // Scroll vers les résultats d'analyse
                             setTimeout(() => {
                                 parsingContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
                             }, 300);
@@ -1049,8 +373,6 @@
             // Bouton pour continuer vers la page de questionnaire
             continueBtn.addEventListener('click', function() {
                 // Animation de l'étape 3 avant de rediriger
-                stepper.classList.remove('step2');
-                stepper.classList.add('step3');
                 steps[1].classList.remove('active');
                 steps[1].classList.add('completed');
                 steps[1].querySelector('.step-circle').innerHTML = '<i class="fas fa-check"></i>';
@@ -1059,16 +381,6 @@
                 setTimeout(() => {
                     window.location.href = 'candidate-questionnaire.html';
                 }, 800);
-            });
-            
-            // Animation au chargement de la page
-            document.querySelectorAll('.option-card').forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, 200 * index);
             });
         });
     </script>

@@ -6,61 +6,53 @@
     <title>Tableau de bord Recruteur - Nexten</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Styles principaux */
+        /* Styles spécifiques à cette page */
         .dashboard-section {
             padding: 2rem 0;
             background-color: var(--gray);
             min-height: calc(100vh - 130px);
         }
         
-        .dashboard-container {
-            background-color: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            overflow: hidden;
-            margin-bottom: 2rem;
-        }
-        
         /* Header de l'entreprise */
         .company-header {
-            background-color: #f1d359;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             padding: 2rem;
             display: grid;
             grid-template-columns: auto 1fr;
             gap: 2rem;
             align-items: center;
+            color: white;
         }
         
         .company-logo {
             width: 120px;
             height: 120px;
             background-color: rgba(255, 255, 255, 0.3);
-            border: 2px solid rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2rem;
-            color: rgba(0, 0, 0, 0.5);
+            color: white;
         }
         
         .company-info h2 {
             font-size: 1.8rem;
             margin-bottom: 0.3rem;
-            color: #333;
+            color: white;
         }
         
         .recruiter-name {
             font-size: 1.1rem;
             margin-bottom: 0.8rem;
-            color: #555;
+            color: rgba(255, 255, 255, 0.9);
         }
         
         .company-stats {
             font-size: 1rem;
-            color: #444;
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
         }
         
@@ -70,32 +62,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .new-job-btn {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 30px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .new-job-btn:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(108, 99, 255, 0.4);
-        }
-        
-        .new-job-btn i {
-            margin-right: 0.5rem;
+            border-bottom: 1px solid var(--gray);
         }
         
         .view-options {
@@ -112,7 +79,7 @@
             color: var(--text);
             background-color: white;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition);
         }
         
         .view-option:hover, .view-option.active {
@@ -183,16 +150,16 @@
             background-color: white;
             border-radius: var(--radius);
             box-shadow: var(--shadow-sm);
-            border: 1px solid #eee;
+            border: 1px solid var(--gray);
             padding: 1.5rem;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             position: relative;
         }
         
         .candidate-card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-md);
-            border-color: var(--primary);
+            border-left: 4px solid var(--primary);
         }
         
         .candidate-name {
@@ -217,17 +184,20 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
-            background-color: rgba(108, 99, 255, 0.1);
-            color: var(--primary);
             padding: 0.3rem 0.7rem;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
         }
         
+        .candidate-match {
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+        }
+        
         .candidate-match.high {
             background-color: rgba(16, 185, 129, 0.1);
-            color: #10b981;
+            color: var(--success);
         }
         
         .candidate-match.medium {
@@ -243,7 +213,7 @@
         }
         
         .candidate-skill {
-            background-color: #f1f5f9;
+            background-color: var(--gray);
             color: var(--text);
             padding: 0.3rem 0.6rem;
             border-radius: 15px;
@@ -256,7 +226,7 @@
             align-items: center;
             margin-top: 1rem;
             padding-top: 1rem;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--gray);
         }
         
         .candidate-location {
@@ -268,7 +238,7 @@
         
         .candidate-location i {
             margin-right: 0.3rem;
-            color: #888;
+            color: var(--text);
         }
         
         .candidate-action {
@@ -286,9 +256,9 @@
             justify-content: center;
             color: var(--primary);
             background-color: white;
-            border: 1px solid #eee;
+            border: 1px solid var(--gray);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition);
         }
         
         .candidate-action-btn:hover {
@@ -586,6 +556,7 @@
                     <li><a href="index.html">Accueil</a></li>
                     <li><a href="post-job.html">Publier une offre</a></li>
                     <li><a href="candidate-upload.html">Espace candidat</a></li>
+                    <li><a href="recruiter-dashboard.html" class="active">Espace recruteur</a></li>
                 </ul>
             </nav>
         </div>
@@ -593,7 +564,7 @@
 
     <section class="dashboard-section">
         <div class="container">
-            <div class="dashboard-container">
+            <div class="card" style="overflow: hidden; margin-bottom: 2rem;">
                 <!-- En-tête de l'entreprise -->
                 <div class="company-header">
                     <div class="company-logo">
@@ -611,9 +582,9 @@
                 
                 <!-- Section de contrôle -->
                 <div class="control-section">
-                    <button class="new-job-btn">
-                        <i class="fas fa-plus-circle"></i> Création d'un nouveau poste
-                    </button>
+                    <a href="recruiter-questionnaire.html" class="btn btn-primary">
+                        <i class="fas fa-plus-circle" style="margin-right: 0.5rem;"></i> Création d'un nouveau poste
+                    </a>
                     <div class="view-options">
                         <button class="view-option active" data-view="grid">
                             <i class="fas fa-th"></i> Cartes
@@ -638,15 +609,15 @@
                 <div id="selections" class="tab-content active">
                     <div class="candidates-grid">
                         <!-- Candidat 1 -->
-                        <div class="candidate-card">
+                        <div class="candidate-card fade-in">
                             <div class="candidate-match high">92% match</div>
                             <div class="candidate-name">Thomas Martin</div>
                             <div class="candidate-title">Développeur Frontend Senior</div>
                             <div class="candidate-skills">
-                                <span class="candidate-skill">JavaScript</span>
-                                <span class="candidate-skill">React</span>
-                                <span class="candidate-skill">TypeScript</span>
-                                <span class="candidate-skill">CSS</span>
+                                <span class="badge badge-secondary">JavaScript</span>
+                                <span class="badge badge-secondary">React</span>
+                                <span class="badge badge-secondary">TypeScript</span>
+                                <span class="badge badge-secondary">CSS</span>
                             </div>
                             <div class="candidate-footer">
                                 <div class="candidate-location">
@@ -664,15 +635,15 @@
                         </div>
                         
                         <!-- Candidat 2 -->
-                        <div class="candidate-card">
+                        <div class="candidate-card fade-in">
                             <div class="candidate-match high">89% match</div>
                             <div class="candidate-name">Sophie Dubois</div>
                             <div class="candidate-title">UX/UI Designer</div>
                             <div class="candidate-skills">
-                                <span class="candidate-skill">Figma</span>
-                                <span class="candidate-skill">Adobe XD</span>
-                                <span class="candidate-skill">Sketch</span>
-                                <span class="candidate-skill">Wireframing</span>
+                                <span class="badge badge-secondary">Figma</span>
+                                <span class="badge badge-secondary">Adobe XD</span>
+                                <span class="badge badge-secondary">Sketch</span>
+                                <span class="badge badge-secondary">Wireframing</span>
                             </div>
                             <div class="candidate-footer">
                                 <div class="candidate-location">
@@ -690,15 +661,15 @@
                         </div>
                         
                         <!-- Candidat 3 -->
-                        <div class="candidate-card">
+                        <div class="candidate-card fade-in">
                             <div class="candidate-match medium">78% match</div>
                             <div class="candidate-name">Lucas Bernard</div>
                             <div class="candidate-title">Développeur Backend</div>
                             <div class="candidate-skills">
-                                <span class="candidate-skill">Python</span>
-                                <span class="candidate-skill">Django</span>
-                                <span class="candidate-skill">SQL</span>
-                                <span class="candidate-skill">API</span>
+                                <span class="badge badge-secondary">Python</span>
+                                <span class="badge badge-secondary">Django</span>
+                                <span class="badge badge-secondary">SQL</span>
+                                <span class="badge badge-secondary">API</span>
                             </div>
                             <div class="candidate-footer">
                                 <div class="candidate-location">
@@ -716,14 +687,14 @@
                         </div>
                         
                         <!-- Autres candidats -->
-                        <div class="candidate-card">
+                        <div class="candidate-card fade-in">
                             <div class="candidate-match high">85% match</div>
                             <div class="candidate-name">Emma Laurent</div>
                             <div class="candidate-title">Product Owner</div>
                             <div class="candidate-skills">
-                                <span class="candidate-skill">Agile</span>
-                                <span class="candidate-skill">Scrum</span>
-                                <span class="candidate-skill">Product Management</span>
+                                <span class="badge badge-secondary">Agile</span>
+                                <span class="badge badge-secondary">Scrum</span>
+                                <span class="badge badge-secondary">Product Management</span>
                             </div>
                             <div class="candidate-footer">
                                 <div class="candidate-location">
@@ -740,15 +711,15 @@
                             </div>
                         </div>
                         
-                        <div class="candidate-card">
+                        <div class="candidate-card fade-in">
                             <div class="candidate-match medium">75% match</div>
                             <div class="candidate-name">Nicolas Petit</div>
                             <div class="candidate-title">DevOps Engineer</div>
                             <div class="candidate-skills">
-                                <span class="candidate-skill">Docker</span>
-                                <span class="candidate-skill">Kubernetes</span>
-                                <span class="candidate-skill">CI/CD</span>
-                                <span class="candidate-skill">AWS</span>
+                                <span class="badge badge-secondary">Docker</span>
+                                <span class="badge badge-secondary">Kubernetes</span>
+                                <span class="badge badge-secondary">CI/CD</span>
+                                <span class="badge badge-secondary">AWS</span>
                             </div>
                             <div class="candidate-footer">
                                 <div class="candidate-location">
@@ -765,15 +736,15 @@
                             </div>
                         </div>
                         
-                        <div class="candidate-card">
+                        <div class="candidate-card fade-in">
                             <div class="candidate-match high">88% match</div>
                             <div class="candidate-name">Julie Moreau</div>
                             <div class="candidate-title">Data Scientist</div>
                             <div class="candidate-skills">
-                                <span class="candidate-skill">Python</span>
-                                <span class="candidate-skill">ML</span>
-                                <span class="candidate-skill">TensorFlow</span>
-                                <span class="candidate-skill">R</span>
+                                <span class="badge badge-secondary">Python</span>
+                                <span class="badge badge-secondary">ML</span>
+                                <span class="badge badge-secondary">TensorFlow</span>
+                                <span class="badge badge-secondary">R</span>
                             </div>
                             <div class="candidate-footer">
                                 <div class="candidate-location">
@@ -883,89 +854,93 @@
             </div>
             
             <!-- Section Planning -->
-            <div class="dashboard-container">
-                <div class="planning-section">
-                    <div class="planning-header">
-                        <h3 class="planning-title">Planning</h3>
-                        <p class="planning-description">
-                            L'objectif du planning est de faciliter l'organisation des rendez-vous. Le candidat pourra sélectionner les créneaux sur lesquels il est généralement disponible, recommandation au recruteur et matching précis. Possibilité d'organiser les visio et entretien en présentiel grâce au planning lié à la boîte mail.
-                        </p>
-                    </div>
-                    <div class="planning-integration">
-                        <div class="planning-integration-title">Intégration avec vos outils</div>
-                        <div class="planning-options">
-                            <div class="planning-option">
-                                <i class="fab fa-microsoft"></i> Outlook
-                            </div>
-                            <div class="planning-option">
-                                <i class="fab fa-google"></i> Gmail
-                            </div>
-                            <div class="planning-option">
-                                <i class="fas fa-calendar-alt"></i> iCalendar
-                            </div>
-                            <div class="planning-option">
-                                <i class="fas fa-plus"></i> Autres outils
-                            </div>
+            <div class="card fade-in" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h3 class="card-title">Planning</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        L'objectif du planning est de faciliter l'organisation des rendez-vous. Le candidat pourra sélectionner les créneaux sur lesquels il est généralement disponible, recommandation au recruteur et matching précis. Possibilité d'organiser les visio et entretien en présentiel grâce au planning lié à la boîte mail.
+                    </p>
+                    
+                    <div style="background-color: var(--light); padding: 1.2rem; border-radius: var(--radius); margin-top: 1.5rem;">
+                        <h4 style="font-weight: 600; color: var(--dark); margin-bottom: 1rem;">Intégration avec vos outils</h4>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button class="btn btn-secondary">
+                                <i class="fab fa-microsoft" style="margin-right: 0.5rem;"></i> Outlook
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fab fa-google" style="margin-right: 0.5rem;"></i> Gmail
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-calendar-alt" style="margin-right: 0.5rem;"></i> iCalendar
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-plus" style="margin-right: 0.5rem;"></i> Autres outils
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
             
             <!-- Section Messagerie -->
-            <div class="dashboard-container">
-                <div class="messaging-section">
-                    <h3 class="messaging-title">Messagerie</h3>
-                    <p class="planning-description">
+            <div class="card fade-in" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h3 class="card-title">Messagerie</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
                         Échangez avec les candidats et les membres de votre organisation en interne.
                     </p>
-                    <div class="messaging-content">
-                        <div class="messaging-contacts">
-                            <div class="messaging-contacts-header">
-                                <div class="messaging-contacts-title">Conversations</div>
-                                <div class="messaging-integration">
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem;">
+                        <div style="flex: 1; border: 1px solid var(--gray); border-radius: var(--radius); overflow: hidden; min-width: 300px;">
+                            <div style="padding: 1rem; background-color: var(--light); border-bottom: 1px solid var(--gray); display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-weight: 600; color: var(--dark);">Conversations</div>
+                                <div class="badge badge-ai">
                                     <i class="fas fa-plug"></i> API Outlook
                                 </div>
                             </div>
-                            <div class="contact-list">
-                                <div class="contact-item active">
-                                    <div class="contact-avatar">TM</div>
-                                    <div class="contact-info">
-                                        <div class="contact-name">Thomas Martin</div>
-                                        <div class="contact-preview">Je suis disponible pour un entretien...</div>
+                            <div style="max-height: 300px; overflow-y: auto;">
+                                <div style="padding: 0.8rem 1rem; border-bottom: 1px solid var(--gray); display: flex; align-items: center; cursor: pointer; background-color: rgba(108, 99, 255, 0.1); border-left: 3px solid var(--primary);">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--gray); display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 600; margin-right: 1rem;">TM</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 500; color: var(--dark); margin-bottom: 0.2rem;">Thomas Martin</div>
+                                        <div style="font-size: 0.85rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Je suis disponible pour un entretien...</div>
                                     </div>
-                                    <div class="contact-time">14:30</div>
+                                    <div style="font-size: 0.75rem; color: var(--text);">14:30</div>
                                 </div>
-                                <div class="contact-item">
-                                    <div class="contact-avatar">SD</div>
-                                    <div class="contact-info">
-                                        <div class="contact-name">Sophie Dubois</div>
-                                        <div class="contact-preview">Merci pour votre retour, j'aimerais...</div>
+                                <div style="padding: 0.8rem 1rem; border-bottom: 1px solid var(--gray); display: flex; align-items: center; cursor: pointer;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--gray); display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 600; margin-right: 1rem;">SD</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 500; color: var(--dark); margin-bottom: 0.2rem;">Sophie Dubois</div>
+                                        <div style="font-size: 0.85rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Merci pour votre retour, j'aimerais...</div>
                                     </div>
-                                    <div class="contact-time">Hier</div>
+                                    <div style="font-size: 0.75rem; color: var(--text);">Hier</div>
                                 </div>
-                                <div class="contact-item">
-                                    <div class="contact-avatar">LB</div>
-                                    <div class="contact-info">
-                                        <div class="contact-name">Lucas Bernard</div>
-                                        <div class="contact-preview">Je vous confirme ma disponibilité...</div>
+                                <div style="padding: 0.8rem 1rem; border-bottom: 1px solid var(--gray); display: flex; align-items: center; cursor: pointer;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--gray); display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 600; margin-right: 1rem;">LB</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 500; color: var(--dark); margin-bottom: 0.2rem;">Lucas Bernard</div>
+                                        <div style="font-size: 0.85rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Je vous confirme ma disponibilité...</div>
                                     </div>
-                                    <div class="contact-time">Lun</div>
+                                    <div style="font-size: 0.75rem; color: var(--text);">Lun</div>
                                 </div>
-                                <!-- Autres contacts -->
                             </div>
                         </div>
                         
-                        <div class="messaging-api-info">
-                            <p>La messagerie est connectée via <span>API Outlook</span> pour une communication fluide avec vos candidats et votre équipe.</p>
+                        <div style="background-color: var(--light); border-radius: var(--radius); padding: 1rem; font-size: 0.9rem; color: var(--text); line-height: 1.5; margin-top: 1rem; flex: 1; min-width: 300px;">
+                            <p>La messagerie est connectée via <span style="color: var(--primary); font-weight: 500;">API Outlook</span> pour une communication fluide avec vos candidats et votre équipe.</p>
                         </div>
                     </div>
                 </div>
             </div>
             
             <!-- Note informative -->
-            <div class="info-note">
-                <p>L'accès à un profil candidat se fait facilement en cliquant sur le <span>prénom et nom</span> du candidat. Une page s'affiche avec plusieurs informations le concernant.</p>
-                <p>Les noms de candidats en <span>bleu</span> sont des liens directs vers leurs pages de profil.</p>
+            <div class="card fade-in" style="background-color: var(--light); margin-bottom: 2rem;">
+                <div class="card-body">
+                    <p>L'accès à un profil candidat se fait facilement en cliquant sur le <span style="color: var(--primary); font-weight: 500;">prénom et nom</span> du candidat. Une page s'affiche avec plusieurs informations le concernant.</p>
+                    <p>Les noms de candidats en <span style="color: var(--primary); font-weight: 500;">bleu</span> sont des liens directs vers leurs pages de profil.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -1021,35 +996,6 @@
                     }
                 });
             });
-            
-            // Bouton de création de poste
-            const newJobBtn = document.querySelector('.new-job-btn');
-            
-            newJobBtn.addEventListener('click', function() {
-                window.location.href = 'recruiter-questionnaire.html';
-            });
-            
-            // Animation des éléments au chargement
-            function animateElements() {
-                const elements = [
-                    ...document.querySelectorAll('.candidate-card'),
-                    ...document.querySelectorAll('.dashboard-container')
-                ];
-                
-                elements.forEach((el, index) => {
-                    el.style.opacity = '0';
-                    el.style.transform = 'translateY(20px)';
-                    
-                    setTimeout(() => {
-                        el.style.opacity = '1';
-                        el.style.transform = 'translateY(0)';
-                        el.style.transition = 'all 0.5s ease';
-                    }, 100 * index);
-                });
-            }
-            
-            // Exécuter l'animation au chargement
-            animateElements();
         });
     </script>
 </body>

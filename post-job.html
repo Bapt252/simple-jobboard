@@ -6,482 +6,6 @@
     <title>Publier une offre d'emploi - Nexten</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        .post-job-intro {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .ai-badge {
-            display: inline-flex;
-            align-items: center;
-            background-color: rgba(108, 99, 255, 0.1);
-            color: var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 500;
-            margin-bottom: 1rem;
-        }
-        
-        .ai-badge i {
-            margin-right: 0.5rem;
-        }
-        
-        .form-tip {
-            background-color: rgba(52, 152, 219, 0.1);
-            border-left: 3px solid #3498db;
-            padding: 0.8rem 1rem;
-            border-radius: 0 var(--radius) var(--radius) 0;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-            color: var(--text);
-        }
-        
-        .form-tip i {
-            color: #3498db;
-            margin-right: 0.5rem;
-        }
-        
-        .parsing-info {
-            background-color: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .parsing-title {
-            font-weight: 600;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-        
-        .parsing-title i {
-            margin-right: 0.5rem;
-        }
-        
-        .parsing-steps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .parsing-step {
-            background-color: #f8fafc;
-            padding: 1rem;
-            border-radius: var(--radius);
-            flex: 1;
-            min-width: 200px;
-        }
-        
-        .step-number {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 24px;
-            font-weight: 500;
-            margin-right: 0.5rem;
-        }
-        
-        .step-text {
-            font-weight: 500;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-        
-        .step-description {
-            font-size: 0.9rem;
-            color: var(--text);
-        }
-
-        /* Nouveaux styles pour le stepper */
-        .process-stepper {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 2.5rem;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .process-stepper::before {
-            content: '';
-            position: absolute;
-            height: 3px;
-            background-color: #e2e8f0;
-            width: 100%;
-            top: 25px;
-            z-index: -1;
-        }
-        
-        .process-stepper::after {
-            content: '';
-            position: absolute;
-            height: 3px;
-            background-color: var(--primary);
-            width: 0%;
-            top: 25px;
-            z-index: -1;
-            transition: width 0.5s ease;
-        }
-        
-        .process-stepper.step1::after {
-            width: 0%;
-        }
-        
-        .process-stepper.step2::after {
-            width: 50%;
-        }
-        
-        .process-stepper.step3::after {
-            width: 100%;
-        }
-        
-        .process-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .process-step-circle {
-            width: 50px;
-            height: 50px;
-            background-color: white;
-            border: 3px solid #e2e8f0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 12px;
-            font-weight: 600;
-            color: var(--text);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .process-step-text {
-            font-weight: 500;
-            color: var(--text);
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-        
-        .process-step.active .process-step-circle {
-            border-color: var(--primary);
-            color: white;
-            box-shadow: 0 0 0 5px rgba(108, 99, 255, 0.2);
-        }
-        
-        .process-step.active .process-step-circle::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: var(--primary);
-            z-index: -1;
-            animation: circleAnim 0.5s forwards;
-        }
-        
-        .process-step.active .process-step-text {
-            color: var(--primary);
-            font-weight: 600;
-        }
-        
-        .process-step.completed .process-step-circle {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        @keyframes circleAnim {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
-        
-        /* Carte d'invitation au questionnaire */
-        .questionnaire-card {
-            background-color: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--primary);
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .questionnaire-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-        
-        .questionnaire-card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .questionnaire-card-icon {
-            width: 60px;
-            height: 60px;
-            background-color: rgba(108, 99, 255, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1.5rem;
-            font-size: 1.8rem;
-            color: var(--primary);
-        }
-        
-        .questionnaire-card-title {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.3rem;
-        }
-        
-        .questionnaire-card-subtitle {
-            color: var(--text);
-            font-size: 1rem;
-        }
-        
-        .questionnaire-card-content {
-            margin-bottom: 1.5rem;
-        }
-        
-        .questionnaire-card-benefits {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .questionnaire-card-benefit {
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        .questionnaire-card-benefit i {
-            color: var(--primary);
-            margin-right: 0.8rem;
-            margin-top: 0.3rem;
-        }
-        
-        .questionnaire-card-benefit-text {
-            font-size: 0.95rem;
-            color: var(--text);
-        }
-        
-        .start-button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
-        }
-        
-        .start-button:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(108, 99, 255, 0.4);
-        }
-        
-        .start-button i {
-            margin-left: 0.8rem;
-        }
-
-        /* Question préliminaire */
-        .preliminary-question {
-            background-color: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--primary);
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .preliminary-question h3 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 1.5rem;
-        }
-        
-        .question-options {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        @media (max-width: 768px) {
-            .question-options {
-                flex-direction: column;
-            }
-        }
-        
-        .question-option {
-            flex: 1;
-            background-color: #f8fafc;
-            border: 2px solid #e2e8f0;
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .question-option:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
-            background-color: rgba(108, 99, 255, 0.05);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .question-option-icon {
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        
-        .question-option-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.5rem;
-        }
-        
-        .question-option-desc {
-            color: var(--text);
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        /* Styles pour le formulaire court */
-        .short-form {
-            background-color: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-md);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-left: 4px solid var(--primary);
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .short-form h3 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 1.5rem;
-        }
-        
-        .short-form-content {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.7rem;
-            font-weight: 500;
-            color: var(--dark);
-            position: relative;
-        }
-        
-        .label-required::after {
-            content: '*';
-            color: var(--primary);
-            margin-left: 4px;
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.9rem;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background-color: var(--light);
-        }
-        
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .ai-badge {
-            display: inline-flex;
-            align-items: center;
-            background-color: rgba(108, 99, 255, 0.1);
-            color: var(--primary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 500;
-            margin-top: 0.5rem;
-            cursor: pointer;
-        }
-        
-        .ai-badge i {
-            margin-right: 0.5rem;
-        }
-        
-        .submit-button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.9rem 1.8rem;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
-        }
-        
-        .submit-button:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 7px 15px rgba(108, 99, 255, 0.4);
-        }
-        
-        .submit-button i {
-            margin-left: 0.8rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -492,6 +16,7 @@
                     <li><a href="index.html">Accueil</a></li>
                     <li><a href="post-job.html" class="active">Publier une offre</a></li>
                     <li><a href="candidate-upload.html">Espace candidat</a></li>
+                    <li><a href="recruiter-dashboard.html">Espace recruteur</a></li>
                 </ul>
             </nav>
         </div>
@@ -499,152 +24,167 @@
 
     <section class="post-job">
         <div class="container">
-            <div class="post-job-intro">
-                <div class="ai-badge">
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <span class="badge badge-ai">
                     <i class="fas fa-robot"></i> Propulsé par l'IA
-                </div>
-                <h2>Publiez votre offre d'emploi</h2>
-                <p class="section-description">Notre intelligence artificielle analysera votre offre et vous proposera les 10 meilleurs candidats correspondant à votre besoin.</p>
+                </span>
+                <h2 style="margin-bottom: 0.5rem;">Publiez votre offre d'emploi</h2>
+                <p style="color: var(--text); font-size: 1.1rem; max-width: 800px; margin: 0 auto;">Notre intelligence artificielle analysera votre offre et vous proposera les 10 meilleurs candidats correspondant à votre besoin.</p>
             </div>
 
-            <div class="preliminary-question">
-                <h3>Avez-vous actuellement un poste à pourvoir ?</h3>
-                <div class="question-options">
-                    <div class="question-option" id="option-yes">
-                        <div class="question-option-icon">
+            <div class="card fade-in">
+                <h3 class="card-title">Avez-vous actuellement un poste à pourvoir ?</h3>
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <div class="card" id="option-yes" style="flex: 1; min-width: 250px; cursor: pointer; padding: 1.5rem; transition: all 0.3s ease; background-color: var(--light); border-left-color: transparent;">
+                        <div style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;">
                             <i class="fas fa-check-circle"></i>
                         </div>
-                        <div class="question-option-title">Oui</div>
-                        <div class="question-option-desc">
-                            Je souhaite publier une offre d'emploi et trouver des candidats correspondant à mon besoin.
-                        </div>
+                        <h4 style="font-size: 1.2rem; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem;">Oui</h4>
+                        <p style="color: var(--text); font-size: 0.95rem; line-height: 1.5;">Je souhaite publier une offre d'emploi et trouver des candidats correspondant à mon besoin.</p>
                     </div>
-                    <div class="question-option" id="option-no">
-                        <div class="question-option-icon">
+                    <div class="card" id="option-no" style="flex: 1; min-width: 250px; cursor: pointer; padding: 1.5rem; transition: all 0.3s ease; background-color: var(--light); border-left-color: transparent;">
+                        <div style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;">
                             <i class="fas fa-times-circle"></i>
                         </div>
-                        <div class="question-option-title">Non</div>
-                        <div class="question-option-desc">
-                            Je souhaite seulement explorer les profils disponibles ou me tenir informé.
-                        </div>
+                        <h4 style="font-size: 1.2rem; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem;">Non</h4>
+                        <p style="color: var(--text); font-size: 0.95rem; line-height: 1.5;">Je souhaite seulement explorer les profils disponibles ou me tenir informé.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Formulaire court pour recruteurs sans poste ouvert -->
-            <div class="short-form" id="short-form">
-                <h3>Dites-nous en plus sur votre entreprise</h3>
-                <div class="short-form-content">
+            <div class="form-card" id="short-form" style="display: none; animation: fadeIn 0.5s ease;">
+                <h3 class="form-title">Dites-nous en plus sur votre entreprise</h3>
+                <div style="margin-bottom: 1.5rem;">
                     <p>Nous avons besoin de quelques informations sur votre entreprise pour vous proposer les profils qui correspondent le mieux à votre secteur d'activité.</p>
                 </div>
                 
                 <form id="company-info-form">
                     <div class="form-group">
-                        <label for="company-name" class="label-required">Nom de la structure</label>
-                        <input type="text" id="company-name" placeholder="Ex: TechSolutions" required>
+                        <label for="company-name" style="display: block; margin-bottom: 0.7rem; font-weight: 500; color: var(--dark); position: relative;">
+                            Nom de la structure <span style="color: var(--primary);">*</span>
+                        </label>
+                        <input type="text" id="company-name" placeholder="Ex: TechSolutions" required style="width: 100%; padding: 0.9rem; border: 1px solid #e2e8f0; border-radius: var(--radius); font-size: 1rem; transition: var(--transition); background-color: var(--light);">
                     </div>
                     
                     <div class="form-group">
-                        <label for="company-address" class="label-required">Adresse complète</label>
-                        <input type="text" id="company-address" placeholder="Ex: 123 Avenue des Champs-Élysées, 75008 Paris" required>
+                        <label for="company-address" style="display: block; margin-bottom: 0.7rem; font-weight: 500; color: var(--dark); position: relative;">
+                            Adresse complète <span style="color: var(--primary);">*</span>
+                        </label>
+                        <input type="text" id="company-address" placeholder="Ex: 123 Avenue des Champs-Élysées, 75008 Paris" required style="width: 100%; padding: 0.9rem; border: 1px solid #e2e8f0; border-radius: var(--radius); font-size: 1rem; transition: var(--transition); background-color: var(--light);">
                     </div>
                     
                     <div class="form-group">
-                        <label for="company-website">Site internet</label>
-                        <input type="url" id="company-website" placeholder="Ex: https://www.example.com">
+                        <label for="company-website" style="display: block; margin-bottom: 0.7rem; font-weight: 500; color: var(--dark); position: relative;">
+                            Site internet
+                        </label>
+                        <input type="url" id="company-website" placeholder="Ex: https://www.example.com" style="width: 100%; padding: 0.9rem; border: 1px solid #e2e8f0; border-radius: var(--radius); font-size: 1rem; transition: var(--transition); background-color: var(--light);">
                     </div>
                     
                     <div class="form-group">
-                        <label for="company-description" class="label-required">Présentation rapide</label>
-                        <textarea id="company-description" rows="5" placeholder="Décrivez brièvement votre entreprise, son activité et sa mission..." required></textarea>
-                        <div class="ai-badge" id="generate-description">
+                        <label for="company-description" style="display: block; margin-bottom: 0.7rem; font-weight: 500; color: var(--dark); position: relative;">
+                            Présentation rapide <span style="color: var(--primary);">*</span>
+                        </label>
+                        <textarea id="company-description" rows="5" placeholder="Décrivez brièvement votre entreprise, son activité et sa mission..." required style="width: 100%; padding: 0.9rem; border: 1px solid #e2e8f0; border-radius: var(--radius); font-size: 1rem; transition: var(--transition); background-color: var(--light);"></textarea>
+                        <span class="badge badge-ai" id="generate-description" style="margin-top: 0.5rem; cursor: pointer; display: inline-flex;">
                             <i class="fas fa-magic"></i> Générer une description
-                        </div>
+                        </span>
                     </div>
                     
-                    <button type="submit" class="submit-button">
-                        Enregistrer et continuer <i class="fas fa-arrow-right"></i>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                        Enregistrer et continuer <i class="fas fa-arrow-right" style="margin-left: 0.8rem;"></i>
                     </button>
                 </form>
             </div>
             
-            <div class="process-stepper step1">
-                <div class="process-step active">
-                    <div class="process-step-circle">1</div>
-                    <div class="process-step-text">Informations recruteur</div>
+            <div class="progress-steps" id="progress-steps" style="display: none;">
+                <div class="step active">
+                    <div class="step-circle">1</div>
+                    <div class="step-text">Informations recruteur</div>
                 </div>
-                <div class="process-step">
-                    <div class="process-step-circle">2</div>
-                    <div class="process-step-text">Questionnaire détaillé</div>
+                <div class="step">
+                    <div class="step-circle">2</div>
+                    <div class="step-text">Questionnaire détaillé</div>
                 </div>
-                <div class="process-step">
-                    <div class="process-step-circle">3</div>
-                    <div class="process-step-text">Candidats recommandés</div>
-                </div>
-            </div>
-            
-            <div class="parsing-info">
-                <h3 class="parsing-title"><i class="fas fa-magic"></i> Comment notre IA analyse votre offre</h3>
-                <div class="parsing-steps">
-                    <div class="parsing-step">
-                        <div><span class="step-number">1</span> <span class="step-text">Extraction</span></div>
-                        <p class="step-description">Notre algorithme extrait automatiquement les compétences requises, l'expérience et les mots-clés importants.</p>
-                    </div>
-                    <div class="parsing-step">
-                        <div><span class="step-number">2</span> <span class="step-text">Analyse</span></div>
-                        <p class="step-description">L'IA identifie les aspects essentiels du poste et comprend les compétences transférables.</p>
-                    </div>
-                    <div class="parsing-step">
-                        <div><span class="step-number">3</span> <span class="step-text">Matching</span></div>
-                        <p class="step-description">Nous recherchons dans notre base de données les profils qui correspondent le mieux à votre besoin.</p>
-                    </div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <div class="step-text">Candidats recommandés</div>
                 </div>
             </div>
             
-            <div class="questionnaire-card">
-                <div class="questionnaire-card-header">
-                    <div class="questionnaire-card-icon">
+            <div class="card fade-in" id="parsing-info" style="display: none; margin-bottom: 2rem;">
+                <h3 class="card-title" style="color: var(--primary); display: flex; align-items: center;">
+                    <i class="fas fa-magic" style="margin-right: 0.5rem;"></i> Comment notre IA analyse votre offre
+                </h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="background-color: var(--light); padding: 1rem; border-radius: var(--radius); flex: 1; min-width: 200px;">
+                        <div>
+                            <span style="display: inline-block; background-color: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-weight: 500; margin-right: 0.5rem;">1</span>
+                            <span style="font-weight: 500; color: var(--dark); margin-bottom: 0.5rem;">Extraction</span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text);">Notre algorithme extrait automatiquement les compétences requises, l'expérience et les mots-clés importants.</p>
+                    </div>
+                    <div style="background-color: var(--light); padding: 1rem; border-radius: var(--radius); flex: 1; min-width: 200px;">
+                        <div>
+                            <span style="display: inline-block; background-color: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-weight: 500; margin-right: 0.5rem;">2</span>
+                            <span style="font-weight: 500; color: var(--dark); margin-bottom: 0.5rem;">Analyse</span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text);">L'IA identifie les aspects essentiels du poste et comprend les compétences transférables.</p>
+                    </div>
+                    <div style="background-color: var(--light); padding: 1rem; border-radius: var(--radius); flex: 1; min-width: 200px;">
+                        <div>
+                            <span style="display: inline-block; background-color: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; text-align: center; line-height: 24px; font-weight: 500; margin-right: 0.5rem;">3</span>
+                            <span style="font-weight: 500; color: var(--dark); margin-bottom: 0.5rem;">Matching</span>
+                        </div>
+                        <p style="font-size: 0.9rem; color: var(--text);">Nous recherchons dans notre base de données les profils qui correspondent le mieux à votre besoin.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card fade-in" id="questionnaire-card" style="display: none; margin-bottom: 2rem;">
+                <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                    <div style="width: 60px; height: 60px; background-color: rgba(108, 99, 255, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1.5rem; font-size: 1.8rem; color: var(--primary);">
                         <i class="fas fa-clipboard-list"></i>
                     </div>
                     <div>
-                        <h3 class="questionnaire-card-title">Questionnaire recruteur amélioré</h3>
-                        <p class="questionnaire-card-subtitle">Un processus optimisé pour un matching plus précis</p>
+                        <h3 class="card-title" style="margin-bottom: 0.3rem;">Questionnaire recruteur amélioré</h3>
+                        <p style="color: var(--text); font-size: 1rem;">Un processus optimisé pour un matching plus précis</p>
                     </div>
                 </div>
                 
-                <div class="questionnaire-card-content">
+                <div style="margin-bottom: 1.5rem;">
                     <p>Notre questionnaire recruteur vous permet de préciser tous les aspects importants de votre recherche pour un matching optimal avec les candidats. Le processus est simple et intuitif :</p>
                 </div>
                 
-                <div class="questionnaire-card-benefits">
-                    <div class="questionnaire-card-benefit">
-                        <i class="fas fa-building"></i>
-                        <div class="questionnaire-card-benefit-text">
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="display: flex; align-items: flex-start;">
+                        <i class="fas fa-building" style="color: var(--primary); margin-right: 0.8rem; margin-top: 0.3rem;"></i>
+                        <div style="font-size: 0.95rem; color: var(--text);">
                             Informations sur votre entreprise et culture
                         </div>
                     </div>
-                    <div class="questionnaire-card-benefit">
-                        <i class="fas fa-file-upload"></i>
-                        <div class="questionnaire-card-benefit-text">
+                    <div style="display: flex; align-items: flex-start;">
+                        <i class="fas fa-file-upload" style="color: var(--primary); margin-right: 0.8rem; margin-top: 0.3rem;"></i>
+                        <div style="font-size: 0.95rem; color: var(--text);">
                             Upload de fiche de poste avec analyse IA
                         </div>
                     </div>
-                    <div class="questionnaire-card-benefit">
-                        <i class="fas fa-users"></i>
-                        <div class="questionnaire-card-benefit-text">
+                    <div style="display: flex; align-items: flex-start;">
+                        <i class="fas fa-users" style="color: var(--primary); margin-right: 0.8rem; margin-top: 0.3rem;"></i>
+                        <div style="font-size: 0.95rem; color: var(--text);">
                             Précisions sur l'environnement de travail
                         </div>
                     </div>
-                    <div class="questionnaire-card-benefit">
-                        <i class="fas fa-search"></i>
-                        <div class="questionnaire-card-benefit-text">
+                    <div style="display: flex; align-items: flex-start;">
+                        <i class="fas fa-search" style="color: var(--primary); margin-right: 0.8rem; margin-top: 0.3rem;"></i>
+                        <div style="font-size: 0.95rem; color: var(--text);">
                             Critères de recrutement spécifiques
                         </div>
                     </div>
                 </div>
                 
-                <a href="recruiter-questionnaire.html" class="start-button">
-                    Commencer le questionnaire <i class="fas fa-arrow-right"></i>
+                <a href="recruiter-questionnaire.html" class="btn btn-primary btn-lg">
+                    Commencer le questionnaire <i class="fas fa-arrow-right" style="margin-left: 0.8rem;"></i>
                 </a>
             </div>
         </div>
@@ -661,50 +201,46 @@
             const optionYes = document.getElementById('option-yes');
             const optionNo = document.getElementById('option-no');
             const shortForm = document.getElementById('short-form');
-            const processSteps = document.querySelectorAll('.process-step');
-            const processStepper = document.querySelector('.process-stepper');
-            const parsingInfo = document.querySelector('.parsing-info');
-            const questionnaireCard = document.querySelector('.questionnaire-card');
+            const progressSteps = document.getElementById('progress-steps');
+            const steps = document.querySelectorAll('.step');
+            const parsingInfo = document.getElementById('parsing-info');
+            const questionnaireCard = document.getElementById('questionnaire-card');
             const companyInfoForm = document.getElementById('company-info-form');
             const generateDescriptionBtn = document.getElementById('generate-description');
             const companyWebsiteInput = document.getElementById('company-website');
             const companyDescriptionInput = document.getElementById('company-description');
             
-            // Masquer initialement la section stepper et les autres sections
-            processStepper.style.display = 'none';
-            parsingInfo.style.display = 'none';
-            questionnaireCard.style.display = 'none';
-            
             // Option Oui
             optionYes.addEventListener('click', function() {
                 // Animer l'option sélectionnée
                 this.style.borderColor = 'var(--primary)';
+                this.style.borderLeftColor = 'var(--primary)';
                 this.style.backgroundColor = 'rgba(108, 99, 255, 0.05)';
-                optionNo.style.borderColor = '#e2e8f0';
-                optionNo.style.backgroundColor = '#f8fafc';
+                optionNo.style.borderColor = 'transparent';
+                optionNo.style.backgroundColor = 'var(--light)';
                 
                 // Masquer le formulaire court s'il est visible
                 shortForm.style.display = 'none';
                 
                 // Afficher le reste du contenu avec animation
                 setTimeout(() => {
-                    processStepper.style.display = 'flex';
+                    progressSteps.style.display = 'flex';
                     parsingInfo.style.display = 'block';
                     questionnaireCard.style.display = 'block';
                     
                     // Animer l'apparition
-                    processStepper.style.opacity = '0';
+                    progressSteps.style.opacity = '0';
                     parsingInfo.style.opacity = '0';
                     questionnaireCard.style.opacity = '0';
                     
                     setTimeout(() => {
-                        processStepper.style.opacity = '1';
+                        progressSteps.style.opacity = '1';
                         parsingInfo.style.opacity = '1';
                         questionnaireCard.style.opacity = '1';
                     }, 50);
                     
                     // Scroll vers la section stepper
-                    processStepper.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    progressSteps.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 300);
             });
             
@@ -712,12 +248,13 @@
             optionNo.addEventListener('click', function() {
                 // Animer l'option sélectionnée
                 this.style.borderColor = 'var(--primary)';
+                this.style.borderLeftColor = 'var(--primary)';
                 this.style.backgroundColor = 'rgba(108, 99, 255, 0.05)';
-                optionYes.style.borderColor = '#e2e8f0';
-                optionYes.style.backgroundColor = '#f8fafc';
+                optionYes.style.borderColor = 'transparent';
+                optionYes.style.backgroundColor = 'var(--light)';
                 
                 // Masquer les sections de recrutement
-                processStepper.style.display = 'none';
+                progressSteps.style.display = 'none';
                 parsingInfo.style.display = 'none';
                 questionnaireCard.style.display = 'none';
                 
@@ -742,7 +279,7 @@
                 }
                 
                 // Animer le bouton de soumission
-                const submitButton = this.querySelector('.submit-button');
+                const submitButton = this.querySelector('.btn-primary');
                 const originalText = submitButton.innerHTML;
                 submitButton.innerHTML = '<span class="loading-spinner"></span>';
                 submitButton.disabled = true;
@@ -803,7 +340,7 @@
             });
             
             // Animer les étapes au chargement
-            processSteps.forEach((step, index) => {
+            steps.forEach((step, index) => {
                 step.style.opacity = '0';
                 setTimeout(() => {
                     step.style.opacity = '1';
