@@ -6,22 +6,48 @@
     <title>Publier une offre d'emploi - Nexten</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=places&callback=initAutocomplete" defer></script>
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+    <!-- API Google Maps avec paramètre de chargement asynchrone et gestionnaire d'erreur -->
+    <script>
+        function handleGoogleMapsError() {
+            console.error("Erreur de chargement de l'API Google Maps");
+            // Ajouter un message d'erreur visible à l'utilisateur
+            setTimeout(() => {
+                const addressFields = document.querySelectorAll('#company-address');
+                addressFields.forEach(field => {
+                    if (field && field.parentNode) {
+                        const errorMsg = document.createElement('div');
+                        errorMsg.className = 'error-message';
+                        errorMsg.style.color = '#ef4444';
+                        errorMsg.style.fontSize = '0.85rem';
+                        errorMsg.style.marginTop = '5px';
+                        errorMsg.innerHTML = '<i class="fas fa-exclamation-triangle"></i> L\'autocomplétion d\'adresses est indisponible. Saisissez l\'adresse manuellement.';
+                        
+                        // Vérifier si un message d'erreur existe déjà
+                        if (!field.parentNode.querySelector('.error-message')) {
+                            field.parentNode.appendChild(errorMsg);
+                        }
+                    }
+                });
+            }, 2000);
+        }
+
+        function initAutocompleteCallback() {
+            // Fonction appelée quand Google Maps est correctement chargé
+            console.log("Google Maps API chargée avec succès");
+            try {
+                initAutocomplete(); // Fonction définie dans le script principal
+            } catch (e) {
+                console.error("Erreur lors de l'initialisation de l'autocomplete", e);
+                handleGoogleMapsError();
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpOvIETyTmlNODPoMEZ46l1ogsQg7Fcyg&libraries=places&callback=initAutocompleteCallback" async defer onerror="handleGoogleMapsError()"></script>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1><i class="fas fa-briefcase"></i> Nexten</h1>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Accueil</a></li>
-                    <li><a href="post-job.html" class="active">Publier une offre</a></li>
-                    <li><a href="candidate-upload.html">Espace candidat</a></li>
-                    <li><a href="recruiter-dashboard.html">Espace recruteur</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <header></header>
 
     <section class="post-job">
         <div class="container">
@@ -188,8 +214,15 @@
                     Commencer le questionnaire <i class="fas fa-arrow-right" style="margin-left: 0.8rem;"></i>
                 </a>
                 
+                <div style="margin-top: 1rem; text-align: center;">
+                    <a href="recruiter-questionnaire-matching.html" class="btn btn-outline" style="color: var(--primary); border: 1px solid var(--primary); padding: 0.6rem 1.2rem; border-radius: 30px; display: inline-flex; align-items: center; font-weight: 500; transition: all 0.3s ease;">
+                        <i class="fas fa-star" style="color: var(--primary); margin-right: 0.5rem;"></i> Essayer notre nouveau questionnaire en matching learning
+                    </a>
+                </div>
+                
                 <script>
-                    document.getElementById('startQuestionnaireBtn').addEventListener('click', function(e) {
+                    // Fonction pour collecter et sauvegarder les données de l'entreprise
+                    function saveCompanyData() {
                         // Initialiser les données de l'entreprise dans localStorage pour le questionnaire
                         const companyAddressInput = document.getElementById('company-address');
                         const companyName = document.getElementById('company-name')?.value || '';
@@ -216,17 +249,25 @@
                         // Sauvegarde des données dans localStorage
                         localStorage.setItem('recruiterCompanyData', JSON.stringify(companyData));
                         console.log('Données de l\'entreprise sauvegardées:', companyData);
+                        
+                        return companyData;
+                    }
+                    
+                    // Associer les boutons aux actions de sauvegarde
+                    document.getElementById('startQuestionnaireBtn').addEventListener('click', function(e) {
+                        saveCompanyData();
+                    });
+                    
+                    // Ajouter un écouteur d'événement pour le bouton de matching learning
+                    document.querySelector('a[href="recruiter-questionnaire-matching.html"]').addEventListener('click', function(e) {
+                        saveCompanyData();
                     });
                 </script>
             </div>
         </div>
     </section>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Nexten - Tous droits réservés</p>
-        </div>
-    </footer>
+    <footer></footer>
 
     <script>
         // Fonction pour initialiser l'autocomplete Google Maps Places
@@ -234,32 +275,73 @@
             // Autocomplete pour l'adresse de l'entreprise
             const addressInput = document.getElementById('company-address');
             if (addressInput) {
-                const autocomplete = new google.maps.places.Autocomplete(addressInput, {
-                    types: ['address'],
-                    componentRestrictions: { country: ['fr'] }  // Limiter aux adresses françaises
-                });
-                
-                // Enregistrer l'adresse complète lorsqu'un lieu est sélectionné
-                autocomplete.addListener('place_changed', function() {
-                    const place = autocomplete.getPlace();
-                    if (!place.geometry) {
-                        // L'utilisateur a appuyé sur entrée sans sélectionner de suggestion
+                try {
+                    // Vérifier si l'API Google Maps est chargée
+                    if (typeof google === 'undefined' || typeof google.maps === 'undefined' || typeof google.maps.places === 'undefined') {
+                        console.error("L'API Google Maps n'a pas été chargée correctement");
+                        handleGoogleMapsError();
                         return;
                     }
                     
-                    // Sauvegarder les coordonnées et l'adresse formatée pour une utilisation ultérieure
-                    const formattedAddress = place.formatted_address;
-                    const lat = place.geometry.location.lat();
-                    const lng = place.geometry.location.lng();
+                    const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+                        types: ['address'],
+                        componentRestrictions: { country: ['fr'] }  // Limiter aux adresses françaises
+                    });
                     
-                    // Stocker les données de géolocalisation dans des attributs de données
-                    addressInput.dataset.formattedAddress = formattedAddress;
-                    addressInput.dataset.lat = lat;
-                    addressInput.dataset.lng = lng;
+                    // Indiquer visuellement que l'autocomplétion est disponible
+                    addressInput.placeholder = "Commencez à saisir l'adresse...";
+                    addressInput.parentNode.querySelector('label').innerHTML += ' <span style="color: var(--success); font-size: 0.8rem;">(autocomplétion activée)</span>';
                     
-                    console.log('Adresse sélectionnée:', formattedAddress);
-                    console.log('Coordonnées:', lat, lng);
-                });
+                    // Enregistrer l'adresse complète lorsqu'un lieu est sélectionné
+                    autocomplete.addListener('place_changed', function() {
+                        const place = autocomplete.getPlace();
+                        if (!place.geometry) {
+                            // L'utilisateur a appuyé sur entrée sans sélectionner de suggestion
+                            console.warn("Adresse saisie mais non sélectionnée dans les suggestions");
+                            return;
+                        }
+                        
+                        // Sauvegarder les coordonnées et l'adresse formatée pour une utilisation ultérieure
+                        const formattedAddress = place.formatted_address;
+                        const lat = place.geometry.location.lat();
+                        const lng = place.geometry.location.lng();
+                        
+                        // Stocker les données de géolocalisation dans des attributs de données
+                        addressInput.dataset.formattedAddress = formattedAddress;
+                        addressInput.dataset.lat = lat;
+                        addressInput.dataset.lng = lng;
+                        
+                        // Confirmation visuelle subtile pour l'utilisateur
+                        addressInput.style.borderColor = "#10b981";
+                        
+                        // Créer un message de confirmation qui s'auto-efface
+                        const confirmDiv = document.createElement('div');
+                        confirmDiv.className = 'address-confirm';
+                        confirmDiv.innerHTML = `<i class="fas fa-check-circle"></i> Adresse validée: ${formattedAddress}`;
+                        confirmDiv.style.color = "#10b981";
+                        confirmDiv.style.fontSize = "0.85rem";
+                        confirmDiv.style.marginTop = "5px";
+                        
+                        // Ajouter le message après l'input
+                        const existingConfirm = addressInput.parentNode.querySelector('.address-confirm');
+                        if (existingConfirm) {
+                            existingConfirm.remove();
+                        }
+                        addressInput.parentNode.appendChild(confirmDiv);
+                        
+                        console.log('Adresse sélectionnée:', formattedAddress);
+                        console.log('Coordonnées:', lat, lng);
+                        
+                        // Auto-effacement après 5 secondes
+                        setTimeout(() => {
+                            confirmDiv.style.opacity = '0';
+                            setTimeout(() => confirmDiv.remove(), 500);
+                        }, 5000);
+                    });
+                } catch (error) {
+                    console.error("Erreur lors de l'initialisation de l'autocomplete Google Maps:", error);
+                    handleGoogleMapsError();
+                }
             }
         }
 
@@ -276,17 +358,35 @@
             const companyWebsiteInput = document.getElementById('company-website');
             const companyDescriptionInput = document.getElementById('company-description');
             
+            // Fonction pour styliser les options
+            function styleSelectedOption(selected, unselected) {
+                selected.style.borderColor = 'var(--primary)';
+                selected.style.borderLeftColor = 'var(--primary)';
+                selected.style.backgroundColor = 'rgba(108, 99, 255, 0.05)';
+                selected.style.transform = 'translateY(-5px)';
+                selected.style.boxShadow = 'var(--shadow-lg)';
+                
+                unselected.style.borderColor = 'transparent';
+                unselected.style.backgroundColor = 'var(--light)';
+                unselected.style.transform = 'none';
+                unselected.style.boxShadow = 'var(--shadow-md)';
+            }
+            
+            // Vérifier la présence de tous les éléments du DOM
+            if (!optionYes || !optionNo || !shortForm || !progressSteps || !parsingInfo || !questionnaireCard) {
+                console.error("Certains éléments du DOM sont manquants pour initialiser la page");
+                return;
+            }
+            
             // Option Oui
             optionYes.addEventListener('click', function() {
                 // Animer l'option sélectionnée
-                this.style.borderColor = 'var(--primary)';
-                this.style.borderLeftColor = 'var(--primary)';
-                this.style.backgroundColor = 'rgba(108, 99, 255, 0.05)';
-                optionNo.style.borderColor = 'transparent';
-                optionNo.style.backgroundColor = 'var(--light)';
+                styleSelectedOption(this, optionNo);
                 
                 // Masquer le formulaire court s'il est visible
-                shortForm.style.display = 'none';
+                if (shortForm) {
+                    shortForm.style.display = 'none';
+                }
                 
                 // Afficher le reste du contenu avec animation
                 setTimeout(() => {
@@ -295,181 +395,318 @@
                     questionnaireCard.style.display = 'block';
                     
                     // Animer l'apparition
-                    progressSteps.style.opacity = '0';
-                    parsingInfo.style.opacity = '0';
-                    questionnaireCard.style.opacity = '0';
+                    [progressSteps, parsingInfo, questionnaireCard].forEach(el => {
+                        if (el) {
+                            el.style.opacity = '0';
+                            el.style.transform = 'translateY(20px)';
+                        }
+                    });
                     
                     setTimeout(() => {
-                        progressSteps.style.opacity = '1';
-                        parsingInfo.style.opacity = '1';
-                        questionnaireCard.style.opacity = '1';
+                        [progressSteps, parsingInfo, questionnaireCard].forEach(el => {
+                            if (el) {
+                                el.style.opacity = '1';
+                                el.style.transform = 'translateY(0)';
+                                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                            }
+                        });
                     }, 50);
                     
-                    // Scroll vers la section stepper
-                    progressSteps.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Scroll vers la section stepper avec animation plus fluide
+                    if (progressSteps) {
+                        progressSteps.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start' 
+                        });
+                    }
                 }, 300);
             });
             
             // Option Non
             optionNo.addEventListener('click', function() {
                 // Animer l'option sélectionnée
-                this.style.borderColor = 'var(--primary)';
-                this.style.borderLeftColor = 'var(--primary)';
-                this.style.backgroundColor = 'rgba(108, 99, 255, 0.05)';
-                optionYes.style.borderColor = 'transparent';
-                optionYes.style.backgroundColor = 'var(--light)';
+                styleSelectedOption(this, optionYes);
                 
                 // Masquer les sections de recrutement
-                progressSteps.style.display = 'none';
-                parsingInfo.style.display = 'none';
-                questionnaireCard.style.display = 'none';
+                if (progressSteps) progressSteps.style.display = 'none';
+                if (parsingInfo) parsingInfo.style.display = 'none';
+                if (questionnaireCard) questionnaireCard.style.display = 'none';
                 
-                // Afficher le formulaire court
-                shortForm.style.display = 'block';
-                shortForm.style.opacity = '0';
-                
-                setTimeout(() => {
-                    shortForm.style.opacity = '1';
-                    shortForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 50);
+                // Afficher le formulaire court avec animation
+                if (shortForm) {
+                    shortForm.style.display = 'block';
+                    shortForm.style.opacity = '0';
+                    shortForm.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        shortForm.style.opacity = '1';
+                        shortForm.style.transform = 'translateY(0)';
+                        shortForm.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        shortForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 50);
+                }
             });
             
-            // Traitement du formulaire court
-            companyInfoForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+            // Validation du formulaire en temps réel
+            if (companyInfoForm) {
+                // Ajouter validation à tous les champs requis
+                const requiredInputs = companyInfoForm.querySelectorAll('input[required], textarea[required]');
+                requiredInputs.forEach(input => {
+                    input.addEventListener('blur', function() {
+                        validateField(this);
+                    });
+                    
+                    input.addEventListener('input', function() {
+                        if (this.value.trim() !== '') {
+                            validateField(this);
+                        }
+                    });
+                });
                 
-                // Vérifier la validité du formulaire
-                if (!this.checkValidity()) {
-                    alert('Veuillez remplir tous les champs obligatoires.');
-                    return;
-                }
-                
-                // Animer le bouton de soumission
-                const submitButton = this.querySelector('.btn-primary');
-                const originalText = submitButton.innerHTML;
-                submitButton.innerHTML = '<span class="loading-spinner"></span>';
-                submitButton.disabled = true;
-                
-                // Ajouter des styles dynamiques pour l'animation
-                const style = document.createElement('style');
-                style.innerHTML = `
-                    .loading-spinner {
-                        display: inline-block;
-                        width: 20px;
-                        height: 20px;
-                        border: 3px solid rgba(255,255,255,.3);
-                        border-radius: 50%;
-                        border-top-color: #fff;
-                        animation: spin 1s ease-in-out infinite;
+                function validateField(field) {
+                    // Supprimer les messages d'erreur existants
+                    const existingError = field.parentNode.querySelector('.error-message');
+                    if (existingError) existingError.remove();
+                    
+                    // Valider le champ
+                    if (field.required && field.value.trim() === '') {
+                        field.style.borderColor = '#ef4444';
+                        const errorMsg = document.createElement('div');
+                        errorMsg.className = 'error-message';
+                        errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Ce champ est obligatoire';
+                        field.parentNode.appendChild(errorMsg);
+                        return false;
+                    } else if (field.type === 'email' && field.value.trim() !== '') {
+                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(field.value)) {
+                            field.style.borderColor = '#ef4444';
+                            const errorMsg = document.createElement('div');
+                            errorMsg.className = 'error-message';
+                            errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Email invalide';
+                            field.parentNode.appendChild(errorMsg);
+                            return false;
+                        }
+                    } else if (field.type === 'url' && field.value.trim() !== '') {
+                        try {
+                            new URL(field.value);
+                            field.style.borderColor = '#10b981';
+                        } catch (e) {
+                            field.style.borderColor = '#ef4444';
+                            const errorMsg = document.createElement('div');
+                            errorMsg.className = 'error-message';
+                            errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> URL invalide';
+                            field.parentNode.appendChild(errorMsg);
+                            return false;
+                        }
                     }
                     
-                    @keyframes spin {
-                        to { transform: rotate(360deg); }
-                    }
-                `;
-                document.head.appendChild(style);
-                
-                // Simuler un délai de traitement
-                setTimeout(() => {
-                    // Rediriger vers la page d'accueil
-                    window.location.href = 'index.html';
-                }, 1500);
-            });
-            
-            // Génération de description d'entreprise basée sur le site web avec simulation d'appel à OpenAI
-            generateDescriptionBtn.addEventListener('click', function() {
-                const website = companyWebsiteInput.value.trim();
-                if (!website) {
-                    alert('Veuillez entrer l\'URL de votre site web pour générer une description.');
-                    return;
+                    // Si tout est valide
+                    field.style.borderColor = field.value.trim() ? '#10b981' : '#e2e8f0';
+                    return true;
                 }
                 
-                // Simuler un chargement
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération avec IA en cours...';
-                this.style.pointerEvents = 'none';
-                
-                // Extraire le domaine pour la recherche
-                const domain = website.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
-                
-                // Définir les étapes de traitement pour un effet plus réaliste
-                const processingSteps = [
-                    'Analyse du site web...',
-                    'Collecte des informations...',
-                    'Traitement par IA...',
-                    'Finalisation du contenu...'
-                ];
-                
-                let currentStep = 0;
-                
-                // Simuler les étapes de traitement
-                const processingInterval = setInterval(() => {
-                    if (currentStep < processingSteps.length) {
-                        this.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${processingSteps[currentStep]}`;
-                        currentStep++;
-                    } else {
-                        clearInterval(processingInterval);
-                        
-                        // Générer la description finale
-                        let description;
-                        
-                        // Définir des descriptions préconfigurées pour certains domaines connus
-                        if (domain === 'google.com') {
-                            description = "Google est une entreprise technologique mondiale qui développe des produits et services liés à Internet, notamment des technologies de recherche, de cloud computing, de logiciels et de matériel. Fondée en 1998 par Larry Page et Sergey Brin, Google a pour mission d'organiser l'information à l'échelle mondiale et de la rendre universellement accessible et utile.";
-                        } else if (domain === 'microsoft.com') {
-                            description = "Microsoft est une entreprise technologique multinationale qui développe, fabrique, licencie et vend des logiciels informatiques, des produits électroniques, des ordinateurs et des services personnels. Fondée en 1975 par Bill Gates et Paul Allen, Microsoft s'est donné pour mission d'aider chaque personne et chaque organisation sur la planète à accomplir davantage.";
-                        } else if (domain === 'apple.com') {
-                            description = "Apple est une entreprise technologique américaine qui conçoit, développe et vend des produits électroniques grand public, des logiciels informatiques et des services en ligne. Fondée en 1976 par Steve Jobs, Steve Wozniak et Ronald Wayne, Apple est connue pour ses produits innovants comme l'iPhone, l'iPad, le Mac et l'Apple Watch.";
-                        } else if (domain.includes('example.com')) {
-                            description = "TechSolutions est une entreprise innovante spécialisée dans le développement de solutions logicielles pour les entreprises. Fondée en 2015, elle compte aujourd'hui plus de 50 collaborateurs passionnés par la technologie et l'innovation. Avec une approche centrée sur le client, TechSolutions s'efforce de fournir des solutions sur mesure qui répondent parfaitement aux besoins spécifiques de chaque client.";
-                        } else {
-                            // Générer une description dynamique pour les autres domaines
-                            const companyName = domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
-                            const randomYear = 2010 + Math.floor(Math.random() * 10);
-                            const sectors = ["technologique", "de services", "de conseil", "spécialisée en informatique", "innovante"];
-                            const sector = sectors[Math.floor(Math.random() * sectors.length)];
-                            
-                            description = `${companyName} est une entreprise ${sector} dynamique qui se distingue par son approche innovante et sa vision stratégique. Fondée en ${randomYear}, l'entreprise a développé une expertise reconnue dans son domaine et continue d'élargir son offre pour répondre aux besoins évolutifs du marché. Sa culture d'entreprise valorise la collaboration, la créativité et l'excellence. Avec une vision orientée vers l'avenir, ${companyName} s'engage à fournir des produits et services de qualité supérieure tout en maintenant une forte responsabilité envers ses clients, ses employés et la société.`;
+                // Traitement du formulaire court
+                companyInfoForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Vérifier la validité de tous les champs
+                    let formValid = true;
+                    requiredInputs.forEach(input => {
+                        if (!validateField(input)) {
+                            formValid = false;
                         }
-                        
-                        // Simuler une saisie progressive pour un effet plus naturel
-                        let i = 0;
-                        companyDescriptionInput.value = '';
-                        
-                        const typingEffect = setInterval(() => {
-                            if (i < description.length) {
-                                companyDescriptionInput.value += description.charAt(i);
-                                i++;
-                                
-                                // Faire défiler pour voir le texte en cours de saisie
-                                companyDescriptionInput.scrollTop = companyDescriptionInput.scrollHeight;
-                            } else {
-                                clearInterval(typingEffect);
-                                
-                                // Afficher un message de succès
-                                this.innerHTML = '<i class="fas fa-check-circle"></i> Description générée avec IA';
-                                this.style.backgroundColor = "#10b981";
-                                this.style.color = "white";
-                                
-                                // Restaurer le bouton après un délai
-                                setTimeout(() => {
-                                    this.innerHTML = '<i class="fas fa-magic"></i> Générer une description';
-                                    this.style.backgroundColor = "";
-                                    this.style.color = "";
-                                    this.style.pointerEvents = 'auto';
-                                }, 3000);
-                            }
-                        }, 5);
+                    });
+                    
+                    if (!formValid) {
+                        const firstInvalid = companyInfoForm.querySelector('input[style*="border-color: rgb(239, 68, 68)"], textarea[style*="border-color: rgb(239, 68, 68)"]');
+                        if (firstInvalid) {
+                            firstInvalid.focus();
+                            firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                        return;
                     }
-                }, 800);
-            });
+                    
+                    // Animer le bouton de soumission
+                    const submitButton = this.querySelector('.btn-primary');
+                    const originalText = submitButton.innerHTML;
+                    submitButton.innerHTML = '<span class="loading-spinner"></span> Traitement en cours...';
+                    submitButton.disabled = true;
+                    
+                    // Simuler un délai de traitement
+                    setTimeout(() => {
+                        // Créer une notification de succès
+                        const successNotif = document.createElement('div');
+                        successNotif.className = 'success-notification';
+                        successNotif.innerHTML = `
+                            <div style="background-color: #10b981; color: white; padding: 15px 20px; border-radius: var(--radius); box-shadow: var(--shadow-lg); position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: flex; align-items: center; max-width: 400px; transform: translateY(100px); opacity: 0; transition: all 0.5s ease;">
+                                <i class="fas fa-check-circle" style="font-size: 1.5rem; margin-right: 10px;"></i>
+                                <div>
+                                    <div style="font-weight: 600; margin-bottom: 5px;">Informations enregistrées</div>
+                                    <div style="font-size: 0.9rem;">Vous allez être redirigé vers la page d'accueil.</div>
+                                </div>
+                            </div>
+                        `;
+                        document.body.appendChild(successNotif);
+                        
+                        // Animer l'apparition de la notification
+                        setTimeout(() => {
+                            const notif = successNotif.querySelector('div');
+                            if (notif) {
+                                notif.style.transform = 'translateY(0)';
+                                notif.style.opacity = '1';
+                            }
+                        }, 100);
+                        
+                        // Rediriger vers la page d'accueil après un délai
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 2000);
+                    }, 1500);
+                });
+            }
             
-            // Animer les étapes au chargement
-            steps.forEach((step, index) => {
-                step.style.opacity = '0';
-                setTimeout(() => {
-                    step.style.opacity = '1';
-                }, 100 * index);
-            });
+            // Génération de description d'entreprise basée sur le site web
+            if (generateDescriptionBtn && companyWebsiteInput && companyDescriptionInput) {
+                generateDescriptionBtn.addEventListener('click', function() {
+                    const website = companyWebsiteInput.value.trim();
+                    if (!website) {
+                        // Feedback visuel au lieu d'une alerte
+                        companyWebsiteInput.style.borderColor = '#ef4444';
+                        companyWebsiteInput.focus();
+                        
+                        // Ajouter message d'erreur s'il n'existe pas déjà
+                        const existingError = companyWebsiteInput.parentNode.querySelector('.error-message');
+                        if (!existingError) {
+                            const errorMsg = document.createElement('div');
+                            errorMsg.className = 'error-message';
+                            errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Veuillez entrer une URL de site web';
+                            companyWebsiteInput.parentNode.appendChild(errorMsg);
+                        }
+                        return;
+                    }
+                    
+                    // Valider le format URL
+                    try {
+                        new URL(website);
+                    } catch (e) {
+                        // Feedback visuel pour URL invalide
+                        companyWebsiteInput.style.borderColor = '#ef4444';
+                        companyWebsiteInput.focus();
+                        
+                        // Ajouter message d'erreur
+                        const existingError = companyWebsiteInput.parentNode.querySelector('.error-message');
+                        if (!existingError) {
+                            const errorMsg = document.createElement('div');
+                            errorMsg.className = 'error-message';
+                            errorMsg.innerHTML = '<i class="fas fa-exclamation-circle"></i> Format d\'URL invalide (ex: https://example.com)';
+                            companyWebsiteInput.parentNode.appendChild(errorMsg);
+                        }
+                        return;
+                    }
+                    
+                    // Supprimer les messages d'erreur existants
+                    const existingError = companyWebsiteInput.parentNode.querySelector('.error-message');
+                    if (existingError) existingError.remove();
+                    
+                    // Marquer l'URL comme valide
+                    companyWebsiteInput.style.borderColor = '#10b981';
+                    
+                    // Simuler un chargement
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération avec IA en cours...';
+                    this.style.pointerEvents = 'none';
+                    
+                    // Extraire le domaine pour la recherche
+                    const domain = website.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+                    
+                    // Définir les étapes de traitement pour un effet plus réaliste
+                    const processingSteps = [
+                        'Analyse du site web...',
+                        'Collecte des informations...',
+                        'Traitement par IA...',
+                        'Finalisation du contenu...'
+                    ];
+                    
+                    let currentStep = 0;
+                    
+                    // Simuler les étapes de traitement
+                    const processingInterval = setInterval(() => {
+                        if (currentStep < processingSteps.length) {
+                            this.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${processingSteps[currentStep]}`;
+                            currentStep++;
+                        } else {
+                            clearInterval(processingInterval);
+                            
+                            // Générer la description finale
+                            let description;
+                            
+                            // Définir des descriptions préconfigurées pour certains domaines connus
+                            if (domain === 'google.com') {
+                                description = "Google est une entreprise technologique mondiale qui développe des produits et services liés à Internet, notamment des technologies de recherche, de cloud computing, de logiciels et de matériel. Fondée en 1998 par Larry Page et Sergey Brin, Google a pour mission d'organiser l'information à l'échelle mondiale et de la rendre universellement accessible et utile.";
+                            } else if (domain === 'microsoft.com') {
+                                description = "Microsoft est une entreprise technologique multinationale qui développe, fabrique, licencie et vend des logiciels informatiques, des produits électroniques, des ordinateurs et des services personnels. Fondée en 1975 par Bill Gates et Paul Allen, Microsoft s'est donné pour mission d'aider chaque personne et chaque organisation sur la planète à accomplir davantage.";
+                            } else if (domain === 'apple.com') {
+                                description = "Apple est une entreprise technologique américaine qui conçoit, développe et vend des produits électroniques grand public, des logiciels informatiques et des services en ligne. Fondée en 1976 par Steve Jobs, Steve Wozniak et Ronald Wayne, Apple est connue pour ses produits innovants comme l'iPhone, l'iPad, le Mac et l'Apple Watch.";
+                            } else if (domain.includes('example.com')) {
+                                description = "TechSolutions est une entreprise innovante spécialisée dans le développement de solutions logicielles pour les entreprises. Fondée en 2015, elle compte aujourd'hui plus de 50 collaborateurs passionnés par la technologie et l'innovation. Avec une approche centrée sur le client, TechSolutions s'efforce de fournir des solutions sur mesure qui répondent parfaitement aux besoins spécifiques de chaque client.";
+                            } else {
+                                // Générer une description dynamique pour les autres domaines
+                                const companyName = domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
+                                const randomYear = 2010 + Math.floor(Math.random() * 10);
+                                const sectors = ["technologique", "de services", "de conseil", "spécialisée en informatique", "innovante"];
+                                const sector = sectors[Math.floor(Math.random() * sectors.length)];
+                                
+                                description = `${companyName} est une entreprise ${sector} dynamique qui se distingue par son approche innovante et sa vision stratégique. Fondée en ${randomYear}, l'entreprise a développé une expertise reconnue dans son domaine et continue d'élargir son offre pour répondre aux besoins évolutifs du marché. Sa culture d'entreprise valorise la collaboration, la créativité et l'excellence. Avec une vision orientée vers l'avenir, ${companyName} s'engage à fournir des produits et services de qualité supérieure tout en maintenant une forte responsabilité envers ses clients, ses employés et la société.`;
+                            }
+                            
+                            // Simuler une saisie progressive pour un effet plus naturel
+                            let i = 0;
+                            companyDescriptionInput.value = '';
+                            
+                            const typingEffect = setInterval(() => {
+                                if (i < description.length) {
+                                    companyDescriptionInput.value += description.charAt(i);
+                                    i++;
+                                    
+                                    // Faire défiler pour voir le texte en cours de saisie
+                                    companyDescriptionInput.scrollTop = companyDescriptionInput.scrollHeight;
+                                } else {
+                                    clearInterval(typingEffect);
+                                    
+                                    // Afficher un message de succès et prévenir toute surcharge visuelle
+                                    this.innerHTML = '<i class="fas fa-check-circle"></i> Description générée avec IA';
+                                    this.style.backgroundColor = "#10b981";
+                                    this.style.color = "white";
+                                    
+                                    // Style de validation pour le champ description
+                                    companyDescriptionInput.style.borderColor = '#10b981';
+                                    
+                                    // Restaurer le bouton après un délai
+                                    setTimeout(() => {
+                                        this.innerHTML = '<i class="fas fa-magic"></i> Générer une description';
+                                        this.style.backgroundColor = "";
+                                        this.style.color = "";
+                                        this.style.pointerEvents = 'auto';
+                                    }, 3000);
+                                }
+                            }, 5);
+                        }
+                    }, 800);
+                });
+            }
+            
+            // Animer les étapes au chargement pour effet visuel
+            if (steps && steps.length > 0) {
+                steps.forEach((step, index) => {
+                    step.style.opacity = '0';
+                    step.style.transform = 'translateY(10px)';
+                    step.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    
+                    setTimeout(() => {
+                        step.style.opacity = '1';
+                        step.style.transform = 'translateY(0)';
+                    }, 100 * index);
+                });
+            }
         });
     </script>
 </body>
