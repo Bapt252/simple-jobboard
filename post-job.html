@@ -183,9 +183,32 @@
                     </div>
                 </div>
                 
-                <a href="recruiter-questionnaire.html" class="btn btn-primary btn-lg">
+                <a href="recruiter-questionnaire.html" class="btn btn-primary btn-lg" id="startQuestionnaireBtn">
                     Commencer le questionnaire <i class="fas fa-arrow-right" style="margin-left: 0.8rem;"></i>
                 </a>
+                
+                <script>
+                    document.getElementById('startQuestionnaireBtn').addEventListener('click', function(e) {
+                        // Initialiser les données de l'entreprise dans localStorage pour le questionnaire
+                        const companyName = document.getElementById('company-name')?.value || '';
+                        const companyAddress = document.getElementById('company-address')?.value || '';
+                        const companyWebsite = document.getElementById('company-website')?.value || '';
+                        const companyDescription = document.getElementById('company-description')?.value || '';
+                        
+                        // Création des données de l'entreprise
+                        const companyData = {
+                            name: companyName,
+                            address: companyAddress,
+                            website: companyWebsite, 
+                            description: companyDescription,
+                            dataFromPostJob: true
+                        };
+                        
+                        // Sauvegarde des données dans localStorage
+                        localStorage.setItem('recruiterCompanyData', JSON.stringify(companyData));
+                        console.log('Données de l\'entreprise sauvegardées:', companyData);
+                    });
+                </script>
             </div>
         </div>
     </section>
@@ -310,7 +333,7 @@
                 }, 1500);
             });
             
-            // Simulation de génération de description d'entreprise basée sur le site web
+            // Génération de description d'entreprise basée sur le site web avec simulation d'appel à OpenAI
             generateDescriptionBtn.addEventListener('click', function() {
                 const website = companyWebsiteInput.value.trim();
                 if (!website) {
@@ -319,24 +342,82 @@
                 }
                 
                 // Simuler un chargement
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération en cours...';
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération avec IA en cours...';
                 this.style.pointerEvents = 'none';
                 
-                // Simuler un délai de traitement
-                setTimeout(() => {
-                    // Générer une description fictive (dans une vraie application, cela appellerait une API)
-                    let domain = website.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
-                    
-                    if (domain.includes('example.com')) {
-                        companyDescriptionInput.value = "TechSolutions est une entreprise innovante spécialisée dans le développement de solutions logicielles pour les entreprises. Fondée en 2015, elle compte aujourd'hui plus de 50 collaborateurs passionnés par la technologie et l'innovation. Avec une approche centrée sur le client, TechSolutions s'efforce de fournir des solutions sur mesure qui répondent parfaitement aux besoins spécifiques de chaque client.";
+                // Extraire le domaine pour la recherche
+                const domain = website.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+                
+                // Définir les étapes de traitement pour un effet plus réaliste
+                const processingSteps = [
+                    'Analyse du site web...',
+                    'Collecte des informations...',
+                    'Traitement par IA...',
+                    'Finalisation du contenu...'
+                ];
+                
+                let currentStep = 0;
+                
+                // Simuler les étapes de traitement
+                const processingInterval = setInterval(() => {
+                    if (currentStep < processingSteps.length) {
+                        this.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${processingSteps[currentStep]}`;
+                        currentStep++;
                     } else {
-                        companyDescriptionInput.value = `Entreprise dynamique dans son secteur, ${domain} se distingue par son approche innovante et sa culture d'entreprise axée sur l'excellence. Avec une équipe talentueuse et passionnée, l'entreprise propose des produits/services de qualité qui répondent aux besoins de ses clients. Sa mission est de créer de la valeur tout en maintenant un environnement de travail stimulant pour ses collaborateurs.`;
+                        clearInterval(processingInterval);
+                        
+                        // Générer la description finale
+                        let description;
+                        
+                        // Définir des descriptions préconfigurées pour certains domaines connus
+                        if (domain === 'google.com') {
+                            description = "Google est une entreprise technologique mondiale qui développe des produits et services liés à Internet, notamment des technologies de recherche, de cloud computing, de logiciels et de matériel. Fondée en 1998 par Larry Page et Sergey Brin, Google a pour mission d'organiser l'information à l'échelle mondiale et de la rendre universellement accessible et utile.";
+                        } else if (domain === 'microsoft.com') {
+                            description = "Microsoft est une entreprise technologique multinationale qui développe, fabrique, licencie et vend des logiciels informatiques, des produits électroniques, des ordinateurs et des services personnels. Fondée en 1975 par Bill Gates et Paul Allen, Microsoft s'est donné pour mission d'aider chaque personne et chaque organisation sur la planète à accomplir davantage.";
+                        } else if (domain === 'apple.com') {
+                            description = "Apple est une entreprise technologique américaine qui conçoit, développe et vend des produits électroniques grand public, des logiciels informatiques et des services en ligne. Fondée en 1976 par Steve Jobs, Steve Wozniak et Ronald Wayne, Apple est connue pour ses produits innovants comme l'iPhone, l'iPad, le Mac et l'Apple Watch.";
+                        } else if (domain.includes('example.com')) {
+                            description = "TechSolutions est une entreprise innovante spécialisée dans le développement de solutions logicielles pour les entreprises. Fondée en 2015, elle compte aujourd'hui plus de 50 collaborateurs passionnés par la technologie et l'innovation. Avec une approche centrée sur le client, TechSolutions s'efforce de fournir des solutions sur mesure qui répondent parfaitement aux besoins spécifiques de chaque client.";
+                        } else {
+                            // Générer une description dynamique pour les autres domaines
+                            const companyName = domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1);
+                            const randomYear = 2010 + Math.floor(Math.random() * 10);
+                            const sectors = ["technologique", "de services", "de conseil", "spécialisée en informatique", "innovante"];
+                            const sector = sectors[Math.floor(Math.random() * sectors.length)];
+                            
+                            description = `${companyName} est une entreprise ${sector} dynamique qui se distingue par son approche innovante et sa vision stratégique. Fondée en ${randomYear}, l'entreprise a développé une expertise reconnue dans son domaine et continue d'élargir son offre pour répondre aux besoins évolutifs du marché. Sa culture d'entreprise valorise la collaboration, la créativité et l'excellence. Avec une vision orientée vers l'avenir, ${companyName} s'engage à fournir des produits et services de qualité supérieure tout en maintenant une forte responsabilité envers ses clients, ses employés et la société.`;
+                        }
+                        
+                        // Simuler une saisie progressive pour un effet plus naturel
+                        let i = 0;
+                        companyDescriptionInput.value = '';
+                        
+                        const typingEffect = setInterval(() => {
+                            if (i < description.length) {
+                                companyDescriptionInput.value += description.charAt(i);
+                                i++;
+                                
+                                // Faire défiler pour voir le texte en cours de saisie
+                                companyDescriptionInput.scrollTop = companyDescriptionInput.scrollHeight;
+                            } else {
+                                clearInterval(typingEffect);
+                                
+                                // Afficher un message de succès
+                                this.innerHTML = '<i class="fas fa-check-circle"></i> Description générée avec IA';
+                                this.style.backgroundColor = "#10b981";
+                                this.style.color = "white";
+                                
+                                // Restaurer le bouton après un délai
+                                setTimeout(() => {
+                                    this.innerHTML = '<i class="fas fa-magic"></i> Générer une description';
+                                    this.style.backgroundColor = "";
+                                    this.style.color = "";
+                                    this.style.pointerEvents = 'auto';
+                                }, 3000);
+                            }
+                        }, 5);
                     }
-                    
-                    // Réinitialiser le bouton
-                    this.innerHTML = '<i class="fas fa-magic"></i> Générer une description';
-                    this.style.pointerEvents = 'auto';
-                }, 1500);
+                }, 800);
             });
             
             // Animer les étapes au chargement

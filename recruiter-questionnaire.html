@@ -1527,7 +1527,14 @@
         </div>
     </footer>
 
+    <!-- Inclure les bibliothèques de parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.19/mammoth.browser.min.js"></script>
+    
     <script>
+        // Configuration de PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js';
+        
         document.addEventListener('DOMContentLoaded', function() {
             // Références aux éléments
             const recruiterForm = document.getElementById('recruiter-form');
@@ -1535,13 +1542,75 @@
             const steps = document.querySelectorAll('.step');
             const questionContainers = document.querySelectorAll('.question-container');
             
-            // Boutons de navigation
+            // Récupérer les données de l'entreprise depuis localStorage si disponibles
+            const companyDataString = localStorage.getItem('recruiterCompanyData');
+            let companyData = null;
+            
+            if (companyDataString) {
+                try {
+                    companyData = JSON.parse(companyDataString);
+                    console.log('Données de l\'entreprise récupérées:', companyData);
+                    
+                    // Pré-remplir les champs du formulaire
+                    if (companyData.dataFromPostJob) {
+                        prefillCompanyInfo(companyData);
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des données de l\'entreprise:', error);
+                }
+            }
+            
+            // Récupérer les données de la fiche de poste si disponibles
+            const jobDescriptionDataString = localStorage.getItem('jobDescriptionData');
+            let jobDescriptionData = null;
+            
+            if (jobDescriptionDataString) {
+                try {
+                    jobDescriptionData = JSON.parse(jobDescriptionDataString);
+                    console.log('Données de la fiche de poste récupérées:', jobDescriptionData);
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des données de la fiche de poste:', error);
+                }
+            }
+            
+            // Fonction pour pré-remplir les informations de l'entreprise
+            function prefillCompanyInfo(data) {
+                if (!data) return;
+                
+                // Pré-remplir les champs correspondants
+                const companyNameInput = document.getElementById('company-name');
+                if (companyNameInput && data.name) {
+                    companyNameInput.value = data.name;
+                }
+                
+                const companyAddressInput = document.getElementById('company-address');
+                if (companyAddressInput && data.address) {
+                    companyAddressInput.value = data.address;
+                }
+                
+                const companyWebsiteInput = document.getElementById('company-website');
+                if (companyWebsiteInput && data.website) {
+                    companyWebsiteInput.value = data.website;
+                }
+                
+                const companyDescriptionInput = document.getElementById('company-description');
+                if (companyDescriptionInput && data.description) {
+                    companyDescriptionInput.value = data.description;
+                }
+            }
+            
+            // Boutons de navigation et éléments du formulaire
             const next1Btn = document.getElementById('next1');
             const next2Btn = document.getElementById('next2');
             const next3Btn = document.getElementById('next3');
             const prev2Btn = document.getElementById('prev2');
             const prev3Btn = document.getElementById('prev3');
             const prev4Btn = document.getElementById('prev4');
+            
+            // S'assurer que les éléments du formulaire sont bien définis
+            const companyWebsiteInput = document.getElementById('company-website');
+            const companyDescriptionInput = document.getElementById('company-description');
+            const generateDescriptionBtn = document.getElementById('generate-description');
             
             // Éléments conditionnels
             const hasPositionRadios = document.getElementsByName('has-position');
@@ -1684,37 +1753,465 @@
                 }
             });
             
-            function simulateParsing() {
+            async function simulateParsing() {
+                const file = jobDescriptionFile.files[0];
+                if (!file) {
+                    alert("Veuillez d'abord sélectionner un fichier.");
+                    return;
+                }
+                
                 // Afficher la barre de progression
                 parsingProgress.style.display = 'block';
                 parsedContainer.style.display = 'none';
+                parsingProgressFill.style.width = '0%';
                 
-                // Simuler une progression
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 5;
+                try {
+                    // Extraire le texte du fichier selon son type
+                    let jobText = '';
+                    let progress = 10;
+                    
+                    // Mise à jour visuelle de la progression
                     parsingProgressFill.style.width = progress + '%';
                     
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        setTimeout(() => {
-                            parsingProgress.style.display = 'none';
-                            parsedContainer.style.display = 'block';
-                        }, 500);
+                    if (file.type === 'application/pdf') {
+                        // Parsing PDF
+                        jobText = await parsePdfFile(file, (currentProgress) => {
+                            progress = 10 + currentProgress * 0.5; // 10% à 60%
+                            parsingProgressFill.style.width = progress + '%';
+                        });
+                    } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || 
+                              file.name.endsWith('.docx')) {
+                        // Parsing DOCX
+                        jobText = await parseDocxFile(file, (currentProgress) => {
+                            progress = 10 + currentProgress * 0.5; // 10% à 60%
+                            parsingProgressFill.style.width = progress + '%';
+                        });
+                    } else if (file.type === 'application/msword' || file.name.endsWith('.doc')) {
+                        // Message pour fichiers DOC (conversion limitée)
+                        alert('Les fichiers .doc anciens peuvent ne pas être correctement analysés. Nous recommandons le format PDF ou DOCX.');
+                        // Tenter de lire comme du texte
+                        jobText = await parseTextFile(file, (currentProgress) => {
+                            progress = 10 + currentProgress * 0.5;
+                            parsingProgressFill.style.width = progress + '%';
+                        });
+                    } else if (file.type === 'text/plain') {
+                        // Parsing fichier texte
+                        jobText = await parseTextFile(file, (currentProgress) => {
+                            progress = 10 + currentProgress * 0.5;
+                            parsingProgressFill.style.width = progress + '%';
+                        });
+                    } else {
+                        throw new Error('Format de fichier non pris en charge. Utilisez PDF, DOCX ou TXT.');
                     }
-                }, 150);
+                    
+                    // Analyse du texte extrait
+                    progress = 70;
+                    parsingProgressFill.style.width = progress + '%';
+                    
+                    // Analyse de la fiche de poste
+                    const extractedData = await analyzeJobDescription(jobText);
+                    
+                    // Mise à jour finale de la progression
+                    progress = 100;
+                    parsingProgressFill.style.width = progress + '%';
+                    
+                    // Afficher les résultats d'analyse
+                    setTimeout(() => {
+                        // Mettre à jour l'interface avec les données extraites
+                        updateParsedDisplay(extractedData);
+                        
+                        // Cacher la progression et afficher les résultats
+                        parsingProgress.style.display = 'none';
+                        parsedContainer.style.display = 'block';
+                        
+                        // Sauvegarder les données parsées
+                        saveJobDescriptionData(extractedData);
+                    }, 500);
+                    
+                } catch (error) {
+                    console.error('Erreur lors du parsing du fichier:', error);
+                    alert('Erreur lors de l\'analyse du fichier: ' + error.message);
+                    
+                    // Réinitialiser l'interface en cas d'erreur
+                    parsingProgress.style.display = 'none';
+                }
+            }
+            
+            // Parsers pour différents types de fichiers
+            async function parsePdfFile(file, progressCallback) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = async function(event) {
+                        try {
+                            const typedArray = new Uint8Array(event.target.result);
+                            progressCallback(20);
+                            
+                            // Utiliser PDF.js pour extraire le texte
+                            const pdf = await pdfjsLib.getDocument({data: typedArray}).promise;
+                            let fullText = '';
+                            
+                            // Extraire le texte de chaque page
+                            for (let i = 1; i <= pdf.numPages; i++) {
+                                const page = await pdf.getPage(i);
+                                const textContent = await page.getTextContent();
+                                const pageText = textContent.items.map(item => item.str).join(' ');
+                                fullText += pageText + ' ';
+                                
+                                // Mise à jour de la progression
+                                progressCallback(20 + (i / pdf.numPages) * 60);
+                            }
+                            
+                            resolve(fullText);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    };
+                    reader.onerror = reject;
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+            
+            async function parseDocxFile(file, progressCallback) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        try {
+                            progressCallback(30);
+                            
+                            // Utiliser mammoth.js pour extraire le texte des fichiers DOCX
+                            mammoth.extractRawText({arrayBuffer: event.target.result})
+                                .then(result => {
+                                    progressCallback(80);
+                                    resolve(result.value);
+                                })
+                                .catch(reject);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    };
+                    reader.onerror = reject;
+                    reader.readAsArrayBuffer(file);
+                });
+            }
+            
+            async function parseTextFile(file, progressCallback) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        try {
+                            progressCallback(50);
+                            resolve(event.target.result);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    };
+                    reader.onerror = reject;
+                    reader.readAsText(file);
+                });
+            }
+            
+            // Analyse de la fiche de poste avec des expressions régulières et heuristiques simples
+            async function analyzeJobDescription(jobText) {
+                // Conversion du texte en minuscules pour certaines analyses
+                const lowerText = jobText.toLowerCase();
+                
+                // Structure de données pour les informations extraites
+                const extractedData = {
+                    title: extractJobTitle(jobText),
+                    location: extractLocation(jobText),
+                    contractType: extractContractType(jobText),
+                    experience: extractExperience(jobText),
+                    skills: extractRequiredSkills(jobText),
+                    description: extractDescription(jobText)
+                };
+                
+                return extractedData;
+            }
+            
+            // Fonctions d'extraction par expressions régulières et heuristiques
+            function extractJobTitle(text) {
+                // Rechercher dans les premiers paragraphes
+                const paragraphs = text.split('\n').slice(0, 10);
+                const titleIndicators = ["poste", "recherchons", "recrutons", "à pourvoir", "offre d'emploi", "postuler"];
+                
+                for (const paragraph of paragraphs) {
+                    for (const indicator of titleIndicators) {
+                        if (paragraph.toLowerCase().includes(indicator)) {
+                            return paragraph.trim();
+                        }
+                    }
+                }
+                
+                // Alternatives: rechercher des motifs de titre communs
+                const commonTitles = [
+                    "développeur", "analyste", "chef de projet", "ingénieur", "consultant", 
+                    "directeur", "technicien", "responsable", "manager"
+                ];
+                
+                for (const title of commonTitles) {
+                    const regex = new RegExp(`([^.!?;:]*${title}[^.!?;:]*\\.?)`, 'i');
+                    const match = text.match(regex);
+                    if (match) {
+                        return match[1].trim();
+                    }
+                }
+                
+                return "Développeur Frontend Senior"; // Valeur par défaut si non détecté
+            }
+            
+            function extractLocation(text) {
+                const lowerText = text.toLowerCase();
+                
+                // Liste des grandes villes françaises pour recherche
+                const cities = ["paris", "marseille", "lyon", "toulouse", "nice", "nantes", 
+                            "strasbourg", "montpellier", "bordeaux", "lille", "rennes", "reims"];
+                
+                // Recherche contextuelle de lieux de travail
+                const locationIndicators = ["lieu", "localisation", "emplacement", "site", "basé à", "basée à"];
+                
+                for (const indicator of locationIndicators) {
+                    const index = lowerText.indexOf(indicator);
+                    if (index !== -1) {
+                        const context = text.substring(index, index + 100);
+                        const cityMatch = context.match(/[A-Z][a-zé]+([-\s][A-Z][a-zé]+)*/);
+                        if (cityMatch) {
+                            return cityMatch[0].trim();
+                        }
+                    }
+                }
+                
+                // Recherche simple basée sur les grandes villes
+                for (const city of cities) {
+                    if (lowerText.includes(city)) {
+                        return city.charAt(0).toUpperCase() + city.slice(1);
+                    }
+                }
+                
+                return "Paris, France"; // Valeur par défaut
+            }
+            
+            function extractContractType(text) {
+                const lowerText = text.toLowerCase();
+                
+                // Rechercher des types de contrats courants
+                const contractTypes = [
+                    { regex: /cdi|contrat à durée indéterminée/i, type: "CDI" },
+                    { regex: /cdd|contrat à durée déterminée/i, type: "CDD" },
+                    { regex: /stage/i, type: "Stage" },
+                    { regex: /alternance|apprentissage/i, type: "Alternance" },
+                    { regex: /freelance|indépendant/i, type: "Freelance" },
+                    { regex: /intérim/i, type: "Intérim" }
+                ];
+                
+                for (const contract of contractTypes) {
+                    if (contract.regex.test(lowerText)) {
+                        return contract.type;
+                    }
+                }
+                
+                return "CDI"; // Valeur par défaut
+            }
+            
+            function extractExperience(text) {
+                const lowerText = text.toLowerCase();
+                
+                // Rechercher des patterns d'expérience spécifiques
+                const experiencePatterns = [
+                    { regex: /minimum\s+(\d+\s*-\s*\d+|\d+)\s+(ans|années|an)/i, group: 1 },
+                    { regex: /(\d+\s*-\s*\d+|\d+)\s+(ans|années|an)\s+d['']expérience/i, group: 1 },
+                    { regex: /expérience\s+(\d+\s*-\s*\d+|\d+)\s+(ans|années|an)/i, group: 1 },
+                    { regex: /profil\s+junior/i, value: "0-2 ans" },
+                    { regex: /profil\s+confirmé/i, value: "3-5 ans" },
+                    { regex: /profil\s+senior/i, value: "5+ ans" }
+                ];
+                
+                for (const pattern of experiencePatterns) {
+                    const match = lowerText.match(pattern.regex);
+                    if (match) {
+                        return pattern.group ? match[pattern.group] + " ans" : pattern.value;
+                    }
+                }
+                
+                return "3-5 ans"; // Valeur par défaut
+            }
+            
+            function extractRequiredSkills(text) {
+                const lowerText = text.toLowerCase();
+                
+                // Liste de compétences techniques courantes
+                const technicalSkills = [
+                    "javascript", "react", "angular", "vue", "node.js", "express", "html5", "css3",
+                    "php", "python", "django", "flask", "java", "spring", "c#", ".net", "ruby",
+                    "rails", "sql", "mysql", "postgresql", "mongodb", "nosql", "aws", "azure", 
+                    "docker", "kubernetes", "git", "github", "devops", "ci/cd", "linux", "unix",
+                    "typescript", "rest api", "graphql", "redux", "sass", "less", "webpack", "babel"
+                ];
+                
+                // Rechercher les compétences dans le contexte approprié
+                const skillContexts = [
+                    { startMarker: /comp[ée]tences|skills|requis|required|profil|maitrise/i },
+                    { startMarker: /vous\s+(poss[ée]dez|maitrisez|connaissez)/i }
+                ];
+                
+                const foundSkills = new Set();
+                
+                // Rechercher des compétences dans des contextes spécifiques d'abord
+                for (const context of skillContexts) {
+                    const startIndex = lowerText.search(context.startMarker);
+                    if (startIndex !== -1) {
+                        const contextSection = lowerText.substring(startIndex, startIndex + 500);
+                        for (const skill of technicalSkills) {
+                            if (contextSection.includes(skill)) {
+                                foundSkills.add(skill.charAt(0).toUpperCase() + skill.slice(1));
+                            }
+                        }
+                    }
+                }
+                
+                // Si aucune compétence n'a été trouvée dans les contextes, rechercher dans tout le texte
+                if (foundSkills.size === 0) {
+                    for (const skill of technicalSkills) {
+                        if (lowerText.includes(skill)) {
+                            foundSkills.add(skill.charAt(0).toUpperCase() + skill.slice(1));
+                        }
+                    }
+                }
+                
+                // Limiter à un maximum de 5 compétences
+                return Array.from(foundSkills).slice(0, 5).length > 0 ? 
+                       Array.from(foundSkills).slice(0, 5) : 
+                       ["JavaScript", "React", "TypeScript", "HTML/CSS", "Git"];
+            }
+            
+            function extractDescription(text) {
+                // Si le texte est très long, limiter à la première partie significative
+                if (text.length > 500) {
+                    const firstParagraphs = text.split('\n').filter(p => p.trim().length > 0).slice(0, 3).join('\n\n');
+                    if (firstParagraphs.length > 200) {
+                        return firstParagraphs;
+                    }
+                    return text.substring(0, 500) + '...';
+                }
+                return text;
+            }
+            
+            // Mettre à jour l'affichage avec les données extraites
+            function updateParsedDisplay(data) {
+                // Mettre à jour les champs d'information
+                document.getElementById('parsed-title').textContent = data.title;
+                document.getElementById('parsed-location').textContent = data.location;
+                document.getElementById('parsed-contract-type').textContent = data.contractType;
+                document.getElementById('parsed-experience').textContent = data.experience;
+                
+                // Mettre à jour les compétences
+                const skillsContainer = document.getElementById('parsed-skills');
+                skillsContainer.innerHTML = '';
+                
+                data.skills.forEach(skill => {
+                    const skillTag = document.createElement('span');
+                    skillTag.className = 'summary-tag';
+                    skillTag.textContent = skill;
+                    skillsContainer.appendChild(skillTag);
+                });
+                
+                // Mettre à jour la description
+                document.getElementById('parsed-description').textContent = data.description;
+            }
+            
+            // Fonction pour sauvegarder les données de la fiche de poste
+            function saveJobDescriptionData(extractedData) {
+                // Si les données parsées sont fournies, les utiliser
+                // Sinon, récupérer les valeurs affichées dans l'interface
+                const jobData = extractedData || {
+                    title: document.getElementById('parsed-title').textContent,
+                    location: document.getElementById('parsed-location').textContent,
+                    contractType: document.getElementById('parsed-contract-type').textContent,
+                    experience: document.getElementById('parsed-experience').textContent,
+                    skills: Array.from(document.querySelectorAll('#parsed-skills .summary-tag')).map(tag => tag.textContent),
+                    description: document.getElementById('parsed-description').textContent,
+                    parsedFromJobDescription: true,
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Sauvegarder dans localStorage
+                localStorage.setItem('jobDescriptionData', JSON.stringify(jobData));
+                console.log('Job description data saved to localStorage:', jobData);
             }
             
             // Utiliser les données parsées
             useParsedDataBtn.addEventListener('click', function() {
-                // Remplir les champs avec les données parsées
-                jobTitleInput.value = document.getElementById('parsed-title').textContent;
-                
-                // Autres champs à remplir ici (dans une vraie application)
+                try {
+                    // Récupérer les données sauvegardées
+                    const jobData = JSON.parse(localStorage.getItem('jobDescriptionData'));
+                    
+                    if (jobData) {
+                        // Remplir les champs avec les données parsées
+                        jobTitleInput.value = jobData.title || document.getElementById('parsed-title').textContent;
+                        
+                        // Sélectionner la valeur d'expérience appropriée si disponible
+                        if (jobData.experience) {
+                            const experienceRequired = document.getElementById('experience-required');
+                            const experienceValue = mapExperienceToSelectValue(jobData.experience);
+                            if (experienceValue && experienceRequired) {
+                                experienceRequired.value = experienceValue;
+                            }
+                        }
+                        
+                        // Si un type de contrat est défini, essayer de sélectionner l'option correspondante
+                        if (jobData.contractType) {
+                            selectContractTypeFromJobDescription(jobData.contractType);
+                        }
+                    } else {
+                        // Fallback si les données ne sont pas disponibles dans localStorage
+                        jobTitleInput.value = document.getElementById('parsed-title').textContent;
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de l\'utilisation des données parsées:', error);
+                    jobTitleInput.value = document.getElementById('parsed-title').textContent;
+                }
                 
                 // Passer à l'étape suivante
                 navigateToQuestion(2, 3);
             });
+            
+            // Fonction pour mapper l'expérience à une valeur de select
+            function mapExperienceToSelectValue(experienceText) {
+                experienceText = experienceText.toLowerCase();
+                if (experienceText.includes('0-2') || experienceText.includes('junior')) {
+                    return 'junior';
+                } else if (experienceText.includes('2-3')) {
+                    return '2-3-years';
+                } else if (experienceText.includes('3-5')) {
+                    return '3-5-years';
+                } else if (experienceText.includes('5-10')) {
+                    return '5-10-years';
+                } else if (experienceText.includes('10+') || experienceText.includes('10 ans et plus')) {
+                    return '10-plus-years';
+                }
+                return null;
+            }
+            
+            // Fonction pour sélectionner le type de contrat approprié
+            function selectContractTypeFromJobDescription(contractTypeText) {
+                contractTypeText = contractTypeText.toLowerCase();
+                const contractTypeRadios = document.getElementsByName('contract-type');
+                
+                if (contractTypeText.includes('cdi') && contractTypeText.includes('cadre')) {
+                    for (const radio of contractTypeRadios) {
+                        if (radio.value === '35h-cadre' || radio.value === '39h-cadre' || radio.value === 'forfait-jour') {
+                            radio.checked = true;
+                            break;
+                        }
+                    }
+                } else if (contractTypeText.includes('cdi') && !contractTypeText.includes('cadre')) {
+                    for (const radio of contractTypeRadios) {
+                        if (radio.value === '35h-non-cadre' || radio.value === '39h-non-cadre') {
+                            radio.checked = true;
+                            break;
+                        }
+                    }
+                }
+            }
             
             // Saisie manuelle
             manualEntryBtn.addEventListener('click', function() {
@@ -1733,7 +2230,7 @@
                 });
             });
             
-            // Simulation de génération de description d'entreprise basée sur le site web
+            // Génération de description d'entreprise basée sur le site web avec simulation d'appel à OpenAI
             generateDescriptionBtn.addEventListener('click', function() {
                 const website = companyWebsiteInput.value.trim();
                 if (!website) {
@@ -1742,25 +2239,153 @@
                 }
                 
                 // Simuler un chargement
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération en cours...';
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération avec IA en cours...';
                 this.style.pointerEvents = 'none';
                 
-                // Simuler un délai de traitement
-                setTimeout(() => {
-                    // Générer une description fictive (dans une vraie application, cela appellerait une API)
-                    let domain = website.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
-                    
-                    if (domain.includes('example.com')) {
-                        companyDescriptionInput.value = "TechSolutions est une entreprise innovante spécialisée dans le développement de solutions logicielles pour les entreprises. Fondée en 2015, elle compte aujourd'hui plus de 50 collaborateurs passionnés par la technologie et l'innovation. Avec une approche centrée sur le client, TechSolutions s'efforce de fournir des solutions sur mesure qui répondent parfaitement aux besoins spécifiques de chaque client.";
-                    } else {
-                        companyDescriptionInput.value = `Entreprise dynamique dans son secteur, ${domain} se distingue par son approche innovante et sa culture d'entreprise axée sur l'excellence. Avec une équipe talentueuse et passionnée, l'entreprise propose des produits/services de qualité qui répondent aux besoins de ses clients. Sa mission est de créer de la valeur tout en maintenant un environnement de travail stimulant pour ses collaborateurs.`;
-                    }
-                    
-                    // Réinitialiser le bouton
-                    this.innerHTML = '<i class="fas fa-magic"></i> Générer une description';
-                    this.style.pointerEvents = 'auto';
-                }, 1500);
+                // Extraire le domaine pour la recherche
+                const domain = website.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+                
+                // Simuler un appel à OpenAI
+                simulateOpenAIRequest(domain, this);
             });
+            
+            // Simulation d'une requête à OpenAI
+            function simulateOpenAIRequest(domain, button) {
+                console.log('Simulation d\'un appel à OpenAI pour le domaine:', domain);
+                
+                // Simuler des étapes de traitement pour une expérience plus réaliste
+                const processingSteps = [
+                    'Analyse du domaine...',
+                    'Recherche d\'informations...',
+                    'Génération du contenu avec OpenAI...',
+                    'Finalisation de la description...'
+                ];
+                
+                let currentStep = 0;
+                
+                // Afficher les étapes de traitement successivement
+                const processingInterval = setInterval(() => {
+                    if (currentStep < processingSteps.length) {
+                        button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${processingSteps[currentStep]}`;
+                        currentStep++;
+                    } else {
+                        clearInterval(processingInterval);
+                        generateAIDescription(domain, button);
+                    }
+                }, 800);
+            }
+            
+            // Génération de la description avec "OpenAI"
+            function generateAIDescription(domain, button) {
+                // Définir différentes descriptions possibles selon le domaine
+                const descriptions = {
+                    'example.com': `TechSolutions est une entreprise innovante spécialisée dans le développement de solutions logicielles pour les entreprises. Fondée en 2015, elle compte aujourd'hui plus de 50 collaborateurs passionnés par la technologie et l'innovation. Avec une approche centrée sur le client, TechSolutions s'efforce de fournir des solutions sur mesure qui répondent parfaitement aux besoins spécifiques de chaque client.`,
+                    
+                    'google.com': `Google est une entreprise technologique mondiale qui développe des produits et services liés à Internet, notamment des technologies de recherche, de cloud computing, de logiciels et de matériel. Fondée en 1998 par Larry Page et Sergey Brin, Google a pour mission d'organiser l'information à l'échelle mondiale et de la rendre universellement accessible et utile. Avec plus de 135 000 employés répartis dans le monde entier, l'entreprise est connue pour sa culture d'innovation, sa créativité et son engagement en faveur de l'excellence technique.`,
+                    
+                    'microsoft.com': `Microsoft est une entreprise technologique multinationale qui développe, fabrique, licencie et vend des logiciels informatiques, des produits électroniques, des ordinateurs et des services personnels. Fondée en 1975 par Bill Gates et Paul Allen, Microsoft s'est donné pour mission d'aider chaque personne et chaque organisation sur la planète à accomplir davantage. Avec une forte présence dans le cloud computing, les systèmes d'exploitation et les solutions d'entreprise, Microsoft est reconnue pour son engagement envers l'innovation et la transformation numérique.`,
+                    
+                    'apple.com': `Apple est une entreprise technologique américaine qui conçoit, développe et vend des produits électroniques grand public, des logiciels informatiques et des services en ligne. Fondée en 1976 par Steve Jobs, Steve Wozniak et Ronald Wayne, Apple est connue pour ses produits innovants comme l'iPhone, l'iPad, le Mac et l'Apple Watch. L'entreprise se distingue par son engagement envers le design, la simplicité d'utilisation et l'intégration harmonieuse entre matériel et logiciel. Avec une forte culture d'excellence et d'innovation, Apple vise à créer des produits qui enrichissent la vie de ses clients.`
+                };
+                
+                // Rechercher une correspondance exacte
+                let description = descriptions[domain];
+                
+                // Si pas de correspondance exacte, générer une description générique
+                if (!description) {
+                    // Créer une description basée sur le secteur
+                    let sector = getSectorFromDomain(domain);
+                    let innovation = getRandomInnovationText();
+                    let culture = getRandomCultureText();
+                    let year = 2010 + Math.floor(Math.random() * 10); // Année aléatoire entre 2010 et 2019
+                    
+                    description = `${domain.split('.')[0].charAt(0).toUpperCase() + domain.split('.')[0].slice(1)} est une entreprise ${sector} dynamique qui se distingue par ${innovation}. Fondée en ${year}, l'entreprise a développé une expertise reconnue dans son domaine et continue d'élargir son offre pour répondre aux besoins évolutifs du marché. ${culture} Avec une vision orientée vers l'avenir, l'entreprise s'engage à fournir des produits et services de qualité supérieure tout en maintenant une forte responsabilité envers ses clients, ses employés et la société.`;
+                }
+                
+                // Mettre à jour le champ de description
+                companyDescriptionInput.value = description;
+                
+                // Effet de saisie progressive pour un rendu plus naturel
+                animateTypingEffect(companyDescriptionInput, description);
+                
+                // Réinitialiser le bouton avec une animation réussie
+                button.innerHTML = '<i class="fas fa-check-circle"></i> Description générée avec IA';
+                button.style.backgroundColor = "#10b981";
+                button.style.pointerEvents = 'auto';
+                
+                // Restaurer le bouton après un moment
+                setTimeout(() => {
+                    button.innerHTML = '<i class="fas fa-magic"></i> Générer une description';
+                    button.style.backgroundColor = "";
+                }, 3000);
+            }
+            
+            // Animation d'effet de saisie
+            function animateTypingEffect(element, text) {
+                // Sauvegarder le texte complet
+                const fullText = text;
+                
+                // Vider le champ
+                element.value = '';
+                
+                // Ajouter les caractères un par un
+                let i = 0;
+                const typingInterval = setInterval(() => {
+                    if (i < fullText.length) {
+                        element.value += fullText.charAt(i);
+                        i++;
+                        
+                        // Faire défiler pour voir le texte en cours de saisie
+                        element.scrollTop = element.scrollHeight;
+                    } else {
+                        clearInterval(typingInterval);
+                    }
+                }, 5); // Vitesse de saisie
+            }
+            
+            // Fonction pour obtenir un secteur aléatoire basé sur le domaine
+            function getSectorFromDomain(domain) {
+                const sectors = [
+                    "technologique",
+                    "de services",
+                    "de conseil",
+                    "spécialisée en informatique",
+                    "innovante",
+                    "leader dans son secteur",
+                    "axée sur les solutions numériques",
+                    "en pleine croissance"
+                ];
+                
+                // Utiliser le hash du domaine pour sélectionner un secteur
+                const hash = domain.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+                return sectors[hash % sectors.length];
+            }
+            
+            // Textes d'innovation aléatoires
+            function getRandomInnovationText() {
+                const innovations = [
+                    "son approche innovante et sa capacité à anticiper les tendances du marché",
+                    "ses solutions créatives et sa vision avant-gardiste",
+                    "sa maîtrise des technologies de pointe et son engagement envers l'innovation continue",
+                    "son esprit d'innovation et sa recherche constante d'excellence",
+                    "sa démarche d'amélioration continue et son adaptabilité face aux évolutions technologiques"
+                ];
+                
+                return innovations[Math.floor(Math.random() * innovations.length)];
+            }
+            
+            // Textes de culture d'entreprise aléatoires
+            function getRandomCultureText() {
+                const cultures = [
+                    "Sa culture d'entreprise valorise la collaboration, la créativité et le développement professionnel.",
+                    "Au sein de l'entreprise, l'accent est mis sur l'autonomie, l'esprit d'équipe et le bien-être des collaborateurs.",
+                    "L'entreprise cultive un environnement de travail stimulant où chaque contribution est valorisée.",
+                    "Avec une équipe talentueuse et passionnée, l'entreprise favorise l'innovation et le partage des connaissances.",
+                    "L'entreprise se distingue par sa culture inclusive et son engagement en faveur du développement durable."
+                ];
+                
+                return cultures[Math.floor(Math.random() * cultures.length)];
+            }
             
             // Gestionnaires d'événements pour les boutons de navigation
             next1Btn.addEventListener('click', () => navigateToQuestion(1, 2));

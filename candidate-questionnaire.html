@@ -899,23 +899,67 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Récupérer les données du candidat depuis localStorage
+            const candidateDataString = localStorage.getItem('candidateData');
+            let candidateData = null;
+            
+            if (candidateDataString) {
+                try {
+                    candidateData = JSON.parse(candidateDataString);
+                    console.log('Données du candidat récupérées:', candidateData);
+                } catch (error) {
+                    console.error('Erreur lors de la récupération des données:', error);
+                }
+            }
+            
             // Vérifier si le CV a été téléchargé
             function checkCVUploadStatus() {
-                // Simuler que le CV n'a pas été téléchargé
-                // En production, cela serait vérifié via une session ou un cookie
-                const cvUploaded = false;
                 const uploadLaterBox = document.getElementById('uploadLaterBox');
                 const cvStep = document.getElementById('cvStep');
+                
+                // Vérifier si le CV a été téléchargé en utilisant localStorage
+                const cvUploaded = candidateData && candidateData.cvUploaded === true;
                 
                 if (cvUploaded) {
                     // Si le CV a été téléchargé, marquer l'étape comme complétée
                     uploadLaterBox.style.display = 'none';
                     cvStep.classList.add('completed');
+                    cvStep.querySelector('.step-number').innerHTML = '<i class="fas fa-check"></i>';
+                    
+                    // Pré-remplir le formulaire avec les données du CV
+                    prefillFormWithCVData(candidateData);
                 } else {
                     // Si le CV n'a pas été téléchargé, afficher la notification
                     uploadLaterBox.style.display = 'flex';
                     cvStep.classList.remove('completed');
                 }
+            }
+            
+            // Fonction pour pré-remplir le formulaire avec les données du CV
+            function prefillFormWithCVData(data) {
+                if (!data) return;
+                
+                // Pré-remplir les informations personnelles
+                if (data.personalInfo) {
+                    // Nom complet
+                    const fullNameInput = document.getElementById('fullName');
+                    if (fullNameInput && data.personalInfo.name) {
+                        fullNameInput.value = data.personalInfo.name;
+                    }
+                    
+                    // Adresse
+                    const addressInput = document.getElementById('address');
+                    if (addressInput && data.personalInfo.location) {
+                        addressInput.value = data.personalInfo.location;
+                    }
+                }
+                
+                // Pré-remplir le titre du poste si présent
+                if (data.experience && data.experience.title) {
+                    addJobTitleTag(data.experience.title);
+                }
+                
+                console.log('Formulaire pré-rempli avec les données du CV');
             }
             
             checkCVUploadStatus();
