@@ -1303,3 +1303,39 @@ footer p {
     margin-right: 0.75rem;
     margin-bottom: 0.75rem;
 }
+
+/* Styles pour les résultats d'extraction de CV */
+.result-details {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: white;
+    border: 1px solid #D1FAE5;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    text-align: left;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.result-item {
+    display: flex;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-label {
+    width: 35%;
+    font-weight: 500;
+    color: #4B5563;
+    padding-right: 1rem;
+}
+
+.result-value {
+    width: 65%;
+    color: #1F2937;
+    word-break: break-word;
+}

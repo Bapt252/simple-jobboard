@@ -3,130 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Télécharger votre CV - Nexten</title>
+    <title>Téléchargez votre CV - Simple JobBoard</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1><i class="fas fa-briefcase"></i> Nexten</h1>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Accueil</a></li>
-                    <li><a href="post-job.html">Publier une offre</a></li>
-                    <li><a href="candidate-upload.html" class="active">Espace candidat</a></li>
-                    <li><a href="recruiter-dashboard.html">Espace recruteur</a></li>
-                </ul>
-            </nav>
+    <div id="header"></div>
+    
+    <main class="container">
+        <div class="stepper step1">
+            <div class="step active">
+                <div class="step-number">1</div>
+                <div class="step-label">Télécharger CV</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-label">Questionnaire</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-label">Matchs</div>
+            </div>
         </div>
-    </header>
-
-    <main>
-        <div class="container">
-            <h2>Comment souhaitez-vous procéder ?</h2>
-            <p>Vous pouvez télécharger votre CV maintenant ou commencer directement par le questionnaire.</p>
-            
-            <div class="form-card">
-                <button class="btn btn-primary" id="uploadNowBtn">Télécharger mon CV</button>
-                <a href="candidate-questionnaire.html" class="btn btn-secondary">Aller au questionnaire</a>
+        
+        <div class="page-header">
+            <h1>Téléchargez votre CV</h1>
+            <p class="subtitle">Commencez par télécharger votre CV pour faciliter le processus de candidature.</p>
+        </div>
+        
+        <div class="options-container">
+            <div class="option" id="uploadOption">
+                <div class="option-icon">
+                    <i class="fas fa-file-upload"></i>
+                </div>
+                <div class="option-content">
+                    <h3>Télécharger mon CV</h3>
+                    <p>Téléchargez votre CV au format PDF ou Word pour que nous puissions extraire vos informations automatiquement.</p>
+                </div>
+                <div class="option-arrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
             </div>
             
-            <div id="uploadContent" style="display: none;">
-                <label for="cvUpload">Téléchargez votre CV :</label>
-                <input type="file" id="cvUpload" accept=".pdf,.docx,.doc">
-                <div id="progressContainer" style="display: none;">
-                    <div id="progressFill" style="width: 0%;"></div>
-                    <div id="progressText">0%</div>
+            <div class="option" id="manualOption">
+                <div class="option-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <div class="option-content">
+                    <h3>Saisir mes informations manuellement</h3>
+                    <p>Pas de CV disponible ? Pas de problème ! Vous pouvez saisir vos informations manuellement.</p>
+                </div>
+                <div class="option-arrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="upload-container" id="uploadArea">
+            <div class="alert alert-info">
+                <div class="alert-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="alert-content">
+                    <div class="alert-title">Comment ça marche ?</div>
+                    <div class="alert-text">Nous allons analyser votre CV pour en extraire les informations importantes comme vos compétences, votre expérience et votre formation. Vous pourrez ensuite vérifier et compléter ces informations.</div>
+                </div>
+            </div>
+            
+            <div class="file-upload-container">
+                <input type="file" id="cvUpload" accept=".pdf,.doc,.docx" style="display: block; margin-bottom: 10px;">
+                <label for="cvUpload" class="file-upload-label">
+                    <div class="file-upload-icon">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                    </div>
+                    <div class="file-upload-text">
+                        <strong>Choisir un fichier</strong> ou glisser-déposer
+                        <span>Formats acceptés : PDF, Word (.doc, .docx) • Max 5 Mo</span>
+                    </div>
+                </label>
+                
+                <div id="filePreview" class="file-preview">
+                    <div class="file-preview-content">
+                        <i class="fas fa-file-pdf file-icon"></i>
+                        <div class="file-info">
+                            <div id="fileName" class="file-name">document.pdf</div>
+                            <div id="fileSize" class="file-size">2.4 MB • PDF</div>
+                        </div>
+                    </div>
+                    <div class="file-preview-actions">
+                        <button id="changeFileBtn" class="btn btn-text">Changer</button>
+                        <button id="uploadBtn" class="btn btn-primary">Télécharger</button>
+                    </div>
+                </div>
+                
+                <div id="progressContainer" class="progress-container">
+                    <div class="progress-text-wrapper">
+                        <span>Analyse en cours...</span>
+                        <span id="progressText">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                </div>
+                
+                <div id="resultContainer" class="result-container">
+                    <div class="result-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="result-title">CV téléchargé avec succès</div>
+                    <p class="result-text">Nous avons extrait les informations importantes de votre CV. Vous pourrez les compléter ou les modifier dans la prochaine étape.</p>
+                    <div id="resultDetails" class="result-details">
+                        <!-- Les données extraites seront affichées ici -->
+                    </div>
+                    <div class="result-actions">
+                        <button id="continueBtn" class="btn btn-primary">Continuer</button>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
-
-    <footer>
-        <div class="container">
-            <p>© 2025 Nexten - Tous droits réservés</p>
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const uploadNowBtn = document.getElementById('uploadNowBtn');
-            const cvUpload = document.getElementById('cvUpload');
-            const progressFill = document.getElementById('progressFill');
-            const progressText = document.getElementById('progressText');
-            const progressContainer = document.getElementById('progressContainer');
-            const uploadContent = document.getElementById('uploadContent');
-
-            uploadNowBtn.addEventListener('click', function() {
-                uploadContent.style.display = 'block';
-            });
-
-            cvUpload.addEventListener('change', async function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-
-                if (file.size > 5 * 1024 * 1024) {
-                    alert('Le fichier est trop volumineux. Taille maximum : 5 Mo');
-                    cvUpload.value = '';
-                    return;
-                }
-
-                progressContainer.style.display = 'block';
-                simulateUploadWithAnimation();
-            });
-
-            function simulateUploadWithAnimation() {
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 20;
-                    progressFill.style.width = `${progress}%`;
-                    progressText.textContent = `${progress}%`;
-                    
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        setTimeout(() => saveExtractedData({
-                            personalInfo: {
-                                name: "John Doe",
-                                email: "john@example.com",
-                                phone: "0123456789",
-                                location: "Paris, France"
-                            },
-                            skills: ["JavaScript", "HTML", "CSS", "React"],
-                            experience: {
-                                company: "TechCorp",
-                                duration: "3 ans"
-                            },
-                            education: {
-                                degree: "Master Informatique",
-                                school: "Université de Paris",
-                                year: "2020"
-                            }
-                        }), 500);
-                    }
-                }, 500);
-            }
-
-            function saveExtractedData(extractedData) {
-                try {
-                    localStorage.setItem('candidateData', JSON.stringify(extractedData));
-                    console.log('CV data saved:', extractedData);
-
-                    const questionnaireBtn = document.createElement('button');
-                    questionnaireBtn.textContent = 'Accéder au questionnaire';
-                    questionnaireBtn.className = 'btn btn-primary';
-                    questionnaireBtn.addEventListener('click', function() {
-                        window.location.href = 'candidate-questionnaire.html';
-                    });
-
-                    progressContainer.innerHTML = '';
-                    progressContainer.appendChild(questionnaireBtn);
-                } catch (error) {
-                    console.error('Erreur lors de la sauvegarde des données:', error);
-                    alert('Une erreur est survenue lors de la sauvegarde des données');
-                }
-            }
-        });
-    </script>
+    
+    <div id="footer"></div>
+    
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+    <script src="candidate-upload.js"></script>
 </body>
 </html>
