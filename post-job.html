@@ -98,7 +98,10 @@
                         <label for="company-address" style="display: block; margin-bottom: 0.7rem; font-weight: 500; color: var(--dark); position: relative;">
                             Adresse complète <span style="color: var(--primary);">*</span>
                         </label>
-                        <input type="text" id="company-address" placeholder="Ex: 123 Avenue des Champs-Élysées, 75008 Paris" required style="width: 100%; padding: 0.9rem; border: 1px solid #e2e8f0; border-radius: var(--radius); font-size: 1rem; transition: var(--transition); background-color: var(--light);">
+                        <div style="position: relative;">
+                            <input type="text" id="company-address" placeholder="Ex: 123 Avenue des Champs-Élysées, 75008 Paris" required style="width: 100%; padding: 0.9rem; border: 1px solid #e2e8f0; border-radius: var(--radius); font-size: 1rem; transition: var(--transition); background-color: var(--light);">
+                        </div>
+                        <small style="color: var(--primary); font-size: 0.85rem; margin-top: 0.3rem; display: block;">Commencez à saisir votre adresse pour voir des suggestions</small>
                     </div>
                     
                     <div class="form-group">
@@ -285,26 +288,65 @@
                     
                     const autocomplete = new google.maps.places.Autocomplete(addressInput, {
                         types: ['address'],
-                        componentRestrictions: { country: ['fr'] }  // Limiter aux adresses françaises
+                        componentRestrictions: { country: ['fr'] },  // Limiter aux adresses françaises
+                        fields: ['address_components', 'formatted_address', 'geometry', 'name']
                     });
                     
                     // Indiquer visuellement que l'autocomplétion est disponible
                     addressInput.placeholder = "Commencez à saisir l'adresse...";
                     addressInput.parentNode.querySelector('label').innerHTML += ' <span style="color: var(--success); font-size: 0.8rem;">(autocomplétion activée)</span>';
                     
+                    // Ajouter un indicateur de chargement à l'input
+                    const parentDiv = addressInput.parentNode;
+                    let loadingElement = parentDiv.querySelector('.loading-indicator');
+                    if (!loadingElement) {
+                        loadingElement = document.createElement('div');
+                        loadingElement.className = 'loading-indicator';
+                        loadingElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                        loadingElement.style.position = 'absolute';
+                        loadingElement.style.right = '10px';
+                        loadingElement.style.top = '50%';
+                        loadingElement.style.transform = 'translateY(-50%)';
+                        loadingElement.style.color = 'var(--primary)';
+                        loadingElement.style.display = 'none';
+                        
+                        // Si le parent n'a pas de position relative, la définir
+                        if (window.getComputedStyle(parentDiv).position === 'static') {
+                            parentDiv.style.position = 'relative';
+                        }
+                        
+                        parentDiv.appendChild(loadingElement);
+                    }
+                    
+                    // Afficher l'indicateur de chargement lors de la saisie
+                    addressInput.addEventListener('input', function() {
+                        if (this.value.length > 3) {
+                            loadingElement.style.display = 'block';
+                        } else {
+                            loadingElement.style.display = 'none';
+                        }
+                    });
+                    
                     // Enregistrer l'adresse complète lorsqu'un lieu est sélectionné
                     autocomplete.addListener('place_changed', function() {
+                        // Masquer l'indicateur de chargement
+                        loadingElement.style.display = 'none';
+                        
                         const place = autocomplete.getPlace();
-                        if (!place.geometry) {
+                        if (!place || !place.geometry) {
                             // L'utilisateur a appuyé sur entrée sans sélectionner de suggestion
                             console.warn("Adresse saisie mais non sélectionnée dans les suggestions");
+                            addressInput.style.borderColor = "#f97316"; // Orange pour avertissement
                             return;
                         }
                         
                         // Sauvegarder les coordonnées et l'adresse formatée pour une utilisation ultérieure
-                        const formattedAddress = place.formatted_address;
+                        const formattedAddress = place.formatted_address || addressInput.value;
                         const lat = place.geometry.location.lat();
                         const lng = place.geometry.location.lng();
+                        
+                        // Mettre à jour l'input avec l'adresse formatée
+                        addressInput.value = formattedAddress;
                         
                         // Stocker les données de géolocalisation dans des attributs de données
                         addressInput.dataset.formattedAddress = formattedAddress;
@@ -313,6 +355,19 @@
                         
                         // Confirmation visuelle subtile pour l'utilisateur
                         addressInput.style.borderColor = "#10b981";
+                        
+                        // Ajouter une icône de confirmation dans l'input
+                        const existingIcon = parentDiv.querySelector('.address-validated');
+                        if (!existingIcon) {
+                            const confirmIcon = document.createElement('div');
+                            confirmIcon.className = 'address-validated';
+                            confirmIcon.innerHTML = '<i class="fas fa-check-circle" style="color: #10b981;"></i>';
+                            confirmIcon.style.position = 'absolute';
+                            confirmIcon.style.right = '10px';
+                            confirmIcon.style.top = '50%';
+                            confirmIcon.style.transform = 'translateY(-50%)';
+                            parentDiv.appendChild(confirmIcon);
+                        }
                         
                         // Créer un message de confirmation qui s'auto-efface
                         const confirmDiv = document.createElement('div');
@@ -323,11 +378,11 @@
                         confirmDiv.style.marginTop = "5px";
                         
                         // Ajouter le message après l'input
-                        const existingConfirm = addressInput.parentNode.querySelector('.address-confirm');
+                        const existingConfirm = parentDiv.querySelector('.address-confirm');
                         if (existingConfirm) {
                             existingConfirm.remove();
                         }
-                        addressInput.parentNode.appendChild(confirmDiv);
+                        parentDiv.appendChild(confirmDiv);
                         
                         console.log('Adresse sélectionnée:', formattedAddress);
                         console.log('Coordonnées:', lat, lng);
@@ -335,7 +390,12 @@
                         // Auto-effacement après 5 secondes
                         setTimeout(() => {
                             confirmDiv.style.opacity = '0';
-                            setTimeout(() => confirmDiv.remove(), 500);
+                            confirmDiv.style.transition = 'opacity 0.5s ease';
+                            setTimeout(() => {
+                                if (confirmDiv.parentNode) {
+                                    confirmDiv.remove();
+                                }
+                            }, 500);
                         }, 5000);
                     });
                 } catch (error) {
