@@ -315,8 +315,14 @@
 
                         <div class="form-group">
                             <label for="address" class="form-label">Adresse exacte <span style="color: var(--primary);">*</span></label>
-                            <input type="text" id="address" name="address" class="form-control" placeholder="Saisissez votre adresse complète" required>
+                            <div style="position: relative;">
+                                <input type="text" id="address" name="address" class="form-control" placeholder="Saisissez votre adresse complète" required>
+                                <div id="location-loading" style="display: none; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);">
+                                    <i class="fas fa-spinner fa-spin" style="color: var(--primary);"></i>
+                                </div>
+                            </div>
                             <small class="form-text">Cette information est nécessaire pour calculer le temps de trajet vers les entreprises</small>
+                            <small class="form-text" style="color: var(--primary);">Commencez à saisir votre adresse pour voir des suggestions</small>
                         </div>
                     </div>
 
@@ -801,6 +807,8 @@
         // Fonction pour initialiser l'autocomplete Google Maps
         function initAutocomplete() {
             const addressInput = document.getElementById('address');
+            const loadingElement = document.getElementById('location-loading');
+            
             if (addressInput) {
                 try {
                     // Vérifier si l'API Google Maps est chargée
@@ -812,25 +820,43 @@
                     
                     const autocomplete = new google.maps.places.Autocomplete(addressInput, {
                         types: ['address'],
-                        componentRestrictions: { country: ['fr'] }
+                        componentRestrictions: { country: ['fr'] },
+                        fields: ['address_components', 'formatted_address', 'geometry', 'name']
                     });
                     
                     // Indiquer visuellement que l'autocomplétion est disponible
                     addressInput.placeholder = "Commencez à saisir votre adresse...";
-                    const label = addressInput.previousElementSibling;
-                    if (label) {
-                        label.innerHTML += ' <span style="color: var(--success); font-size: 0.8rem;">(autocomplétion activée)</span>';
-                    }
+                    
+                    // Activer l'indicateur de chargement quand l'utilisateur commence à saisir
+                    addressInput.addEventListener('input', function() {
+                        if (addressInput.value.length > 3) {
+                            if (loadingElement) loadingElement.style.display = 'block';
+                        } else {
+                            if (loadingElement) loadingElement.style.display = 'none';
+                        }
+                    });
+                    
+                    // Masquer l'indicateur de chargement lorsque l'utilisateur clique ailleurs
+                    document.addEventListener('click', function(event) {
+                        if (event.target !== addressInput && loadingElement) {
+                            loadingElement.style.display = 'none';
+                        }
+                    });
                     
                     // Enregistrer l'adresse complète lorsqu'un lieu est sélectionné
                     autocomplete.addListener('place_changed', function() {
+                        if (loadingElement) loadingElement.style.display = 'none';
+                        
                         const place = autocomplete.getPlace();
-                        if (!place.geometry) {
+                        if (!place || !place.geometry) {
+                            console.error("Aucune information géométrique reçue pour cette adresse");
+                            // Permettre quand même la saisie manuelle
+                            addressInput.style.borderColor = "#f97316";
                             return;
                         }
                         
                         // Sauvegarder les coordonnées et l'adresse formatée
-                        const formattedAddress = place.formatted_address;
+                        const formattedAddress = place.formatted_address || addressInput.value;
                         const lat = place.geometry.location.lat();
                         const lng = place.geometry.location.lng();
                         
@@ -839,8 +865,21 @@
                         addressInput.dataset.lat = lat;
                         addressInput.dataset.lng = lng;
                         
+                        // Mettre à jour le champ avec l'adresse formatée
+                        addressInput.value = formattedAddress;
+                        
                         // Confirmation visuelle
                         addressInput.style.borderColor = "#10b981";
+                        
+                        // Ajouter une icône de confirmation
+                        const parentDiv = addressInput.parentNode;
+                        const existingIcon = parentDiv.querySelector('.address-validated');
+                        if (!existingIcon) {
+                            const confirmIcon = document.createElement('div');
+                            confirmIcon.className = 'address-validated';
+                            confirmIcon.innerHTML = '<i class="fas fa-check-circle" style="color: #10b981; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"></i>';
+                            parentDiv.appendChild(confirmIcon);
+                        }
                         
                         console.log('Adresse sélectionnée:', formattedAddress);
                         console.log('Coordonnées:', lat, lng);
