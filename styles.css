@@ -71,11 +71,17 @@ header .container {
     align-items: center;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
 header h1 {
     font-size: 1.8rem;
     font-weight: 700;
     display: flex;
     align-items: center;
+    margin-right: 2rem;
 }
 
 /* Logo */
@@ -95,6 +101,35 @@ nav ul {
 
 nav ul li {
     margin-left: 2rem;
+}
+
+/* Auth buttons in header */
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.btn-auth {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.btn-auth:hover {
+    transform: translateY(-2px);
+}
+
+.btn-auth-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.btn-auth-primary:hover {
+    background-color: var(--primary-dark);
+    color: white;
 }
 
 nav ul li a {
@@ -943,6 +978,21 @@ footer p {
         flex: 0 0 calc(50% - 1rem);
         margin-bottom: 1rem;
     }
+    
+    .match-card {
+        flex-direction: column;
+    }
+    
+    .match-avatar {
+        margin-bottom: 1rem;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .match-percentage {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -951,13 +1001,28 @@ footer p {
         text-align: center;
     }
     
+    .header-left {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    header h1 {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+    
     nav ul {
         margin-top: 1rem;
         justify-content: center;
+        flex-wrap: wrap;
     }
     
     nav ul li {
-        margin: 0 1rem;
+        margin: 0.5rem 1rem;
+    }
+    
+    .auth-buttons {
+        margin-top: 1rem;
     }
     
     .hero h2 {
@@ -972,12 +1037,13 @@ footer p {
     .search-bar select,
     .search-bar button {
         width: 100%;
-        border-radius: 0;
+        border-radius: var(--radius);
+        margin-bottom: 0.5rem;
     }
     
     .search-bar select {
         border-left: none;
-        border-top: 1px solid var(--gray);
+        border: 1px solid var(--gray);
     }
     
     .form-group {
@@ -1027,6 +1093,11 @@ footer p {
     .dashboard-tabs {
         overflow-x: auto;
         white-space: nowrap;
+        padding-bottom: 5px;
+    }
+    
+    .dashboard-tab {
+        padding: 0.8rem 1rem;
     }
     
     .metric-card {
@@ -1038,6 +1109,16 @@ footer p {
         margin: 0 -15px;
         padding: 0 15px;
         width: calc(100% + 30px);
+        overflow-x: auto;
+    }
+    
+    /* Amélioration responsive pour les formulaires de questionnaire */
+    .question-options {
+        margin: 0 -0.5rem;
+    }
+    
+    .question-option {
+        padding: 0.8rem;
     }
 }
 
@@ -1049,6 +1130,71 @@ footer p {
     .progress-steps {
         margin-bottom: 1.5rem;
     }
+    
+    .btn-lg {
+        padding: 0.9rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    /* Fix pour les modales et popups sur mobile */
+    .modal-content {
+        max-width: 95%;
+        padding: 1rem;
+    }
+    
+    /* Amélioration du spacing sur mobile */
+    .container {
+        padding: 0 10px;
+    }
+    
+    .job-card, .card {
+        padding: 1.25rem;
+    }
+    
+    .result-details {
+        padding: 0.75rem;
+    }
+    
+    .result-item {
+        flex-direction: column;
+    }
+    
+    .result-label, .result-value {
+        width: 100%;
+    }
+    
+    .result-label {
+        margin-bottom: 0.25rem;
+        font-weight: 600;
+    }
+}
+
+/* Ajout de styles pour afficher correctement les erreurs */
+.error-message {
+    color: #ef4444;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    animation: fadeIn 0.3s ease;
+}
+
+.error-message i {
+    margin-right: 0.3rem;
+}
+
+/* Style pour message d'avertissement */
+.alert-warning {
+    background-color: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    color: #92400e;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+.alert-warning i {
+    color: #f59e0b;
+    margin-right: 0.5rem;
 }
 
 /* Animations */
