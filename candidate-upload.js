@@ -1,7 +1,36 @@
+// Fonction pour initialiser l'autocomplete Google Maps
+function initAutocomplete() {
+    // Cette fonction pourra être utilisée quand on ajoute un champ d'adresse pour le candidat
+    console.log("Fonction d'autocomplétion Google Maps initialisée");
+    
+    // Si on ajoute un champ d'adresse plus tard, l'initialisation se fera ici
+    // Exemple:
+    // const addressInput = document.getElementById('candidate-address');
+    // if (addressInput) {
+    //     try {
+    //         const autocomplete = new google.maps.places.Autocomplete(addressInput, {
+    //             types: ['address'],
+    //             componentRestrictions: { country: ['fr'] }
+    //         });
+    //         
+    //         autocomplete.addListener('place_changed', function() {
+    //             const place = autocomplete.getPlace();
+    //             if (place.geometry) {
+    //                 addressInput.dataset.lat = place.geometry.location.lat();
+    //                 addressInput.dataset.lng = place.geometry.location.lng();
+    //             }
+    //         });
+    //     } catch (error) {
+    //         console.error("Erreur Google Maps:", error);
+    //     }
+    // }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Elements
     const uploadOption = document.getElementById('uploadOption');
     const manualOption = document.getElementById('manualOption');
+    const skipOption = document.getElementById('skipOption');
     const uploadArea = document.getElementById('uploadArea');
     const filePreview = document.getElementById('filePreview');
     const cvUpload = document.getElementById('cvUpload');
@@ -26,6 +55,76 @@ document.addEventListener('DOMContentLoaded', function() {
         uploadOption.addEventListener('click', function() {
             uploadArea.classList.add('active');
             scrollToElement(uploadArea);
+        });
+    }
+
+    if (skipOption) {
+        skipOption.addEventListener('click', function() {
+            // Mise à jour du stepper
+            stepper.classList.remove('step1');
+            stepper.classList.add('step2');
+            document.querySelectorAll('.step')[0].classList.remove('active');
+            document.querySelectorAll('.step')[0].classList.add('completed');
+            document.querySelectorAll('.step')[1].classList.add('active');
+            
+            // Enregistrer un objet vide pour indiquer que le CV n'a pas été parsé
+            localStorage.setItem('candidateData', JSON.stringify({
+                skipped: true,
+                personalInfo: {
+                    name: "",
+                    email: "",
+                    phone: "",
+                    location: ""
+                },
+                skills: [],
+                experience: {
+                    company: "",
+                    duration: ""
+                },
+                education: {
+                    degree: "",
+                    school: "",
+                    year: ""
+                }
+            }));
+            
+            // Redirection vers le questionnaire
+            setTimeout(() => window.location.href = 'new-candidate-questionnaire.html', 800);
+        });
+    }
+    
+    if (manualOption) {
+        manualOption.addEventListener('click', function() {
+            // Mise à jour du stepper
+            stepper.classList.remove('step1');
+            stepper.classList.add('step2');
+            document.querySelectorAll('.step')[0].classList.remove('active');
+            document.querySelectorAll('.step')[0].classList.add('completed');
+            document.querySelectorAll('.step')[1].classList.add('active');
+            
+            // Enregistrer un objet vide pour indiquer que le CV sera rempli manuellement
+            localStorage.setItem('candidateData', JSON.stringify({
+                manual: true,
+                personalInfo: {
+                    name: "",
+                    email: "",
+                    phone: "",
+                    location: ""
+                },
+                skills: [],
+                experience: {
+                    company: "",
+                    duration: ""
+                },
+                education: {
+                    degree: "",
+                    school: "",
+                    year: ""
+                }
+            }));
+            
+            // Redirection vers le questionnaire
+            setTimeout(() => window.location.href = 'new-candidate-questionnaire.html', 800);
         });
     }
 
@@ -93,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.step')[1].classList.add('active');
 
             // Redirect to questionnaire page
-            setTimeout(() => window.location.href = 'candidate-questionnaire.html', 800);
+            setTimeout(() => window.location.href = 'new-candidate-questionnaire.html', 800);
         });
     }
 

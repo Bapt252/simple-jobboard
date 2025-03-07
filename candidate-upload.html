@@ -6,7 +6,26 @@
     <title>Téléchargez votre CV - Simple JobBoard</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=places" defer></script>
+    <script>
+        function handleGoogleMapsError() {
+            console.error("Erreur de chargement de l'API Google Maps");
+            // Ajouter un message d'erreur visible à l'utilisateur si nécessaire
+        }
+
+        function initAutocompleteCallback() {
+            console.log("Google Maps API chargée avec succès");
+            try {
+                // La fonction initAutocomplete sera définie dans candidate-upload.js
+                if (typeof initAutocomplete === 'function') {
+                    initAutocomplete();
+                }
+            } catch (e) {
+                console.error("Erreur lors de l'initialisation de l'autocomplete", e);
+                handleGoogleMapsError();
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpOvIETyTmlNODPoMEZ46l1ogsQg7Fcyg&libraries=places&callback=initAutocompleteCallback" async defer onerror="handleGoogleMapsError()"></script>
 </head>
 <body>
     <div id="header"></div>
@@ -53,6 +72,19 @@
                 <div class="option-content">
                     <h3>Saisir mes informations manuellement</h3>
                     <p>Pas de CV disponible ? Pas de problème ! Vous pouvez saisir vos informations manuellement.</p>
+                </div>
+                <div class="option-arrow">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            
+            <div class="option" id="skipOption">
+                <div class="option-icon">
+                    <i class="fas fa-forward"></i>
+                </div>
+                <div class="option-content">
+                    <h3>Passer cette étape</h3>
+                    <p>Vous préférez remplir directement le questionnaire ? Vous pourrez télécharger votre CV plus tard.</p>
                 </div>
                 <div class="option-arrow">
                     <i class="fas fa-chevron-right"></i>
