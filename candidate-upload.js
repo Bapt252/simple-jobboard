@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.step')[1].classList.add('active');
 
             // Redirect to questionnaire page
-            setTimeout(() => window.location.href = 'new-candidate-questionnaire.html', 800);
+            setTimeout(() => window.location.href = 'candidate-questionnaire.html', 800);
         });
     }
 
