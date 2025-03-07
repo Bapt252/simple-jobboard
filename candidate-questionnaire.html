@@ -422,13 +422,88 @@
                         <p class="step-description">Informations sur votre disponibilité</p>
                         
                         <div class="form-group">
-                            <label class="form-label" for="interviewAvailability">Disponibilité pour entretiens</label>
-                            <input type="text" id="interviewAvailability" class="form-control" placeholder="Ex: En semaine après 18h, le mardi toute la journée...">
+                            <label class="form-label" for="currentlyEmployed">Êtes-vous actuellement en poste ?</label>
+                            <select id="currentlyEmployed" class="form-control">
+                                <option value="">Sélectionner...</option>
+                                <option value="oui">Oui</option>
+                                <option value="non">Non</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Section conditionnelle pour les candidats en poste -->
+                        <div id="employed-section" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label" for="jobSearchReason">Pourquoi êtes-vous de nouveau à l'écoute ?</label>
+                                <select id="jobSearchReason" class="form-control">
+                                    <option value="">Sélectionner...</option>
+                                    <option value="plus_epanouissement">Je ne m'épanouis plus, je souhaite découvrir de nouvelles choses</option>
+                                    <option value="perspectives">Manque de perspectives d'évolutions</option>
+                                    <option value="remuneration">Rémunération trop faible</option>
+                                    <option value="distance">Poste trop loin de mon domicile</option>
+                                    <option value="flexibilite">Manque de flexibilité (pas de TT, RTT)</option>
+                                    <option value="probleme_interne">Problème en interne (organisation, management)</option>
+                                    <option value="poste_different">Le poste ne coïncide pas avec le poste proposé initialement</option>
+                                    <option value="pse">PSE</option>
+                                    <option value="pas_communiquer">Je ne souhaite pas communiquer</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="noticePeriod">Combien de temps est votre préavis ?</label>
+                                <select id="noticePeriod" class="form-control">
+                                    <option value="">Sélectionner...</option>
+                                    <option value="aucun">Je n'en ai pas, encore en période d'essai</option>
+                                    <option value="1_mois">1 mois</option>
+                                    <option value="2_mois">2 mois</option>
+                                    <option value="3_mois">3 mois</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="noticeNegotiable">Le préavis est-il négociable ?</label>
+                                <select id="noticeNegotiable" class="form-control">
+                                    <option value="">Sélectionner...</option>
+                                    <option value="oui">Oui</option>
+                                    <option value="non">Non</option>
+                                    <option value="ne_sais_pas">Je ne sais pas</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Section conditionnelle pour les candidats sans emploi -->
+                        <div id="unemployed-section" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label" for="jobEndReason">Pourquoi votre dernier contrat s'est arrêté ?</label>
+                                <select id="jobEndReason" class="form-control">
+                                    <option value="">Sélectionner...</option>
+                                    <option value="plus_epanouissement">Je ne m'épanouis plus, je souhaite découvrir de nouvelles choses</option>
+                                    <option value="perspectives">Manque de perspectives d'évolutions</option>
+                                    <option value="remuneration">Rémunération trop faible</option>
+                                    <option value="distance">Poste trop loin de mon domicile</option>
+                                    <option value="flexibilite">Manque de flexibilité (pas de TT, RTT)</option>
+                                    <option value="probleme_interne">Problème en interne (organisation, management)</option>
+                                    <option value="poste_different">Le poste ne coïncide pas avec le poste proposé initialement</option>
+                                    <option value="pse">PSE</option>
+                                    <option value="pas_communiquer">Je ne souhaite pas communiquer</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Section commune aux deux parcours -->
+                        <div class="form-group">
+                            <label class="form-label" for="recruitmentStatus">Où en êtes-vous dans vos process de recrutement ?</label>
+                            <select id="recruitmentStatus" class="form-control">
+                                <option value="">Sélectionner...</option>
+                                <option value="pas_piste">Je n'ai pas encore de piste</option>
+                                <option value="entretiens">J'avance sur différents entretiens</option>
+                                <option value="processus_final">Je suis en processus final</option>
+                                <option value="propositions">On m'a fait des propositions</option>
+                            </select>
                         </div>
                         
                         <div class="form-group">
-                            <label class="form-label" for="noticePeriod">Préavis actuel (en jours)</label>
-                            <input type="number" id="noticePeriod" class="form-control" placeholder="Ex: 30, 60, 90...">
+                            <label class="form-label" for="interviewAvailability">Disponibilité pour entretiens</label>
+                            <input type="text" id="interviewAvailability" class="form-control" placeholder="Ex: En semaine après 18h, le mardi toute la journée...">
                         </div>
                         
                         <div class="form-group">
@@ -816,6 +891,31 @@
                 return priorities;
             }
 
+            // Fonction pour afficher/masquer les sections conditionnelles en fonction du statut d'emploi
+            function toggleEmploymentSections() {
+                const currentlyEmployed = document.getElementById('currentlyEmployed');
+                const employedSection = document.getElementById('employed-section');
+                const unemployedSection = document.getElementById('unemployed-section');
+                
+                if (currentlyEmployed) {
+                    currentlyEmployed.addEventListener('change', function() {
+                        if (this.value === 'oui') {
+                            employedSection.style.display = 'block';
+                            unemployedSection.style.display = 'none';
+                        } else if (this.value === 'non') {
+                            employedSection.style.display = 'none';
+                            unemployedSection.style.display = 'block';
+                        } else {
+                            employedSection.style.display = 'none';
+                            unemployedSection.style.display = 'none';
+                        }
+                    });
+                }
+            }
+            
+            // Initialiser le toggle des sections d'emploi
+            toggleEmploymentSections();
+            
             // Fonction pour collecter les données du formulaire
             function getFormData() {
                 // Récupérer les informations de localisation
@@ -838,6 +938,26 @@
                 // Récupérer les priorités
                 const priorities = getPriorities();
                 
+                // Récupérer le statut d'emploi actuel
+                const currentlyEmployed = document.getElementById('currentlyEmployed').value;
+                
+                // Construire les informations de disponibilité en fonction du statut d'emploi
+                const availabilityData = {
+                    interviewAvailability: document.getElementById('interviewAvailability').value,
+                    relocateWilling: document.getElementById('relocateWilling').checked,
+                    currentlyEmployed: currentlyEmployed,
+                    recruitmentStatus: document.getElementById('recruitmentStatus').value
+                };
+                
+                // Ajouter les informations spécifiques au statut d'emploi
+                if (currentlyEmployed === 'oui') {
+                    availabilityData.jobSearchReason = document.getElementById('jobSearchReason').value;
+                    availabilityData.noticePeriod = document.getElementById('noticePeriod').value;
+                    availabilityData.noticeNegotiable = document.getElementById('noticeNegotiable').value;
+                } else if (currentlyEmployed === 'non') {
+                    availabilityData.jobEndReason = document.getElementById('jobEndReason').value;
+                }
+                
                 // Récupérer les valeurs des champs de l'étape actuelle
                 const formData = {
                     jobPreferences: {
@@ -857,11 +977,7 @@
                         languages: getTagsValues('languages'),
                         certifications: getTagsValues('certifications')
                     },
-                    availability: {
-                        interviewAvailability: document.getElementById('interviewAvailability').value,
-                        noticePeriod: document.getElementById('noticePeriod').value,
-                        relocateWilling: document.getElementById('relocateWilling').checked
-                    },
+                    availability: availabilityData,
                     additional: {
                         motivation: document.getElementById('motivation').value,
                         strengths: document.getElementById('strengths').value,
