@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de bord candidat - Nexten</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-container {
+            padding: 2rem 0;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-header h1 {
+            margin: 0;
+            color: var(--dark);
+            font-size: 1.8rem;
+        }
+        
+        .dashboard-header .welcome-text {
+            color: var(--text);
+            margin-top: 0.5rem;
+        }
+        
+        .dashboard-tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        
+        .dashboard-tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text);
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        .dashboard-tab.active {
+            color: var(--primary);
+        }
+        
+        .dashboard-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .dashboard-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .dashboard-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Process tracking table */
+        .process-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background-color: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .process-table th, 
+        .process-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .process-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .process-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .process-table .company-col {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .company-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f5f9;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .company-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .company-name {
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .job-title {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        
+        /* Process steps */
+        .process-steps {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .process-step {
+            flex: 1;
+            padding: 0.5rem 0;
+            font-size: 0.85rem;
+            text-align: center;
+            position: relative;
+            background-color: #f1f5f9;
+            color: var(--text);
+            border-radius: 4px;
+        }
+        
+        .process-step::after {
+            content: '>';
+            position: absolute;
+            right: -1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+        
+        .process-step:last-child::after {
+            display: none;
+        }
+        
+        .process-step.completed {
+            background-color: #dcfce7;
+            color: #166534;
+            font-weight: 500;
+        }
+        
+        .process-step.active {
+            background-color: #e0e7ff;
+            color: var(--primary-dark);
+            font-weight: 500;
+        }
+        
+        .process-step.upcoming {
+            background-color: #f1f5f9;
+            color: #94a3b8;
+        }
+        
+        /* Action buttons */
+        .process-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            border-radius: 4px;
+        }
+        
+        /* Job cards */
+        .jobs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .job-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .job-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .job-card-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .job-info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem 2rem;
+        }
+        
+        .job-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        
+        .job-info-item i {
+            color: var(--primary);
+            font-size: 1rem;
+        }
+        
+        .job-match {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: #166534;
+            margin-top: 0.5rem;
+        }
+        
+        .job-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .skill-tag {
+            padding: 0.3rem 0.6rem;
+            background-color: #f8fafc;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+        
+        /* Resource cards */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .resource-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .resource-type {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        .resource-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin: 0.5rem 0;
+        }
+        
+        .resource-desc {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        /* Calendar */
+        .calendar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .calendar-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        .calendar-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8fafc;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .calendar-nav-btn:hover {
+            background-color: #f1f5f9;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.25rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .calendar-weekday {
+            text-align: center;
+            padding: 0.75rem 0;
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            padding: 0.5rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .calendar-day:hover {
+            background-color: #f1f5f9;
+        }
+        
+        .day-number {
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .calendar-day.has-event::after {
+            content: '';
+            position: absolute;
+            bottom: 0.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: var(--primary);
+        }
+        
+        .calendar-day.today {
+            background-color: var(--primary);
+        }
+        
+        .calendar-day.today .day-number {
+            color: white;
+        }
+        
+        .calendar-day.inactive {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .upcoming-events {
+            margin-top: 1.5rem;
+        }
+        
+        .event-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .event-time {
+            width: 100px;
+            text-align: center;
+        }
+        
+        .event-time .time {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.1rem;
+        }
+        
+        .event-time .date {
+            color: var(--text);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+        
+        .event-details {
+            flex: 1;
+        }
+        
+        .event-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .event-company {
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .time-slot-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .time-slot {
+            padding: 0.75rem 1rem;
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .time-slot:hover {
+            background-color: #f1f5f9;
+        }
+        
+        .time-slot.selected {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Profile sidebar */
+        .profile-sidebar {
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .profile-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .profile-title {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+        
+        .profile-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .profile-info-item i {
+            width: 20px;
+            color: var(--primary);
+        }
+        
+        /* Messages */
+        .messages-container {
+            display: flex;
+            height: 70vh;
+            background-color: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .conversations-list {
+            width: 320px;
+            border-right: 1px solid #f1f5f9;
+        }
+        
+        .message-search {
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .message-search input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+        }
+        
+        .conversation-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .conversation-item:hover {
+            background-color: #f8fafc;
+        }
+        
+        .conversation-item.active {
+            background-color: #f8fafc;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .conversation-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .conversation-details {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .conversation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.25rem;
+        }
+        
+        .conversation-name {
+            font-weight: 500;
+            color: var(--dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .conversation-time {
+            font-size: 0.8rem;
+            color: var(--text);
+            white-space: nowrap;
+        }
+        
+        .conversation-last-message {
+            font-size: 0.9rem;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .chat-window {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-header {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .message {
+            display: flex;
+            flex-direction: column;
+            max-width: 70%;
+        }
+        
+        .message.received {
+            align-self: flex-start;
+        }
+        
+        .message.sent {
+            align-self: flex-end;
+        }
+        
+        .message-bubble {
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .message.received .message-bubble {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            border-bottom-left-radius: 4px;
+        }
+        
+        .message.sent .message-bubble {
+            background-color: var(--primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text);
+            margin-top: 0.25rem;
+            align-self: flex-end;
+        }
+        
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid #f1f5f9;
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .chat-input textarea {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            resize: none;
+            height: 60px;
+        }
+        
+        .chat-input button {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius);
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-flex {
+                flex-direction: column;
+            }
+            
+            .dashboard-main {
+                order: 2;
+            }
+            
+            .dashboard-sidebar {
+                order: 1;
+                margin-bottom: 2rem;
+            }
+            
+            .messages-container {
+                flex-direction: column;
+                height: auto;
+                max-height: 80vh;
+            }
+            
+            .conversations-list {
+                width: 100%;
+                max-height: 300px;
+                overflow-y: auto;
+                border-right: none;
+                border-bottom: 1px solid #f1f5f9;
+            }
+            
+            .chat-window {
+                min-height: 50vh;
+            }
+            
+            .process-steps {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .process-step {
+                width: 100%;
+            }
+            
+            .process-step::after {
+                content: 'v';
+                top: auto;
+                right: 50%;
+                bottom: -1rem;
+                transform: translateX(50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!-- Le header sera chargé par JavaScript -->
+    </header>
+
+    <main class="container dashboard-container">
+        <div class="dashboard-header">
+            <div>
+                <h1>Tableau de bord candidat</h1>
+                <p class="welcome-text">Bonjour Thomas, voici vos opportunités et ressources.</p>
+            </div>
+            <div>
+                <button class="btn btn-primary"><i class="fas fa-edit"></i> Mettre à jour mon profil</button>
+            </div>
+        </div>
+        
+        <div class="dashboard-tabs">
+            <div class="dashboard-tab active" data-tab="opportunities">
+                <i class="fas fa-briefcase"></i> Mes opportunités
+            </div>
+            <div class="dashboard-tab" data-tab="jobs">
+                <i class="fas fa-search"></i> Postuler en un clic
+            </div>
+            <div class="dashboard-tab" data-tab="resources">
+                <i class="fas fa-book"></i> Centre de ressources
+            </div>
+            <div class="dashboard-tab" data-tab="calendar">
+                <i class="fas fa-calendar-alt"></i> Planning
+            </div>
+            <div class="dashboard-tab" data-tab="messages">
+                <i class="fas fa-envelope"></i> Messagerie
+            </div>
+        </div>
+        
+        <div class="dashboard-flex" style="display: flex; gap: 2rem;">
+            <div class="dashboard-main" style="flex: 1;">
+                <!-- 1. Mes opportunités sélectionnées -->
+                <div class="dashboard-section active" id="opportunities">
+                    <div class="section-header" style="margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Mes process de recrutement en cours</h2>
+                        <p style="color: var(--text);">Suivez l'avancement de vos candidatures et planifiez vos prochaines étapes.</p>
+                    </div>
+                    
+                    <table class="process-table">
+                        <thead>
+                            <tr>
+                                <th>Entreprise</th>
+                                <th>Étapes du process</th>
+                                <th>Prochaine action</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="company-col">
+                                        <div class="company-logo">AL</div>
+                                        <div class="company-info">
+                                            <div class="company-name">AlphaTeam</div>
+                                            <div class="job-title">Développeur Front-end Senior</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-steps">
+                                        <div class="process-step completed">
+                                            Présélection
+                                        </div>
+                                        <div class="process-step completed">
+                                            Entretien RH
+                                        </div>
+                                        <div class="process-step active">
+                                            Test technique
+                                        </div>
+                                        <div class="process-step upcoming">
+                                            Entretien final
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div style="font-weight: 500; color: var(--dark);">Test technique</div>
+                                        <div style="font-size: 0.9rem; color: var(--text);">À compléter avant le 15 mars</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-actions">
+                                        <button class="btn btn-sm btn-primary">Accéder au test</button>
+                                        <button class="btn btn-sm btn-secondary"><i class="fas fa-info-circle"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="company-col">
+                                        <div class="company-logo">NV</div>
+                                        <div class="company-info">
+                                            <div class="company-name">NovaTech</div>
+                                            <div class="job-title">UX/UI Designer</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-steps">
+                                        <div class="process-step completed">
+                                            Présélection
+                                        </div>
+                                        <div class="process-step active">
+                                            Entretien RH
+                                        </div>
+                                        <div class="process-step upcoming">
+                                            Présentation portfolio
+                                        </div>
+                                        <div class="process-step upcoming">
+                                            Entretien final
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div style="font-weight: 500; color: var(--dark);">Entretien RH</div>
+                                        <div style="font-size: 0.9rem; color: var(--text);">Programmé le 12 mars à 14h</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-actions">
+                                        <button class="btn btn-sm btn-primary">Rejoindre call</button>
+                                        <button class="btn btn-sm btn-secondary"><i class="fas fa-calendar-alt"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="company-col">
+                                        <div class="company-logo">DG</div>
+                                        <div class="company-info">
+                                            <div class="company-name">DigitalSphere</div>
+                                            <div class="job-title">Product Manager</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-steps">
+                                        <div class="process-step completed">
+                                            Présélection
+                                        </div>
+                                        <div class="process-step completed">
+                                            Entretien RH
+                                        </div>
+                                        <div class="process-step completed">
+                                            Case study
+                                        </div>
+                                        <div class="process-step completed">
+                                            Entretien équipe
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div style="font-weight: 500; color: var(--dark);">Offre en cours</div>
+                                        <div style="font-size: 0.9rem; color: var(--text);">Réponse attendue d'ici le 10 mars</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-actions">
+                                        <button class="btn btn-sm btn-secondary">Voir détails</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="section-header" style="margin: 2rem 0 1.5rem;">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Mes offres reçues</h2>
+                        <p style="color: var(--text);">Opportunités proposées par les recruteurs suite à votre profil.</p>
+                    </div>
+                    
+                    <div class="jobs-grid">
+                        <div class="job-card">
+                            <div class="job-card-header">
+                                <div class="company-logo">SY</div>
+                                <div>
+                                    <h3 style="margin-bottom: 0.25rem;">Développeur Front-end React</h3>
+                                    <div style="color: var(--text); font-size: 0.9rem;">SynergySoft</div>
+                                </div>
+                            </div>
+                            <div class="job-card-details">
+                                <div class="job-info-row">
+                                    <div class="job-info-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Paris, France</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-euro-sign"></i>
+                                        <span>55-65K€</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-briefcase"></i>
+                                        <span>CDI</span>
+                                    </div>
+                                </div>
+                                <div class="job-match">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Match 92%</span>
+                                </div>
+                                <div class="job-skills">
+                                    <div class="skill-tag">React</div>
+                                    <div class="skill-tag">TypeScript</div>
+                                    <div class="skill-tag">Redux</div>
+                                    <div class="skill-tag">Jest</div>
+                                </div>
+                                <button class="btn btn-primary">Voir l'offre</button>
+                            </div>
+                        </div>
+                        
+                        <div class="job-card">
+                            <div class="job-card-header">
+                                <div class="company-logo">CL</div>
+                                <div>
+                                    <h3 style="margin-bottom: 0.25rem;">UX/UI Designer Senior</h3>
+                                    <div style="color: var(--text); font-size: 0.9rem;">CloudNative</div>
+                                </div>
+                            </div>
+                            <div class="job-card-details">
+                                <div class="job-info-row">
+                                    <div class="job-info-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Remote</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-euro-sign"></i>
+                                        <span>50-60K€</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-briefcase"></i>
+                                        <span>CDI</span>
+                                    </div>
+                                </div>
+                                <div class="job-match">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Match 88%</span>
+                                </div>
+                                <div class="job-skills">
+                                    <div class="skill-tag">Figma</div>
+                                    <div class="skill-tag">Adobe XD</div>
+                                    <div class="skill-tag">User Research</div>
+                                    <div class="skill-tag">Prototyping</div>
+                                </div>
+                                <button class="btn btn-primary">Voir l'offre</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2. Postuler en un clic -->
+                <div class="dashboard-section" id="jobs">
+                    <div class="section-header" style="margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Opportunités recommandées pour vous</h2>
+                        <p style="color: var(--text);">Basées sur votre profil, compétences et préférences.</p>
+                    </div>
+                    
+                    <div class="jobs-grid">
+                        <div class="job-card">
+                            <div class="job-card-header">
+                                <div class="company-logo" style="background-color: #e0e7ff; color: var(--primary-dark);">FT</div>
+                                <div>
+                                    <h3 style="margin-bottom: 0.25rem;">Lead Developer</h3>
+                                    <div style="color: var(--text); font-size: 0.9rem;">FutureTech</div>
+                                </div>
+                            </div>
+                            <div class="job-card-details">
+                                <div class="job-info-row">
+                                    <div class="job-info-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Lyon, France</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-euro-sign"></i>
+                                        <span>65-75K€</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-briefcase"></i>
+                                        <span>CDI</span>
+                                    </div>
+                                </div>
+                                <div class="job-match">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Match 95%</span>
+                                </div>
+                                <div class="job-skills">
+                                    <div class="skill-tag">React</div>
+                                    <div class="skill-tag">Node.js</div>
+                                    <div class="skill-tag">AWS</div>
+                                    <div class="skill-tag">Team Management</div>
+                                </div>
+                                <button class="btn btn-primary">Postuler en 1 clic</button>
+                            </div>
+                        </div>
+                        
+                        <div class="job-card">
+                            <div class="job-card-header">
+                                <div class="company-logo" style="background-color: #dcfce7; color: #166534;">GR</div>
+                                <div>
+                                    <h3 style="margin-bottom: 0.25rem;">Product Designer</h3>
+                                    <div style="color: var(--text); font-size: 0.9rem;">GreenTech</div>
+                                </div>
+                            </div>
+                            <div class="job-card-details">
+                                <div class="job-info-row">
+                                    <div class="job-info-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Paris, France</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-euro-sign"></i>
+                                        <span>50-60K€</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-briefcase"></i>
+                                        <span>CDI</span>
+                                    </div>
+                                </div>
+                                <div class="job-match">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Match 92%</span>
+                                </div>
+                                <div class="job-skills">
+                                    <div class="skill-tag">Figma</div>
+                                    <div class="skill-tag">Product Design</div>
+                                    <div class="skill-tag">UX Research</div>
+                                    <div class="skill-tag">Design Systems</div>
+                                </div>
+                                <button class="btn btn-primary">Postuler en 1 clic</button>
+                            </div>
+                        </div>
+                        
+                        <div class="job-card">
+                            <div class="job-card-header">
+                                <div class="company-logo" style="background-color: #fff7ed; color: #c2410c;">IN</div>
+                                <div>
+                                    <h3 style="margin-bottom: 0.25rem;">Full-Stack Developer</h3>
+                                    <div style="color: var(--text); font-size: 0.9rem;">InnovateSoft</div>
+                                </div>
+                            </div>
+                            <div class="job-card-details">
+                                <div class="job-info-row">
+                                    <div class="job-info-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Remote</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-euro-sign"></i>
+                                        <span>55-65K€</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-briefcase"></i>
+                                        <span>CDI</span>
+                                    </div>
+                                </div>
+                                <div class="job-match">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Match 88%</span>
+                                </div>
+                                <div class="job-skills">
+                                    <div class="skill-tag">JavaScript</div>
+                                    <div class="skill-tag">Vue.js</div>
+                                    <div class="skill-tag">Python</div>
+                                    <div class="skill-tag">Django</div>
+                                </div>
+                                <button class="btn btn-primary">Postuler en 1 clic</button>
+                            </div>
+                        </div>
+                        
+                        <div class="job-card">
+                            <div class="job-card-header">
+                                <div class="company-logo" style="background-color: #ede9fe; color: #7e22ce;">QT</div>
+                                <div>
+                                    <h3 style="margin-bottom: 0.25rem;">DevOps Engineer</h3>
+                                    <div style="color: var(--text); font-size: 0.9rem;">QuantumTech</div>
+                                </div>
+                            </div>
+                            <div class="job-card-details">
+                                <div class="job-info-row">
+                                    <div class="job-info-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Bordeaux, France</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-euro-sign"></i>
+                                        <span>60-70K€</span>
+                                    </div>
+                                    <div class="job-info-item">
+                                        <i class="fas fa-briefcase"></i>
+                                        <span>CDI</span>
+                                    </div>
+                                </div>
+                                <div class="job-match">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Match 85%</span>
+                                </div>
+                                <div class="job-skills">
+                                    <div class="skill-tag">Kubernetes</div>
+                                    <div class="skill-tag">Docker</div>
+                                    <div class="skill-tag">CI/CD</div>
+                                    <div class="skill-tag">Terraform</div>
+                                </div>
+                                <button class="btn btn-primary">Postuler en 1 clic</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 3. Centre de Ressources & Préparation aux Entretiens -->
+                <div class="dashboard-section" id="resources">
+                    <div class="section-header" style="margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Centre de ressources personnalisé</h2>
+                        <p style="color: var(--text);">Ressources et conseils adaptés à vos processus de recrutement actuels.</p>
+                    </div>
+                    
+                    <div class="resources-grid">
+                        <div class="resource-card">
+                            <div class="resource-type">Guide d'entreprise</div>
+                            <h3 class="resource-title">AlphaTeam - Culture et valeurs</h3>
+                            <p class="resource-desc">Découvrez la culture, les valeurs et l'environnement de travail chez AlphaTeam pour mieux vous préparer à votre entretien.</p>
+                            <button class="btn btn-secondary">Consulter</button>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-type">Préparation technique</div>
+                            <h3 class="resource-title">Guide du test technique Front-end</h3>
+                            <p class="resource-desc">Conseils et stratégies pour réussir le test technique d'AlphaTeam sur React, TypeScript et les tests unitaires.</p>
+                            <button class="btn btn-secondary">Consulter</button>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-type">Questions fréquentes</div>
+                            <h3 class="resource-title">Top 20 questions d'entretien UX/UI</h3>
+                            <p class="resource-desc">Préparez-vous pour votre entretien avec NovaTech avec ces questions courantes et nos conseils pour y répondre.</p>
+                            <button class="btn btn-secondary">Consulter</button>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-type">Profil recommandé</div>
+                            <h3 class="resource-title">Ce que recherche DigitalSphere</h3>
+                            <p class="resource-desc">Insights sur les profils recherchés par DigitalSphere et comment mettre en valeur vos compétences.</p>
+                            <button class="btn btn-secondary">Consulter</button>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-type">Stratégie de négociation</div>
+                            <h3 class="resource-title">Négocier votre package salarial</h3>
+                            <p class="resource-desc">Guide pratique pour négocier efficacement votre salaire et vos avantages dans le secteur tech.</p>
+                            <button class="btn btn-secondary">Consulter</button>
+                        </div>
+                        
+                        <div class="resource-card">
+                            <div class="resource-type">Tendances du marché</div>
+                            <h3 class="resource-title">Rapport Tech Salaries 2023</h3>
+                            <p class="resource-desc">Informations sur les tendances salariales et du marché de l'emploi pour vous aider à évaluer les offres.</p>
+                            <button class="btn btn-secondary">Consulter</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 4. Planning -->
+                <div class="dashboard-section" id="calendar">
+                    <div class="section-header" style="margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Planning et disponibilités</h2>
+                        <p style="color: var(--text);">Gérez vos entretiens et définissez vos disponibilités pour faciliter la planification.</p>
+                    </div>
+                    
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <div class="calendar-nav">
+                                <div class="calendar-nav-btn"><i class="fas fa-chevron-left"></i></div>
+                                <div class="calendar-title">Mars 2025</div>
+                                <div class="calendar-nav-btn"><i class="fas fa-chevron-right"></i></div>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Synchroniser</button>
+                            </div>
+                        </div>
+                        
+                        <div class="calendar-grid">
+                            <div class="calendar-weekday">Lun</div>
+                            <div class="calendar-weekday">Mar</div>
+                            <div class="calendar-weekday">Mer</div>
+                            <div class="calendar-weekday">Jeu</div>
+                            <div class="calendar-weekday">Ven</div>
+                            <div class="calendar-weekday">Sam</div>
+                            <div class="calendar-weekday">Dim</div>
+                            
+                            <div class="calendar-day inactive">
+                                <div class="day-number">26</div>
+                            </div>
+                            <div class="calendar-day inactive">
+                                <div class="day-number">27</div>
+                            </div>
+                            <div class="calendar-day inactive">
+                                <div class="day-number">28</div>
+                            </div>
+                            <div class="calendar-day inactive">
+                                <div class="day-number">29</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">1</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">2</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">3</div>
+                            </div>
+                            
+                            <div class="calendar-day">
+                                <div class="day-number">4</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">5</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">6</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">7</div>
+                            </div>
+                            <div class="calendar-day today">
+                                <div class="day-number">8</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">9</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">10</div>
+                            </div>
+                            
+                            <div class="calendar-day">
+                                <div class="day-number">11</div>
+                            </div>
+                            <div class="calendar-day has-event">
+                                <div class="day-number">12</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">13</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">14</div>
+                            </div>
+                            <div class="calendar-day has-event">
+                                <div class="day-number">15</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">16</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">17</div>
+                            </div>
+                            
+                            <div class="calendar-day">
+                                <div class="day-number">18</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">19</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">20</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">21</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">22</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">23</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">24</div>
+                            </div>
+                            
+                            <div class="calendar-day">
+                                <div class="day-number">25</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">26</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">27</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">28</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">29</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">30</div>
+                            </div>
+                            <div class="calendar-day">
+                                <div class="day-number">31</div>
+                            </div>
+                        </div>
+                        
+                        <div class="upcoming-events">
+                            <h3 style="margin-bottom: 1rem;">Vos prochains rendez-vous</h3>
+                            
+                            <div class="event-card">
+                                <div class="event-time">
+                                    <div class="time">14:00</div>
+                                    <div class="date">12 mars</div>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-title">Entretien RH avec NovaTech</div>
+                                    <div class="event-company">
+                                        <div class="company-logo" style="width: 24px; height: 24px; font-size: 0.8rem;">NV</div>
+                                        <span>NovaTech - UX/UI Designer</span>
+                                    </div>
+                                </div>
+                                <div class="event-actions">
+                                    <button class="btn btn-sm btn-primary">Rejoindre</button>
+                                </div>
+                            </div>
+                            
+                            <div class="event-card">
+                                <div class="event-time">
+                                    <div class="time">10:30</div>
+                                    <div class="date">15 mars</div>
+                                </div>
+                                <div class="event-details">
+                                    <div class="event-title">Date limite test technique</div>
+                                    <div class="event-company">
+                                        <div class="company-logo" style="width: 24px; height: 24px; font-size: 0.8rem;">AL</div>
+                                        <span>AlphaTeam - Développeur Front-end</span>
+                                    </div>
+                                </div>
+                                <div class="event-actions">
+                                    <button class="btn btn-sm btn-primary">Compléter</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 2rem;">
+                            <h3 style="margin-bottom: 1rem;">Définissez vos disponibilités régulières</h3>
+                            <p style="color: var(--text); margin-bottom: 1rem;">Ces créneaux seront proposés aux recruteurs pour planifier les entretiens.</p>
+                            
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                                <div style="background-color: white; padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                                    <h4 style="margin-bottom: 0.5rem;">Lundi</h4>
+                                    <div class="time-slot-selector">
+                                        <div class="time-slot">9:00 - 10:00</div>
+                                        <div class="time-slot selected">10:00 - 11:00</div>
+                                        <div class="time-slot selected">11:00 - 12:00</div>
+                                        <div class="time-slot">14:00 - 15:00</div>
+                                        <div class="time-slot">15:00 - 16:00</div>
+                                        <div class="time-slot selected">16:00 - 17:00</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="background-color: white; padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                                    <h4 style="margin-bottom: 0.5rem;">Mardi</h4>
+                                    <div class="time-slot-selector">
+                                        <div class="time-slot">9:00 - 10:00</div>
+                                        <div class="time-slot">10:00 - 11:00</div>
+                                        <div class="time-slot">11:00 - 12:00</div>
+                                        <div class="time-slot selected">14:00 - 15:00</div>
+                                        <div class="time-slot selected">15:00 - 16:00</div>
+                                        <div class="time-slot">16:00 - 17:00</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="background-color: white; padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                                    <h4 style="margin-bottom: 0.5rem;">Mercredi</h4>
+                                    <div class="time-slot-selector">
+                                        <div class="time-slot selected">9:00 - 10:00</div>
+                                        <div class="time-slot selected">10:00 - 11:00</div>
+                                        <div class="time-slot">11:00 - 12:00</div>
+                                        <div class="time-slot">14:00 - 15:00</div>
+                                        <div class="time-slot">15:00 - 16:00</div>
+                                        <div class="time-slot">16:00 - 17:00</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="background-color: white; padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                                    <h4 style="margin-bottom: 0.5rem;">Jeudi</h4>
+                                    <div class="time-slot-selector">
+                                        <div class="time-slot">9:00 - 10:00</div>
+                                        <div class="time-slot">10:00 - 11:00</div>
+                                        <div class="time-slot selected">11:00 - 12:00</div>
+                                        <div class="time-slot">14:00 - 15:00</div>
+                                        <div class="time-slot selected">15:00 - 16:00</div>
+                                        <div class="time-slot selected">16:00 - 17:00</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="background-color: white; padding: 1rem; border-radius: var(--radius); box-shadow: var(--shadow-sm);">
+                                    <h4 style="margin-bottom: 0.5rem;">Vendredi</h4>
+                                    <div class="time-slot-selector">
+                                        <div class="time-slot selected">9:00 - 10:00</div>
+                                        <div class="time-slot selected">10:00 - 11:00</div>
+                                        <div class="time-slot selected">11:00 - 12:00</div>
+                                        <div class="time-slot">14:00 - 15:00</div>
+                                        <div class="time-slot">15:00 - 16:00</div>
+                                        <div class="time-slot">16:00 - 17:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn btn-primary">Enregistrer mes disponibilités</button>
+                                <button class="btn btn-secondary">Synchroniser avec Google Calendar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 5. Messagerie -->
+                <div class="dashboard-section" id="messages">
+                    <div class="section-header" style="margin-bottom: 1.5rem;">
+                        <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Messagerie</h2>
+                        <p style="color: var(--text);">Échangez directement avec les recruteurs et les équipes RH.</p>
+                    </div>
+                    
+                    <div class="messages-container">
+                        <div class="conversations-list">
+                            <div class="message-search">
+                                <input type="text" placeholder="Rechercher une conversation...">
+                            </div>
+                            
+                            <div class="conversation-item active">
+                                <div class="conversation-avatar">AL</div>
+                                <div class="conversation-details">
+                                    <div class="conversation-header">
+                                        <div class="conversation-name">Marie Dubois (AlphaTeam)</div>
+                                        <div class="conversation-time">10:24</div>
+                                    </div>
+                                    <div class="conversation-last-message">Bonjour Thomas, j'espère que vous avez pu...</div>
+                                </div>
+                            </div>
+                            
+                            <div class="conversation-item">
+                                <div class="conversation-avatar">NV</div>
+                                <div class="conversation-details">
+                                    <div class="conversation-header">
+                                        <div class="conversation-name">Pierre Martin (NovaTech)</div>
+                                        <div class="conversation-time">Hier</div>
+                                    </div>
+                                    <div class="conversation-last-message">Concernant votre entretien de jeudi, pourriez-vous...</div>
+                                </div>
+                            </div>
+                            
+                            <div class="conversation-item">
+                                <div class="conversation-avatar">DG</div>
+                                <div class="conversation-details">
+                                    <div class="conversation-header">
+                                        <div class="conversation-name">Sophie Bernard (DigitalSphere)</div>
+                                        <div class="conversation-time">Lun</div>
+                                    </div>
+                                    <div class="conversation-last-message">Nous sommes ravis de vous informer que...</div>
+                                </div>
+                            </div>
+                            
+                            <div class="conversation-item">
+                                <div class="conversation-avatar">FT</div>
+                                <div class="conversation-details">
+                                    <div class="conversation-header">
+                                        <div class="conversation-name">Lucas Moreau (FutureTech)</div>
+                                        <div class="conversation-time">28/02</div>
+                                    </div>
+                                    <div class="conversation-last-message">Suite à votre candidature, nous aimerions...</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-window">
+                            <div class="chat-header">
+                                <div class="conversation-avatar">AL</div>
+                                <div>
+                                    <div style="font-weight: 500; color: var(--dark);">Marie Dubois</div>
+                                    <div style="font-size: 0.9rem; color: var(--text);">Responsable RH - AlphaTeam</div>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-messages">
+                                <div class="message received">
+                                    <div class="message-bubble">
+                                        Bonjour Thomas, j'espère que vous vous portez bien. Je voulais savoir si vous aviez des questions concernant le test technique qui vous a été envoyé ?
+                                    </div>
+                                    <div class="message-time">10:15</div>
+                                </div>
+                                
+                                <div class="message sent">
+                                    <div class="message-bubble">
+                                        Bonjour Marie, tout va bien merci ! J'ai commencé à travailler sur le test hier soir. J'aurais une petite question sur la partie authentification : est-ce que vous préférez une approche JWT ou OAuth ?
+                                    </div>
+                                    <div class="message-time">10:18</div>
+                                </div>
+                                
+                                <div class="message received">
+                                    <div class="message-bubble">
+                                        Très bonne question ! Nous utilisons principalement JWT dans nos projets internes, donc ce serait préférable pour le test, mais n'hésitez pas à justifier votre choix si vous optez pour une autre approche.
+                                    </div>
+                                    <div class="message-time">10:22</div>
+                                </div>
+                                
+                                <div class="message received">
+                                    <div class="message-bubble">
+                                        J'espère que vous avez pu commencer le test et que tout se passe bien. N'hésitez pas si vous avez d'autres questions !
+                                    </div>
+                                    <div class="message-time">10:24</div>
+                                </div>
+                            </div>
+                            
+                            <div class="chat-input">
+                                <textarea placeholder="Écrivez votre message..."></textarea>
+                                <button><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-sidebar" style="width: 300px;">
+                <div class="profile-sidebar">
+                    <div class="profile-header">
+                        <div class="profile-avatar">TM</div>
+                        <div>
+                            <div class="profile-name">Thomas Martin</div>
+                            <div class="profile-title">Développeur Front-end Senior</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <div class="profile-info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Paris, France</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>thomas.martin@gmail.com</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+33 6 12 34 56 78</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>5 ans d'expérience</span>
+                        </div>
+                        <div class="profile-info-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Master informatique - Univ. Paris</span>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1.5rem;">
+                        <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Compétences principales</h3>
+                        
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem;">
+                            <div class="skill-tag">JavaScript</div>
+                            <div class="skill-tag">React</div>
+                            <div class="skill-tag">TypeScript</div>
+                            <div class="skill-tag">Redux</div>
+                            <div class="skill-tag">Node.js</div>
+                            <div class="skill-tag">HTML/CSS</div>
+                            <div class="skill-tag">UI/UX</div>
+                            <div class="skill-tag">Git</div>
+                        </div>
+                        
+                        <h3 style="font-size: 1.1rem; margin-bottom: 1rem;">Langues</h3>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Français</span>
+                                <span>Natif</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                <span>Anglais</span>
+                                <span>Courant (C1)</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>Espagnol</span>
+                                <span>Intermédiaire (B1)</span>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <button class="btn btn-primary">Mettre à jour mon profil</button>
+                            <button class="btn btn-secondary">Télécharger mon CV</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <!-- Le footer sera chargé par JavaScript -->
+    </footer>
+
+    <script src="header.js"></script>
+    <script src="footer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gestion des onglets
+            const tabs = document.querySelectorAll('.dashboard-tab');
+            const sections = document.querySelectorAll('.dashboard-section');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Désactiver tous les onglets et sections
+                    tabs.forEach(t => t.classList.remove('active'));
+                    sections.forEach(s => s.classList.remove('active'));
+                    
+                    // Activer l'onglet et la section correspondante
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Simulation de sélection des créneaux de disponibilité
+            const timeSlots = document.querySelectorAll('.time-slot');
+            timeSlots.forEach(slot => {
+                slot.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

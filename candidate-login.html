@@ -229,10 +229,10 @@
                 loginForm.style.display = 'none';
             });
             
-            // Redirection après connexion ou création de compte vers la page candidate-upload.html
+            // Redirection après connexion vers le dashboard, création de compte vers la page upload
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-                window.location.href = 'candidate-upload.html';
+                window.location.href = 'candidate-dashboard.html';
             });
             
             registerForm.addEventListener('submit', function(e) {
