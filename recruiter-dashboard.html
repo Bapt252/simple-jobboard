@@ -953,6 +953,31 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier le flux d'arrivée de l'utilisateur (avec ou sans poste à pourvoir)
+            const recruitmentFlow = localStorage.getItem('recruiterFlow') || '';
+            
+            // Si l'utilisateur vient de confirmer une sélection de candidats, mettre à jour l'interface
+            const selectedCandidatesData = localStorage.getItem('selectedCandidates');
+            if (selectedCandidatesData) {
+                const selectedCandidates = JSON.parse(selectedCandidatesData);
+                const candidateCount = document.querySelector('.job-count');
+                if (candidateCount) {
+                    candidateCount.textContent = `${selectedCandidates.length} candidats sélectionnés`;
+                }
+                
+                // Afficher une notification de succès
+                showNotification('Candidats ajoutés à votre sélection', 'Vos candidats sélectionnés ont été ajoutés à votre tableau de bord.');
+                
+                // Effacer les données pour éviter de réafficher la notification au rechargement
+                localStorage.removeItem('selectedCandidates');
+            }
+            
+            // Afficher un message d'accueil si l'utilisateur vient du flux "pas de poste à pourvoir"
+            if (recruitmentFlow === 'noJob') {
+                showNotification('Bienvenue dans votre espace recruteur', 'Vous pouvez maintenant explorer les profils disponibles et créer de nouvelles offres d\'emploi.');
+                localStorage.removeItem('recruiterFlow');
+            }
+            
             // Gestion des onglets
             const tabs = document.querySelectorAll('.tab');
             const tabContents = document.querySelectorAll('.tab-content');
@@ -997,6 +1022,54 @@
                 });
             });
         });
+        
+        // Fonction pour afficher une notification
+        function showNotification(title, message) {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = 'white';
+            notification.style.boxShadow = 'var(--shadow-lg)';
+            notification.style.borderRadius = 'var(--radius)';
+            notification.style.padding = '1rem';
+            notification.style.zIndex = '1000';
+            notification.style.minWidth = '300px';
+            notification.style.maxWidth = '400px';
+            notification.style.transform = 'translateY(100px)';
+            notification.style.opacity = '0';
+            notification.style.transition = 'all 0.3s ease';
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: flex-start;">
+                    <div style="color: var(--primary); font-size: 1.5rem; margin-right: 1rem;">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 0.3rem; color: var(--dark);">${title}</div>
+                        <div style="font-size: 0.95rem; color: var(--text);">${message}</div>
+                    </div>
+                    <div style="margin-left: 1rem; cursor: pointer; color: var(--text);" onclick="this.parentNode.parentNode.remove()">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animer l'apparition
+            setTimeout(() => {
+                notification.style.transform = 'translateY(0)';
+                notification.style.opacity = '1';
+            }, 100);
+            
+            // Auto-effacement après 5 secondes
+            setTimeout(() => {
+                notification.style.transform = 'translateY(100px)';
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
     </script>
 </body>
 </html>
