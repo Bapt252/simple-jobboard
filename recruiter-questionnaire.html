@@ -1171,6 +1171,44 @@
                             </div>
                             
                             <div class="form-group">
+                                <label for="required-skills">Compétences techniques requises</label>
+                                <div class="info-card" style="margin-bottom: 0.8rem;">
+                                    <div style="display: flex; align-items: flex-start;">
+                                        <i class="fas fa-robot" style="color: var(--primary); margin-right: 0.8rem; margin-top: 0.2rem;"></i>
+                                        <div>
+                                            <p style="color: var(--text); font-size: 0.9rem;">
+                                                Précisez le niveau requis pour chaque compétence afin d'améliorer la qualité du matching avec les candidats.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="skills-container" style="margin-bottom: 1rem;">
+                                    <div class="skill-item" style="display: flex; align-items: center; margin-bottom: 0.8rem; padding: 0.8rem; background-color: #f8fafc; border-radius: var(--radius);">
+                                        <div style="flex: 1;">
+                                            <input type="text" class="form-control skill-name" placeholder="Nom de la compétence" style="margin-bottom: 0.5rem;">
+                                            <select class="form-control skill-level">
+                                                <option value="">Niveau requis</option>
+                                                <option value="débutant">Débutant</option>
+                                                <option value="intermédiaire">Intermédiaire</option>
+                                                <option value="avancé">Avancé</option>
+                                                <option value="expert">Expert</option>
+                                            </select>
+                                        </div>
+                                        <div style="margin-left: 1rem;">
+                                            <button type="button" class="remove-skill" style="background: none; border: none; color: #ef4444; cursor: pointer;">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button type="button" id="add-skill-btn" class="btn btn-outline" style="width: 100%; color: var(--primary); border: 1px dashed var(--primary);">
+                                    <i class="fas fa-plus" style="margin-right: 0.5rem;"></i> Ajouter une compétence
+                                </button>
+                            </div>
+                            
+                            <div class="form-group">
                                 <label for="recruitment-deadline" class="label-required">Délai de recrutement</label>
                                 <select id="recruitment-deadline" required>
                                     <option value="">Sélectionnez une option</option>
@@ -1268,6 +1306,18 @@
                                         <option value="legal">Juridique</option>
                                         <option value="real-estate">Immobilier</option>
                                     </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="sector-importance">Importance de cette connaissance sectorielle</label>
+                                    <select id="sector-importance" class="form-control">
+                                        <option value="1">Critère absolu (éliminatoire)</option>
+                                        <option value="2">Très important (forte priorité)</option>
+                                        <option value="3" selected>Important (préférable)</option>
+                                        <option value="4">Souhaitable (mais non déterminant)</option>
+                                        <option value="5">Peu important (formation possible)</option>
+                                    </select>
+                                    <small style="color: var(--text); display: block; margin-top: 0.3rem;">Cette information aidera notre IA à mieux prioriser les candidats</small>
                                 </div>
                             </div>
                             
@@ -2530,6 +2580,24 @@
                 const companyDescription = document.getElementById('company-description').value;
                 const jobTitle = document.getElementById('job-title').value;
                 
+                // Récupérer les compétences techniques requises
+                const technicalSkills = [];
+                const skillItems = document.querySelectorAll('.skill-item');
+                skillItems.forEach(item => {
+                    const name = item.querySelector('.skill-name')?.value.trim();
+                    const level = item.querySelector('.skill-level')?.value;
+                    
+                    if (name) {
+                        technicalSkills.push({
+                            name: name,
+                            level: level || 'intermédiaire' // Valeur par défaut si non spécifiée
+                        });
+                    }
+                });
+
+                // Récupérer l'importance de la connaissance sectorielle
+                const sectorImportance = document.getElementById('sector-importance')?.value || '3';
+                
                 // Créer un objet avec toutes les données du formulaire
                 const formData = {
                     company: {
@@ -2542,6 +2610,12 @@
                     },
                     job: {
                         title: jobTitle,
+                        technicalSkills: technicalSkills,
+                        sectorKnowledge: {
+                            required: document.querySelector('input[name="sector-knowledge"]:checked')?.value === 'yes',
+                            sector: document.getElementById('specific-sector')?.value || '',
+                            importance: parseInt(sectorImportance, 10)
+                        }
                         // Ajouter d'autres champs si nécessaire
                     }
                 };

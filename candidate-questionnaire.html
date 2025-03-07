@@ -327,13 +327,76 @@
                             </div>
                             <small style="display: block; margin-top: 0.3rem; color: var(--text);">Appuyez sur Entrée ou virgule pour ajouter</small>
                         </div>
+
+                        <div id="skills-levels-container" style="margin-top: 1rem; margin-bottom: 1.5rem; border: 1px solid #e2e8f0; border-radius: var(--radius); padding: 1rem;">
+                            <h4 style="font-weight: 600; margin-bottom: 0.8rem; color: var(--dark);">Niveau de maîtrise des compétences</h4>
+                            <p style="color: var(--text); font-size: 0.95rem; margin-bottom: 1rem;">Pour les compétences que vous venez d'ajouter, indiquez votre niveau de maîtrise.</p>
+                            <div id="skill-levels" class="skill-levels-container">
+                                <!-- Les niveaux de compétences seront ajoutés ici dynamiquement -->
+                                <div class="info-card" style="background-color: #f8fafc; padding: 0.8rem; margin-bottom: 0.5rem;">
+                                    <p style="color: var(--text); font-size: 0.9rem; font-style: italic;">Les compétences ajoutées apparaîtront ici pour évaluation.</p>
+                                </div>
+                            </div>
+                        </div>
                         
                         <div class="form-group">
                             <label class="form-label" for="softSkills">Soft skills</label>
-                            <div class="tags-input-container" id="softSkills-container">
-                                <input type="text" class="tags-input" id="softSkills-input" placeholder="Saisir et appuyer sur Entrée...">
+                            <div class="info-card" style="margin-bottom: 0.8rem;">
+                                <div style="display: flex; align-items: flex-start;">
+                                    <i class="fas fa-lightbulb" style="color: var(--primary); margin-right: 0.8rem; margin-top: 0.2rem;"></i>
+                                    <div>
+                                        <p style="color: var(--text); font-size: 0.9rem;">
+                                            Les soft skills sont essentiels pour le matching avec les entreprises. Sélectionnez ceux qui vous correspondent le mieux.
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
-                            <small style="display: block; margin-top: 0.3rem; color: var(--text);">Appuyez sur Entrée ou virgule pour ajouter</small>
+                            <div class="soft-skills-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.8rem; margin-bottom: 1rem;">
+                                <div class="soft-skill-item" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="soft-skill-1" class="soft-skill-checkbox" value="Communication" style="margin-right: 0.5rem;">
+                                    <label for="soft-skill-1" style="font-size: 0.95rem; color: var(--dark);">Communication</label>
+                                </div>
+                                <div class="soft-skill-item" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="soft-skill-2" class="soft-skill-checkbox" value="Travail d'équipe" style="margin-right: 0.5rem;">
+                                    <label for="soft-skill-2" style="font-size: 0.95rem; color: var(--dark);">Travail d'équipe</label>
+                                </div>
+                                <div class="soft-skill-item" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="soft-skill-3" class="soft-skill-checkbox" value="Résolution de problèmes" style="margin-right: 0.5rem;">
+                                    <label for="soft-skill-3" style="font-size: 0.95rem; color: var(--dark);">Résolution de problèmes</label>
+                                </div>
+                                <div class="soft-skill-item" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="soft-skill-4" class="soft-skill-checkbox" value="Adaptabilité" style="margin-right: 0.5rem;">
+                                    <label for="soft-skill-4" style="font-size: 0.95rem; color: var(--dark);">Adaptabilité</label>
+                                </div>
+                                <div class="soft-skill-item" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="soft-skill-5" class="soft-skill-checkbox" value="Créativité" style="margin-right: 0.5rem;">
+                                    <label for="soft-skill-5" style="font-size: 0.95rem; color: var(--dark);">Créativité</label>
+                                </div>
+                                <div class="soft-skill-item" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="soft-skill-6" class="soft-skill-checkbox" value="Leadership" style="margin-right: 0.5rem;">
+                                    <label for="soft-skill-6" style="font-size: 0.95rem; color: var(--dark);">Leadership</label>
+                                </div>
+                                <div class="soft-skill-item" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="soft-skill-7" class="soft-skill-checkbox" value="Gestion du temps" style="margin-right: 0.5rem;">
+                                    <label for="soft-skill-7" style="font-size: 0.95rem; color: var(--dark);">Gestion du temps</label>
+                                </div>
+                                <div class="soft-skill-item" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="soft-skill-8" class="soft-skill-checkbox" value="Pensée critique" style="margin-right: 0.5rem;">
+                                    <label for="soft-skill-8" style="font-size: 0.95rem; color: var(--dark);">Pensée critique</label>
+                                </div>
+                                <div class="soft-skill-item" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="soft-skill-9" class="soft-skill-checkbox" value="Empathie" style="margin-right: 0.5rem;">
+                                    <label for="soft-skill-9" style="font-size: 0.95rem; color: var(--dark);">Empathie</label>
+                                </div>
+                                <div class="soft-skill-item" style="display: flex; align-items: center;">
+                                    <input type="checkbox" id="soft-skill-10" class="soft-skill-checkbox" value="Autonomie" style="margin-right: 0.5rem;">
+                                    <label for="soft-skill-10" style="font-size: 0.95rem; color: var(--dark);">Autonomie</label>
+                                </div>
+                            </div>
+                            <div class="tags-input-container" id="softSkills-container">
+                                <input type="text" class="tags-input" id="softSkills-input" placeholder="Ajouter d'autres soft skills...">
+                            </div>
+                            <small style="display: block; margin-top: 0.3rem; color: var(--text);">Appuyez sur Entrée ou virgule pour ajouter des soft skills personnalisés</small>
                         </div>
                         
                         <div class="form-group">
@@ -399,6 +462,64 @@
                         <div class="form-group">
                             <label class="form-label" for="additionalInfo">Informations complémentaires</label>
                             <textarea id="additionalInfo" class="form-control" rows="4" placeholder="Toute autre information que vous souhaitez partager..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <h4 style="font-weight: 600; margin-bottom: 1rem; color: var(--dark);">Quels critères sont les plus importants pour vous ?</h4>
+                            <p style="color: var(--text); font-size: 0.95rem; margin-bottom: 1rem;">Classez les critères suivants par ordre d'importance (1 étant le plus important).</p>
+                            
+                            <div class="priority-container" style="border: 1px solid #e2e8f0; border-radius: var(--radius); padding: 1rem; margin-bottom: 1.5rem;">
+                                <div class="priority-item" style="display: flex; align-items: center; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #f1f5f9;">
+                                    <select class="form-control priority-select" style="width: 80px; margin-right: 1rem;">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <span style="font-weight: 500; color: var(--dark);">Salaire et avantages</span>
+                                </div>
+                                <div class="priority-item" style="display: flex; align-items: center; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #f1f5f9;">
+                                    <select class="form-control priority-select" style="width: 80px; margin-right: 1rem;">
+                                        <option value="1">1</option>
+                                        <option value="2" selected>2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <span style="font-weight: 500; color: var(--dark);">Localisation et mode de travail</span>
+                                </div>
+                                <div class="priority-item" style="display: flex; align-items: center; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #f1f5f9;">
+                                    <select class="form-control priority-select" style="width: 80px; margin-right: 1rem;">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3" selected>3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <span style="font-weight: 500; color: var(--dark);">Missions et responsabilités</span>
+                                </div>
+                                <div class="priority-item" style="display: flex; align-items: center; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid #f1f5f9;">
+                                    <select class="form-control priority-select" style="width: 80px; margin-right: 1rem;">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4" selected>4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <span style="font-weight: 500; color: var(--dark);">Culture d'entreprise et valeurs</span>
+                                </div>
+                                <div class="priority-item" style="display: flex; align-items: center;">
+                                    <select class="form-control priority-select" style="width: 80px; margin-right: 1rem;">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5" selected>5</option>
+                                    </select>
+                                    <span style="font-weight: 500; color: var(--dark);">Perspectives d'évolution</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -468,6 +589,9 @@
             const preferredRoleInput = document.getElementById('preferredRole');
             const locationInput = document.getElementById('location');
             const prefilledMessage = document.getElementById('prefilled-message');
+            
+            // Initialiser les niveaux de compétences
+            setupSkillLevels();
             
             let currentStep = 1;
             const totalSteps = formSteps.length;
@@ -608,6 +732,90 @@
             setupTagsInput('languages');
             setupTagsInput('certifications');
             
+            // Fonction pour gérer l'ajout/la modification des niveaux de compétence
+            function setupSkillLevels() {
+                const technicalSkillsContainer = document.getElementById('technicalSkills-container');
+                const skillLevelsContainer = document.getElementById('skill-levels');
+                
+                // Observer les modifications dans le conteneur de compétences
+                const observer = new MutationObserver(function(mutations) {
+                    updateSkillLevelsDisplay();
+                });
+                
+                observer.observe(technicalSkillsContainer, { childList: true, subtree: true });
+                
+                function updateSkillLevelsDisplay() {
+                    // Effacer le contenu précédent
+                    skillLevelsContainer.innerHTML = '';
+                    
+                    // Récupérer toutes les compétences
+                    const skills = getTagsValues('technicalSkills');
+                    
+                    if (skills.length === 0) {
+                        // Afficher un message si aucune compétence n'est ajoutée
+                        skillLevelsContainer.innerHTML = `
+                            <div class="info-card" style="background-color: #f8fafc; padding: 0.8rem; margin-bottom: 0.5rem;">
+                                <p style="color: var(--text); font-size: 0.9rem; font-style: italic;">Les compétences ajoutées apparaîtront ici pour évaluation.</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    // Créer un élément pour chaque compétence
+                    skills.forEach(skill => {
+                        const skillId = 'skill-level-' + skill.replace(/\s+/g, '-').toLowerCase();
+                        
+                        const skillItem = document.createElement('div');
+                        skillItem.className = 'skill-level-item';
+                        skillItem.style.display = 'flex';
+                        skillItem.style.alignItems = 'center';
+                        skillItem.style.justifyContent = 'space-between';
+                        skillItem.style.padding = '0.8rem';
+                        skillItem.style.marginBottom = '0.8rem';
+                        skillItem.style.backgroundColor = '#f8fafc';
+                        skillItem.style.borderRadius = 'var(--radius)';
+                        
+                        skillItem.innerHTML = `
+                            <div style="font-weight: 500; color: var(--dark);">${skill}</div>
+                            <div style="display: flex; align-items: center;">
+                                <select id="${skillId}" class="form-control skill-level-select" data-skill="${skill}" style="width: 140px;">
+                                    <option value="débutant">Débutant</option>
+                                    <option value="intermédiaire">Intermédiaire</option>
+                                    <option value="avancé">Avancé</option>
+                                    <option value="expert">Expert</option>
+                                </select>
+                            </div>
+                        `;
+                        
+                        skillLevelsContainer.appendChild(skillItem);
+                    });
+                }
+            }
+            
+            // Fonction pour récupérer les soft skills sélectionnés
+            function getSelectedSoftSkills() {
+                const checkboxes = document.querySelectorAll('.soft-skill-checkbox:checked');
+                const softSkills = Array.from(checkboxes).map(cb => cb.value);
+                
+                // Ajouter également les soft skills personnalisés
+                const customSoftSkills = getTagsValues('softSkills');
+                return [...softSkills, ...customSoftSkills];
+            }
+            
+            // Fonction pour obtenir les priorités
+            function getPriorities() {
+                const priorityItems = document.querySelectorAll('.priority-item');
+                const priorities = {};
+                
+                priorityItems.forEach(item => {
+                    const select = item.querySelector('.priority-select');
+                    const label = item.querySelector('span').textContent;
+                    priorities[label] = parseInt(select.value, 10);
+                });
+                
+                return priorities;
+            }
+
             // Fonction pour collecter les données du formulaire
             function getFormData() {
                 // Récupérer les informations de localisation
@@ -616,6 +824,19 @@
                 const formattedAddress = locationInput.dataset.formattedAddress || locationValue;
                 const lat = locationInput.dataset.lat;
                 const lng = locationInput.dataset.lng;
+                
+                // Récupérer les niveaux de compétences
+                const skillLevels = {};
+                document.querySelectorAll('.skill-level-select').forEach(select => {
+                    const skill = select.getAttribute('data-skill');
+                    skillLevels[skill] = select.value;
+                });
+                
+                // Récupérer les soft skills (checkboxes + tags)
+                const softSkills = getSelectedSoftSkills();
+                
+                // Récupérer les priorités
+                const priorities = getPriorities();
                 
                 // Récupérer les valeurs des champs de l'étape actuelle
                 const formData = {
@@ -631,7 +852,8 @@
                     },
                     skills: {
                         technicalSkills: getTagsValues('technicalSkills'),
-                        softSkills: getTagsValues('softSkills'),
+                        technicalSkillLevels: skillLevels,
+                        softSkills: softSkills,
                         languages: getTagsValues('languages'),
                         certifications: getTagsValues('certifications')
                     },
@@ -644,7 +866,8 @@
                         motivation: document.getElementById('motivation').value,
                         strengths: document.getElementById('strengths').value,
                         challenges: document.getElementById('challenges').value,
-                        additionalInfo: document.getElementById('additionalInfo').value
+                        additionalInfo: document.getElementById('additionalInfo').value,
+                        priorities: priorities
                     }
                 };
                 
