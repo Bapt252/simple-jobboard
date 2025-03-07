@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau de bord candidat - Nexten</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -724,7 +724,750 @@
             font-size: 1.2rem;
         }
         
+        /* Dashboard Layout */
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+            padding-top: 70px; /* Pour le header fixe */
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: white;
+            border-right: 1px solid #f1f5f9;
+            height: calc(100vh - 70px);
+            position: fixed;
+            overflow-y: auto;
+            padding: 1.5rem 0;
+        }
+        
+        .sidebar-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar-profile .profile-avatar {
+            width: 48px;
+            height: 48px;
+        }
+        
+        .sidebar-profile .profile-name {
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 1rem;
+        }
+        
+        .sidebar-profile .profile-title {
+            color: var(--text);
+            font-size: 0.85rem;
+        }
+        
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-link:hover {
+            background-color: #f8fafc;
+            color: var(--primary);
+        }
+        
+        .sidebar-link.active {
+            background-color: #f8fafc;
+            color: var(--primary);
+            border-left-color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .sidebar-link i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .sidebar-divider {
+            height: 1px;
+            background-color: #f1f5f9;
+            margin: 1rem 0;
+        }
+        
+        .sidebar-link.logout {
+            margin-top: auto;
+            color: #ef4444;
+        }
+        
+        /* Dashboard Main Content */
+        .dashboard-main {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+        
+        /* Dashboard Cards and Content */
+        .dashboard-content {
+            padding: 0 1rem;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-color: #f0f9ff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .stat-content {
+            flex: 1;
+            margin: 0 1rem;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+        
+        .stat-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 0.3rem 0.6rem;
+            border-radius: 100px;
+        }
+        
+        .stat-trend.up {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .stat-trend.down {
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+        
+        .stat-trend.neutral {
+            background-color: #f1f5f9;
+            color: #64748b;
+        }
+        
+        .dashboard-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .dashboard-card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .card-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .card-action {
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .card-action:hover {
+            text-decoration: underline;
+        }
+        
+        /* Event Items */
+        .upcoming-events {
+            padding: 1rem;
+        }
+        
+        .event-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .event-item:last-child {
+            border-bottom: none;
+        }
+        
+        .event-date {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 0.5rem;
+            width: 60px;
+            text-align: center;
+        }
+        
+        .date-day {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .date-month {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .event-content {
+            flex: 1;
+            margin-left: 1rem;
+        }
+        
+        .event-title {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .event-time {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+        
+        .event-action {
+            margin-left: 1rem;
+        }
+        
+        /* Job items */
+        .recommended-jobs {
+            padding: 1rem;
+        }
+        
+        .job-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .job-item:last-child {
+            border-bottom: none;
+        }
+        
+        .job-company-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background-color: #f0f9ff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .job-content {
+            flex: 1;
+            margin-left: 1rem;
+        }
+        
+        .job-position {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .job-company {
+            font-size: 0.9rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+        
+        .job-match {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+        
+        .match-label {
+            color: var(--text);
+        }
+        
+        .match-progress {
+            flex: 1;
+            height: 6px;
+            background-color: #f1f5f9;
+            border-radius: 100px;
+            overflow: hidden;
+        }
+        
+        .match-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 100px;
+        }
+        
+        .match-percentage {
+            font-weight: 600;
+            color: #166534;
+        }
+        
+        .job-action {
+            margin-left: 1rem;
+        }
+        
+        /* Application items */
+        .applications-list {
+            padding: 0.5rem 1rem;
+        }
+        
+        .application-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .application-item:last-child {
+            border-bottom: none;
+        }
+        
+        .application-company {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+        
+        .company-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .company-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .company-name {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .position-name {
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+        
+        .application-status {
+            margin-left: auto;
+            margin-right: 1rem;
+        }
+        
+        .application-date {
+            text-align: right;
+            min-width: 100px;
+        }
+        
+        .date-label {
+            font-size: 0.8rem;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+        
+        .date-value {
+            font-weight: 500;
+            color: var(--dark);
+            font-size: 0.95rem;
+        }
+        
+        /* Messages preview */
+        .messages-preview {
+            padding: 0.5rem 1rem;
+        }
+        
+        .message-item {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .message-item:last-child {
+            border-bottom: none;
+        }
+        
+        .message-sender {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+        
+        .sender-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f8fafc;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .sender-info {
+            margin-left: 0.75rem;
+        }
+        
+        .sender-name {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .sender-company {
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+        
+        .message-preview {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .message-time {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+        
+        /* Planning section */
+        .section-header {
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-header h2 {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-header p {
+            color: var(--text);
+            max-width: 800px;
+        }
+        
+        .dashboard-filters {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .filter-select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            color: var(--text);
+            background-color: white;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+        }
+        
+        .applications-table-container {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            overflow-x: auto;
+        }
+        
+        .applications-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .applications-table th, 
+        .applications-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .applications-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .applications-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .process-step.rejected {
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+        
+        .process-step.pending {
+            background-color: #fff7ed;
+            color: #c2410c;
+        }
+        
+        .next-action {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        
+        .next-deadline {
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        [data-tooltip] {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--dark);
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+        
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: calc(100% + 5px);
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .notifications {
+            position: relative;
+        }
+        
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--text);
+            transition: all 0.2s ease;
+        }
+        
+        .btn-icon:hover {
+            background-color: #f8fafc;
+            color: var(--primary);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ef4444;
+            color: white;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        /* Dashboard tabs mobile version */
+        .dashboard-tabs {
+            margin-top: 1.5rem;
+            display: none; /* Hidden on desktop */
+        }
+        
+        /* Status badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-badge.pending {
+            background-color: #fff7ed;
+            color: #c2410c;
+        }
+        
+        .status-badge.in-progress {
+            background-color: #e0e7ff;
+            color: var(--primary-dark);
+        }
+        
+        .status-badge.completed {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-badge.rejected {
+            background-color: #fef2f2;
+            color: #b91c1c;
+        }
+        
         /* Responsive */
+        @media (max-width: 991px) {
+            .sidebar {
+                left: -280px;
+                transition: left 0.3s ease;
+                z-index: 1000;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .dashboard-main {
+                margin-left: 0;
+            }
+            
+            .dashboard-header {
+                margin-bottom: 1rem;
+            }
+            
+            .dashboard-tabs {
+                display: flex;
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+            }
+        }
+        
         @media (max-width: 768px) {
             .dashboard-flex {
                 flex-direction: column;
@@ -773,6 +1516,21 @@
                 bottom: -1rem;
                 transform: translateX(50%);
             }
+            
+            .dashboard-layout {
+                flex-direction: column;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
         }
     </style>
 </head>
@@ -781,39 +1539,628 @@
         <!-- Le header sera chargé par JavaScript -->
     </header>
 
-    <main class="container dashboard-container">
-        <div class="dashboard-header">
-            <div>
-                <h1>Tableau de bord candidat</h1>
-                <p class="welcome-text">Bonjour Thomas, voici vos opportunités et ressources.</p>
+    <div class="dashboard-layout">
+        <div class="sidebar">
+            <div class="sidebar-profile">
+                <div class="profile-avatar">TM</div>
+                <div class="profile-info">
+                    <div class="profile-name">Thomas Martin</div>
+                    <div class="profile-title">Développeur Front-end Senior</div>
+                </div>
             </div>
-            <div>
-                <button class="btn btn-primary"><i class="fas fa-edit"></i> Mettre à jour mon profil</button>
-            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="planning">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Planning de suivi</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="opportunities">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Mes offres reçues</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="jobs">
+                    <i class="fas fa-search"></i>
+                    <span>Postuler en un clic</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="selected">
+                    <i class="fas fa-star"></i>
+                    <span>Opportunités sélectionnées</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="messages">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messagerie</span>
+                </a>
+                <a href="#" class="sidebar-link" data-tab="resources">
+                    <i class="fas fa-book"></i>
+                    <span>Centre de ressources</span>
+                </a>
+                <div class="sidebar-divider"></div>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Mon profil</span>
+                </a>
+                <a href="#" class="sidebar-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Paramètres</span>
+                </a>
+                <a href="#" class="sidebar-link logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </nav>
         </div>
         
-        <div class="dashboard-tabs">
-            <div class="dashboard-tab active" data-tab="opportunities">
-                <i class="fas fa-briefcase"></i> Mes opportunités
+        <main class="dashboard-main">
+            <div class="dashboard-header">
+                <div>
+                    <h1>Tableau de bord candidat</h1>
+                    <p class="welcome-text">Bonjour Thomas, voici vos opportunités et ressources.</p>
+                </div>
+                <div class="header-actions">
+                    <div class="notifications">
+                        <button class="btn-icon"><i class="far fa-bell"></i></button>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <button class="btn btn-primary"><i class="fas fa-edit"></i> Mettre à jour mon profil</button>
+                </div>
             </div>
-            <div class="dashboard-tab" data-tab="jobs">
-                <i class="fas fa-search"></i> Postuler en un clic
+            
+            <div class="dashboard-tabs">
+                <div class="dashboard-tab active" data-tab="overview">
+                    <i class="fas fa-th-large"></i> Aperçu général
+                </div>
+                <div class="dashboard-tab" data-tab="opportunities">
+                    <i class="fas fa-briefcase"></i> Mes offres
+                </div>
+                <div class="dashboard-tab" data-tab="jobs">
+                    <i class="fas fa-search"></i> Postuler en un clic
+                </div>
+                <div class="dashboard-tab" data-tab="planning">
+                    <i class="fas fa-calendar-alt"></i> Planning
+                </div>
+                <div class="dashboard-tab" data-tab="messages">
+                    <i class="fas fa-envelope"></i> Messagerie
+                </div>
+                <div class="dashboard-tab" data-tab="resources">
+                    <i class="fas fa-book"></i> Ressources
+                </div>
             </div>
-            <div class="dashboard-tab" data-tab="resources">
-                <i class="fas fa-book"></i> Centre de ressources
-            </div>
-            <div class="dashboard-tab" data-tab="calendar">
-                <i class="fas fa-calendar-alt"></i> Planning
-            </div>
-            <div class="dashboard-tab" data-tab="messages">
-                <i class="fas fa-envelope"></i> Messagerie
-            </div>
-        </div>
         
-        <div class="dashboard-flex" style="display: flex; gap: 2rem;">
-            <div class="dashboard-main" style="flex: 1;">
-                <!-- 1. Mes opportunités sélectionnées -->
-                <div class="dashboard-section active" id="opportunities">
+        <div class="dashboard-content">
+            <!-- Section de vue d'ensemble (dashboard) -->
+            <div class="dashboard-section active" id="overview">
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Candidatures actives</div>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>2</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Entretiens programmés</div>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>1</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-envelope-open-text"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Offres reçues</div>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>3</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">Profil complété</div>
+                        </div>
+                        <div class="stat-trend neutral">
+                            <i class="fas fa-minus"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-row">
+                    <div class="dashboard-col">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Prochains événements</h3>
+                                <a href="#" class="card-action" data-tab="planning">Voir tous</a>
+                            </div>
+                            <div class="upcoming-events">
+                                <div class="event-item">
+                                    <div class="event-date">
+                                        <div class="date-day">12</div>
+                                        <div class="date-month">MAR</div>
+                                    </div>
+                                    <div class="event-content">
+                                        <div class="event-title">Entretien RH avec NovaTech</div>
+                                        <div class="event-time"><i class="far fa-clock"></i> 14:00 - 15:00</div>
+                                    </div>
+                                    <div class="event-action">
+                                        <button class="btn btn-sm btn-primary">Rejoindre</button>
+                                    </div>
+                                </div>
+
+                                <div class="event-item">
+                                    <div class="event-date">
+                                        <div class="date-day">15</div>
+                                        <div class="date-month">MAR</div>
+                                    </div>
+                                    <div class="event-content">
+                                        <div class="event-title">Test technique AlphaTeam</div>
+                                        <div class="event-time"><i class="far fa-clock"></i> Date limite</div>
+                                    </div>
+                                    <div class="event-action">
+                                        <button class="btn btn-sm btn-primary">Compléter</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Offres recommandées</h3>
+                                <a href="#" class="card-action" data-tab="jobs">Voir toutes</a>
+                            </div>
+                            <div class="recommended-jobs">
+                                <div class="job-item">
+                                    <div class="job-company-logo">FT</div>
+                                    <div class="job-content">
+                                        <div class="job-position">Lead Developer</div>
+                                        <div class="job-company">FutureTech</div>
+                                        <div class="job-match">
+                                            <div class="match-label">Match</div>
+                                            <div class="match-progress">
+                                                <div class="match-bar" style="width: 95%"></div>
+                                            </div>
+                                            <div class="match-percentage">95%</div>
+                                        </div>
+                                    </div>
+                                    <div class="job-action">
+                                        <button class="btn btn-sm btn-primary">Postuler</button>
+                                    </div>
+                                </div>
+
+                                <div class="job-item">
+                                    <div class="job-company-logo">GR</div>
+                                    <div class="job-content">
+                                        <div class="job-position">Product Designer</div>
+                                        <div class="job-company">GreenTech</div>
+                                        <div class="job-match">
+                                            <div class="match-label">Match</div>
+                                            <div class="match-progress">
+                                                <div class="match-bar" style="width: 92%"></div>
+                                            </div>
+                                            <div class="match-percentage">92%</div>
+                                        </div>
+                                    </div>
+                                    <div class="job-action">
+                                        <button class="btn btn-sm btn-primary">Postuler</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-col">
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Mes candidatures récentes</h3>
+                                <a href="#" class="card-action" data-tab="planning">Voir toutes</a>
+                            </div>
+                            <div class="applications-list">
+                                <div class="application-item">
+                                    <div class="application-company">
+                                        <div class="company-logo">AL</div>
+                                        <div class="company-info">
+                                            <div class="company-name">AlphaTeam</div>
+                                            <div class="position-name">Développeur Front-end Senior</div>
+                                        </div>
+                                    </div>
+                                    <div class="application-status">
+                                        <div class="status-badge in-progress">
+                                            <i class="fas fa-spinner fa-spin"></i>
+                                            <span>Test technique</span>
+                                        </div>
+                                    </div>
+                                    <div class="application-date">
+                                        <div class="date-label">Mis à jour</div>
+                                        <div class="date-value">Aujourd'hui</div>
+                                    </div>
+                                </div>
+
+                                <div class="application-item">
+                                    <div class="application-company">
+                                        <div class="company-logo">NV</div>
+                                        <div class="company-info">
+                                            <div class="company-name">NovaTech</div>
+                                            <div class="position-name">UX/UI Designer</div>
+                                        </div>
+                                    </div>
+                                    <div class="application-status">
+                                        <div class="status-badge in-progress">
+                                            <i class="fas fa-user"></i>
+                                            <span>Entretien RH</span>
+                                        </div>
+                                    </div>
+                                    <div class="application-date">
+                                        <div class="date-label">Programmé</div>
+                                        <div class="date-value">12 mars</div>
+                                    </div>
+                                </div>
+
+                                <div class="application-item">
+                                    <div class="application-company">
+                                        <div class="company-logo">DG</div>
+                                        <div class="company-info">
+                                            <div class="company-name">DigitalSphere</div>
+                                            <div class="position-name">Product Manager</div>
+                                        </div>
+                                    </div>
+                                    <div class="application-status">
+                                        <div class="status-badge completed">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Offre reçue</span>
+                                        </div>
+                                    </div>
+                                    <div class="application-date">
+                                        <div class="date-label">Reçue le</div>
+                                        <div class="date-value">6 mars</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card">
+                            <div class="card-header">
+                                <h3>Messages récents</h3>
+                                <a href="#" class="card-action" data-tab="messages">Voir tous</a>
+                            </div>
+                            <div class="messages-preview">
+                                <div class="message-item">
+                                    <div class="message-sender">
+                                        <div class="sender-avatar">AL</div>
+                                        <div class="sender-info">
+                                            <div class="sender-name">Marie Dubois</div>
+                                            <div class="sender-company">AlphaTeam</div>
+                                        </div>
+                                    </div>
+                                    <div class="message-preview">
+                                        Bonjour Thomas, j'espère que vous vous portez bien. Je voulais savoir si vous aviez des questions concernant le test technique...
+                                    </div>
+                                    <div class="message-time">10:24</div>
+                                </div>
+
+                                <div class="message-item">
+                                    <div class="message-sender">
+                                        <div class="sender-avatar">NV</div>
+                                        <div class="sender-info">
+                                            <div class="sender-name">Pierre Martin</div>
+                                            <div class="sender-company">NovaTech</div>
+                                        </div>
+                                    </div>
+                                    <div class="message-preview">
+                                        Concernant votre entretien de jeudi, pourriez-vous nous confirmer votre disponibilité ? Nous aimerions aussi discuter...
+                                    </div>
+                                    <div class="message-time">Hier</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Planning de suivi -->
+            <div class="dashboard-section" id="planning">
+                <div class="section-header">
+                    <h2>Planning de suivi de candidatures</h2>
+                    <p>Suivez l'avancement de vos candidatures et planifiez vos prochaines étapes.</p>
+                </div>
+
+                <div class="dashboard-filters">
+                    <div class="filter-group">
+                        <select class="filter-select">
+                            <option value="all">Toutes les candidatures</option>
+                            <option value="active">Candidatures actives</option>
+                            <option value="completed">Candidatures terminées</option>
+                        </select>
+                    </div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Rechercher une entreprise ou un poste...">
+                    </div>
+                </div>
+
+                <div class="applications-table-container">
+                    <table class="applications-table">
+                        <thead>
+                            <tr>
+                                <th>Entreprise & Poste</th>
+                                <th>Date de candidature</th>
+                                <th>Statut</th>
+                                <th>Étapes</th>
+                                <th>Prochaine action</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="application-company">
+                                        <div class="company-logo">AL</div>
+                                        <div class="company-info">
+                                            <div class="company-name">AlphaTeam</div>
+                                            <div class="position-name">Développeur Front-end Senior</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>01/03/2025</td>
+                                <td>
+                                    <div class="status-badge in-progress">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        <span>En cours</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-steps">
+                                        <div class="process-step completed" data-tooltip="Présélection terminée le 03/03">
+                                            Présélection
+                                        </div>
+                                        <div class="process-step completed" data-tooltip="Entretien RH terminé le 05/03">
+                                            Entretien RH
+                                        </div>
+                                        <div class="process-step active" data-tooltip="Test technique à terminer avant le 15/03">
+                                            Test technique
+                                        </div>
+                                        <div class="process-step upcoming" data-tooltip="Entretien final à programmer">
+                                            Entretien final
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div class="next-action">Test technique</div>
+                                        <div class="next-deadline">À compléter avant le 15 mars</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-primary">Accéder au test</button>
+                                        <button class="btn btn-icon btn-sm" data-tooltip="Voir détails">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="application-company">
+                                        <div class="company-logo">NV</div>
+                                        <div class="company-info">
+                                            <div class="company-name">NovaTech</div>
+                                            <div class="position-name">UX/UI Designer</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>28/02/2025</td>
+                                <td>
+                                    <div class="status-badge in-progress">
+                                        <i class="fas fa-spinner fa-spin"></i>
+                                        <span>En cours</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-steps">
+                                        <div class="process-step completed" data-tooltip="Présélection terminée le 02/03">
+                                            Présélection
+                                        </div>
+                                        <div class="process-step active" data-tooltip="Entretien RH programmé le 12/03">
+                                            Entretien RH
+                                        </div>
+                                        <div class="process-step upcoming" data-tooltip="Présentation portfolio à programmer">
+                                            Présentation portfolio
+                                        </div>
+                                        <div class="process-step upcoming" data-tooltip="Entretien final à programmer">
+                                            Entretien final
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div class="next-action">Entretien RH</div>
+                                        <div class="next-deadline">Programmé le 12 mars à 14h</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-primary">Rejoindre call</button>
+                                        <button class="btn btn-icon btn-sm" data-tooltip="Voir détails">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="application-company">
+                                        <div class="company-logo">DG</div>
+                                        <div class="company-info">
+                                            <div class="company-name">DigitalSphere</div>
+                                            <div class="position-name">Product Manager</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>15/02/2025</td>
+                                <td>
+                                    <div class="status-badge completed">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Offre reçue</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-steps">
+                                        <div class="process-step completed" data-tooltip="Présélection terminée le 18/02">
+                                            Présélection
+                                        </div>
+                                        <div class="process-step completed" data-tooltip="Entretien RH terminé le 22/02">
+                                            Entretien RH
+                                        </div>
+                                        <div class="process-step completed" data-tooltip="Case study terminé le 28/02">
+                                            Case study
+                                        </div>
+                                        <div class="process-step completed" data-tooltip="Entretien équipe terminé le 04/03">
+                                            Entretien équipe
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div class="next-action">Offre en cours</div>
+                                        <div class="next-deadline">Réponse attendue d'ici le 10 mars</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-primary">Voir l'offre</button>
+                                        <button class="btn btn-icon btn-sm" data-tooltip="Voir détails">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="application-company">
+                                        <div class="company-logo">WI</div>
+                                        <div class="company-info">
+                                            <div class="company-name">WebInnovate</div>
+                                            <div class="position-name">Front-end Developer</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>10/02/2025</td>
+                                <td>
+                                    <div class="status-badge rejected">
+                                        <i class="fas fa-times-circle"></i>
+                                        <span>Non retenu</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-steps">
+                                        <div class="process-step completed" data-tooltip="Présélection terminée le 13/02">
+                                            Présélection
+                                        </div>
+                                        <div class="process-step completed" data-tooltip="Entretien RH terminé le 15/02">
+                                            Entretien RH
+                                        </div>
+                                        <div class="process-step rejected" data-tooltip="Test technique non validé le 20/02">
+                                            Test technique
+                                        </div>
+                                        <div class="process-step upcoming" data-tooltip="Étape non atteinte">
+                                            Entretien final
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div class="next-action">Candidature terminée</div>
+                                        <div class="next-deadline">Feedback reçu le 22/02</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-secondary">Voir feedback</button>
+                                        <button class="btn btn-icon btn-sm" data-tooltip="Voir détails">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="application-company">
+                                        <div class="company-logo">TL</div>
+                                        <div class="company-info">
+                                            <div class="company-name">TechLabs</div>
+                                            <div class="position-name">Senior React Developer</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>05/02/2025</td>
+                                <td>
+                                    <div class="status-badge pending">
+                                        <i class="fas fa-hourglass-half"></i>
+                                        <span>En attente</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="process-steps">
+                                        <div class="process-step completed" data-tooltip="Présélection terminée le 08/02">
+                                            Présélection
+                                        </div>
+                                        <div class="process-step pending" data-tooltip="En attente de programmation">
+                                            Entretien RH
+                                        </div>
+                                        <div class="process-step upcoming" data-tooltip="Étape non atteinte">
+                                            Test technique
+                                        </div>
+                                        <div class="process-step upcoming" data-tooltip="Étape non atteinte">
+                                            Entretien final
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <div class="next-action">En attente de contact</div>
+                                        <div class="next-deadline">Relance possible le 15/03</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-sm btn-secondary">Relancer</button>
+                                        <button class="btn btn-icon btn-sm" data-tooltip="Voir détails">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mes offres reçues -->
+            <div class="dashboard-section" id="opportunities">
                     <div class="section-header" style="margin-bottom: 1.5rem;">
                         <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Mes process de recrutement en cours</h2>
                         <p style="color: var(--text);">Suivez l'avancement de vos candidatures et planifiez vos prochaines étapes.</p>
@@ -1675,25 +3022,65 @@
         <!-- Le footer sera chargé par JavaScript -->
     </footer>
 
-    <script src="header.js"></script>
-    <script src="footer.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Gestion des onglets
-            const tabs = document.querySelectorAll('.dashboard-tab');
+            // Gestion des onglets de la navigation principale
+            const sidebarLinks = document.querySelectorAll('.sidebar-link[data-tab]');
+            const dashboardTabs = document.querySelectorAll('.dashboard-tab');
             const sections = document.querySelectorAll('.dashboard-section');
             
-            tabs.forEach(tab => {
+            // Fonction pour activer un onglet et sa section
+            function activateTab(tabId) {
+                // Désactiver tous les onglets et sections
+                sidebarLinks.forEach(link => link.classList.remove('active'));
+                dashboardTabs.forEach(tab => tab.classList.remove('active'));
+                sections.forEach(section => section.classList.remove('active'));
+                
+                // Activer l'onglet correspondant dans la sidebar
+                const sidebarLink = document.querySelector(`.sidebar-link[data-tab="${tabId}"]`);
+                if (sidebarLink) {
+                    sidebarLink.classList.add('active');
+                }
+                
+                // Activer l'onglet correspondant dans les tabs mobiles
+                const dashboardTab = document.querySelector(`.dashboard-tab[data-tab="${tabId}"]`);
+                if (dashboardTab) {
+                    dashboardTab.classList.add('active');
+                }
+                
+                // Activer la section correspondante
+                const section = document.getElementById(tabId);
+                if (section) {
+                    section.classList.add('active');
+                }
+            }
+            
+            // Gestion des clics sur les liens de la sidebar
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabId = this.getAttribute('data-tab');
+                    activateTab(tabId);
+                });
+            });
+            
+            // Gestion des clics sur les tabs mobiles
+            dashboardTabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const tabId = this.getAttribute('data-tab');
-                    
-                    // Désactiver tous les onglets et sections
-                    tabs.forEach(t => t.classList.remove('active'));
-                    sections.forEach(s => s.classList.remove('active'));
-                    
-                    // Activer l'onglet et la section correspondante
-                    this.classList.add('active');
-                    document.getElementById(tabId).classList.add('active');
+                    activateTab(tabId);
+                });
+            });
+            
+            // Gestion des liens vers d'autres onglets dans les cartes
+            const cardActions = document.querySelectorAll('.card-action[data-tab]');
+            cardActions.forEach(action => {
+                action.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabId = this.getAttribute('data-tab');
+                    activateTab(tabId);
                 });
             });
             
@@ -1704,6 +3091,59 @@
                     this.classList.toggle('selected');
                 });
             });
+            
+            // Gestion du bouton de menu mobile
+            const mobileMenuBtn = document.createElement('button');
+            mobileMenuBtn.className = 'mobile-menu-btn';
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            document.querySelector('.dashboard-header').prepend(mobileMenuBtn);
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                const sidebar = document.querySelector('.sidebar');
+                sidebar.classList.toggle('open');
+            });
+            
+            // Gestion des filtres dans le planning
+            const filterSelect = document.querySelector('.filter-select');
+            if (filterSelect) {
+                filterSelect.addEventListener('change', function() {
+                    const value = this.value;
+                    const rows = document.querySelectorAll('.applications-table tbody tr');
+                    
+                    rows.forEach(row => {
+                        const status = row.querySelector('.status-badge');
+                        if (value === 'all') {
+                            row.style.display = '';
+                        } else if (value === 'active' && status.classList.contains('in-progress')) {
+                            row.style.display = '';
+                        } else if (value === 'completed' && status.classList.contains('completed')) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            }
+            
+            // Gestion de la recherche dans le planning
+            const searchBox = document.querySelector('.search-box input');
+            if (searchBox) {
+                searchBox.addEventListener('input', function() {
+                    const value = this.value.toLowerCase();
+                    const rows = document.querySelectorAll('.applications-table tbody tr');
+                    
+                    rows.forEach(row => {
+                        const companyName = row.querySelector('.company-name').textContent.toLowerCase();
+                        const positionName = row.querySelector('.position-name').textContent.toLowerCase();
+                        
+                        if (companyName.includes(value) || positionName.includes(value)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            }
         });
     </script>
 </body>

@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sélection des candidats - Nexten</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Sélection des offres - Nexten</title>
+    <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="header.js"></script>
-    <script src="footer.js"></script>
+    <script src="../components/header.js"></script>
+    <script src="../components/footer.js"></script>
     <style>
-        /* Styles spécifiques à la page de sélection des candidats */
+        /* Styles spécifiques à la page de sélection d'emploi */
         .selection-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -122,8 +122,8 @@
             font-weight: 600;
         }
 
-        /* Section profil de l'offre d'emploi */
-        .job-section {
+        /* Section profil du candidat */
+        .profile-section {
             background-color: white;
             border-radius: var(--radius);
             box-shadow: var(--shadow-md);
@@ -131,16 +131,16 @@
             margin-bottom: 2rem;
         }
 
-        .job-header {
+        .profile-header {
             display: flex;
             align-items: flex-start;
             margin-bottom: 1.5rem;
         }
 
-        .company-logo {
+        .profile-avatar {
             width: 80px;
             height: 80px;
-            border-radius: 15px;
+            border-radius: 50%;
             background-color: var(--primary);
             color: white;
             display: flex;
@@ -152,24 +152,24 @@
             flex-shrink: 0;
         }
 
-        .job-info {
+        .profile-info {
             flex: 1;
         }
 
-        .job-title {
+        .profile-name {
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--dark);
             margin-bottom: 0.5rem;
         }
 
-        .company-name {
+        .profile-title {
             font-size: 1.2rem;
             color: var(--text);
             margin-bottom: 1rem;
         }
 
-        .job-meta {
+        .profile-meta {
             display: flex;
             flex-wrap: wrap;
             gap: 1.5rem;
@@ -188,11 +188,11 @@
             margin-right: 0.5rem;
         }
 
-        .job-skills {
+        .profile-skills {
             margin-top: 1.5rem;
         }
 
-        .job-skills h3 {
+        .profile-skills h3 {
             font-size: 1.1rem;
             font-weight: 600;
             color: var(--dark);
@@ -242,8 +242,8 @@
             box-shadow: var(--shadow-sm);
         }
 
-        /* Section des candidats */
-        .candidates-section {
+        /* Section des offres d'emploi */
+        .jobs-section {
             margin-bottom: 3rem;
         }
 
@@ -260,7 +260,7 @@
             color: var(--dark);
         }
 
-        .candidate-filters {
+        .job-filters {
             display: flex;
             gap: 1rem;
             margin-bottom: 1.5rem;
@@ -274,13 +274,13 @@
             font-size: 0.95rem;
         }
 
-        .candidates-grid {
+        .jobs-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 1.5rem;
         }
 
-        .candidate-card {
+        .job-card {
             background-color: white;
             border-radius: var(--radius);
             box-shadow: var(--shadow-sm);
@@ -290,12 +290,12 @@
             border: 2px solid transparent;
         }
 
-        .candidate-card:hover {
+        .job-card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-md);
         }
 
-        .candidate-card.selected {
+        .job-card.selected {
             border-color: var(--primary);
             background-color: rgba(108, 99, 255, 0.05);
         }
@@ -321,18 +321,16 @@
             background-color: #f59e0b;
         }
         
-        .candidate-header {
+        .job-header {
             padding: 1.5rem;
             border-bottom: 1px solid #e2e8f0;
             position: relative;
-            display: flex;
-            align-items: center;
         }
 
-        .candidate-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
             background-color: var(--primary);
             color: white;
             display: flex;
@@ -340,35 +338,30 @@
             justify-content: center;
             font-size: 1.5rem;
             font-weight: 600;
-            margin-right: 1rem;
-            flex-shrink: 0;
+            margin-bottom: 1rem;
         }
 
-        .candidate-header-info {
-            flex: 1;
-        }
-
-        .candidate-name {
+        .job-title {
             font-size: 1.2rem;
             font-weight: 600;
             color: var(--dark);
             margin-bottom: 0.5rem;
         }
 
-        .candidate-title {
+        .company-name {
             font-size: 1rem;
             color: var(--text);
             margin-bottom: 0.8rem;
         }
 
-        .candidate-tags {
+        .job-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
             margin-bottom: 0.5rem;
         }
 
-        .candidate-tag {
+        .job-tag {
             background-color: var(--light);
             color: var(--text);
             padding: 0.3rem 0.6rem;
@@ -378,33 +371,44 @@
             align-items: center;
         }
 
-        .candidate-tag i {
+        .job-tag i {
             margin-right: 0.3rem;
             font-size: 0.8rem;
         }
 
-        .candidate-body {
+        .job-body {
             padding: 1.5rem;
         }
 
-        .candidate-skills {
+        .job-desc {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1.2rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .job-skills {
             margin-bottom: 1.2rem;
         }
 
-        .candidate-skills .section-subtitle {
+        .job-skills .section-subtitle {
             font-size: 0.95rem;
             font-weight: 600;
             color: var(--dark);
             margin-bottom: 0.8rem;
         }
 
-        .candidate-skill-tags {
+        .job-skill-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
         }
 
-        .candidate-skill-tag {
+        .job-skill-tag {
             background-color: var(--light);
             color: var(--text);
             padding: 0.3rem 0.6rem;
@@ -412,13 +416,13 @@
             font-size: 0.85rem;
         }
 
-        .candidate-skill-tag.match {
+        .job-skill-tag.match {
             background-color: rgba(16, 185, 129, 0.1);
             color: #10b981;
             font-weight: 500;
         }
 
-        .candidate-footer {
+        .job-footer {
             padding: 1rem 1.5rem;
             border-top: 1px solid #e2e8f0;
             display: flex;
@@ -426,7 +430,7 @@
             justify-content: space-between;
         }
 
-        .candidate-salary {
+        .job-salary {
             font-weight: 600;
             color: var(--dark);
         }
@@ -547,26 +551,26 @@
                 font-size: 0.8rem;
             }
             
-            .job-header {
+            .profile-header {
                 flex-direction: column;
                 align-items: center;
                 text-align: center;
             }
             
-            .company-logo {
+            .profile-avatar {
                 margin-right: 0;
                 margin-bottom: 1rem;
             }
             
-            .job-meta {
+            .profile-meta {
                 justify-content: center;
             }
             
-            .candidates-grid {
+            .jobs-grid {
                 grid-template-columns: 1fr;
             }
             
-            .candidate-filters {
+            .job-filters {
                 flex-direction: column;
             }
         }
@@ -578,8 +582,8 @@
     <main>
         <div class="selection-container">
             <div class="intro-section">
-                <h1>Sélectionnez les candidats qui vous intéressent</h1>
-                <p>Notre algorithme a analysé votre offre d'emploi et votre questionnaire pour vous proposer les meilleurs candidats. Sélectionnez les profils qui vous intéressent pour être mis en relation avec eux.</p>
+                <h1>Sélectionnez les offres qui vous intéressent</h1>
+                <p>Notre algorithme a analysé votre profil et votre questionnaire pour vous proposer les meilleures correspondances. Sélectionnez jusqu'à 10 offres qui vous intéressent pour être mis en relation avec les recruteurs.</p>
             </div>
 
             <div class="progress-container">
@@ -587,7 +591,7 @@
                     <div class="progress-line"></div>
                     <div class="step completed">
                         <div class="step-circle"><i class="fas fa-check"></i></div>
-                        <div class="step-text">Entreprise</div>
+                        <div class="step-text">Upload CV</div>
                     </div>
                     <div class="step completed">
                         <div class="step-circle"><i class="fas fa-check"></i></div>
@@ -595,7 +599,7 @@
                     </div>
                     <div class="step active">
                         <div class="step-circle">3</div>
-                        <div class="step-text">Sélection</div>
+                        <div class="step-text">Sélection d'offres</div>
                     </div>
                     <div class="step">
                         <div class="step-circle">4</div>
@@ -604,26 +608,26 @@
                 </div>
             </div>
 
-            <div class="job-section">
-                <div class="job-header">
-                    <div class="company-logo">
-                        T
+            <div class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        JD
                     </div>
-                    <div class="job-info">
-                        <h2 class="job-title">Développeur Frontend React</h2>
-                        <p class="company-name">TechSolutions</p>
-                        <div class="job-meta">
+                    <div class="profile-info">
+                        <h2 class="profile-name">Jean Dupont</h2>
+                        <p class="profile-title">Développeur Frontend Senior</p>
+                        <div class="profile-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-briefcase"></i>
+                                <span>5 ans d'expérience</span>
+                            </div>
                             <div class="meta-item">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <span>Paris, France</span>
                             </div>
                             <div class="meta-item">
-                                <i class="fas fa-file-contract"></i>
-                                <span>CDI</span>
-                            </div>
-                            <div class="meta-item">
-                                <i class="fas fa-home"></i>
-                                <span>Hybride</span>
+                                <i class="fas fa-calendar-check"></i>
+                                <span>Disponible dans 2 mois</span>
                             </div>
                             <div class="meta-item">
                                 <i class="fas fa-euro-sign"></i>
@@ -632,64 +636,66 @@
                         </div>
                     </div>
                 </div>
-                <div class="job-skills">
-                    <h3>Compétences requises</h3>
+                <div class="profile-skills">
+                    <h3>Compétences principales</h3>
                     <div class="skills-container">
                         <span class="skill-tag">JavaScript</span>
                         <span class="skill-tag">React</span>
                         <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">Node.js</span>
                         <span class="skill-tag">HTML/CSS</span>
-                        <span class="skill-tag">Redux</span>
+                        <span class="skill-tag">Next.js</span>
+                        <span class="skill-tag">GraphQL</span>
                         <span class="skill-tag">Git</span>
                     </div>
                 </div>
             </div>
 
             <div class="selection-counter">
-                <div class="counter-text">Candidats sélectionnés</div>
+                <div class="counter-text">Offres sélectionnées</div>
                 <div class="counter" id="selection-count">0/10</div>
             </div>
 
-            <div class="candidates-section">
+            <div class="jobs-section">
                 <div class="section-header">
-                    <h2 class="section-title">Candidats recommandés</h2>
+                    <h2 class="section-title">Offres recommandées</h2>
                 </div>
 
-                <div class="candidate-filters">
+                <div class="job-filters">
                     <select class="filter-select" id="sort-filter">
                         <option value="match">Trier par correspondance</option>
-                        <option value="experience">Trier par expérience</option>
-                        <option value="availability">Trier par disponibilité</option>
+                        <option value="salary">Trier par salaire</option>
+                        <option value="recent">Trier par date</option>
                     </select>
-                    <select class="filter-select" id="experience-filter">
-                        <option value="all">Toutes les expériences</option>
-                        <option value="junior">Junior (0-2 ans)</option>
-                        <option value="mid">Confirmé (3-5 ans)</option>
-                        <option value="senior">Senior (5+ ans)</option>
+                    <select class="filter-select" id="contract-filter">
+                        <option value="all">Tous les contrats</option>
+                        <option value="cdi">CDI</option>
+                        <option value="cdd">CDD</option>
+                        <option value="freelance">Freelance</option>
                     </select>
-                    <select class="filter-select" id="availability-filter">
-                        <option value="all">Toutes les disponibilités</option>
-                        <option value="immediate">Immédiate</option>
-                        <option value="one-month">1 mois ou moins</option>
-                        <option value="more">Plus d'un mois</option>
+                    <select class="filter-select" id="location-filter">
+                        <option value="all">Toutes les localisations</option>
+                        <option value="paris">Paris</option>
+                        <option value="lyon">Lyon</option>
+                        <option value="remote">Télétravail</option>
                     </select>
                 </div>
 
-                <div class="candidates-grid" id="candidates-container">
-                    <!-- Les candidats seront générés dynamiquement -->
+                <div class="jobs-grid" id="jobs-container">
+                    <!-- Les offres d'emploi seront générées dynamiquement -->
                 </div>
 
                 <div class="load-more">
                     <button class="load-more-btn" id="load-more-btn">
                         <i class="fas fa-sync-alt"></i>
-                        Afficher plus de candidats
+                        Afficher plus d'offres
                     </button>
                 </div>
             </div>
 
             <div class="finalize-section">
-                <h2 class="finalize-title">Prêt à rencontrer vos futurs collaborateurs ?</h2>
-                <p class="finalize-desc">Vous avez sélectionné <span id="selected-count">0</span> candidats qui correspondent à votre offre. Validez votre sélection pour être mis en relation avec les candidats intéressés.</p>
+                <h2 class="finalize-title">Prêt à rencontrer vos futurs employeurs ?</h2>
+                <p class="finalize-desc">Vous avez sélectionné <span id="selected-count">0</span> offres qui correspondent à votre profil. Validez votre sélection pour être mis en relation avec les recruteurs intéressés.</p>
                 <button class="submit-btn" id="submit-btn" disabled>
                     <i class="fas fa-check-circle"></i>
                     Valider ma sélection
@@ -701,66 +707,75 @@
     <footer></footer>
 
     <script>
-        // Données de l'offre d'emploi (simulées, à remplacer par les données réelles)
-        let jobData = {
-            title: "Développeur Frontend React",
-            company: "TechSolutions",
-            companyInitial: "T",
+        // Données de l'utilisateur (simulées, à remplacer par les données réelles)
+        let userData = {
+            name: "Jean Dupont",
+            initials: "JD",
+            title: "Développeur Frontend Senior",
+            experience: "5 ans d'expérience",
             location: "Paris, France",
-            contract: "CDI",
-            remote: "Hybride",
+            availability: "Disponible dans 2 mois",
             salary: "55-65K€",
-            skills: ["JavaScript", "React", "TypeScript", "HTML/CSS", "Redux", "Git"]
+            skills: ["JavaScript", "React", "TypeScript", "Node.js", "HTML/CSS", "Next.js", "GraphQL", "Git"]
         };
         
-        // Récupérer les données de l'offre depuis localStorage si disponibles
-        const recruiterDataString = localStorage.getItem('recruiterFormData');
-        if (recruiterDataString) {
+        // Récupérer les données du candidat depuis localStorage si disponibles
+        const candidateDataString = localStorage.getItem('candidateData');
+        if (candidateDataString) {
             try {
-                const recruiterData = JSON.parse(recruiterDataString);
-                console.log("Données recruteur récupérées:", recruiterData);
+                const candidateData = JSON.parse(candidateDataString);
+                console.log("Données candidat récupérées:", candidateData);
                 
-                // Mettre à jour les données de l'offre avec les informations du recruteur
-                if (recruiterData.job) {
-                    jobData.title = recruiterData.job.title || jobData.title;
-                }
-                
-                if (recruiterData.company) {
-                    jobData.company = recruiterData.company.name || jobData.company;
-                    jobData.location = recruiterData.company.formattedAddress || recruiterData.company.address || jobData.location;
+                // Mettre à jour les données utilisateur avec les informations du candidat
+                if (candidateData.personalInfo) {
+                    userData.name = candidateData.personalInfo.name || userData.name;
+                    userData.title = candidateData.personalInfo.jobTitle || userData.title;
                     
-                    // Générer l'initiale de l'entreprise
-                    if (recruiterData.company.name) {
-                        jobData.companyInitial = recruiterData.company.name.charAt(0);
+                    // Générer les initiales
+                    const nameParts = userData.name.split(' ');
+                    if (nameParts.length >= 2) {
+                        userData.initials = nameParts[0].charAt(0) + nameParts[1].charAt(0);
+                    } else if (nameParts.length === 1) {
+                        userData.initials = nameParts[0].charAt(0);
                     }
                 }
                 
+                if (candidateData.professionalPreferences) {
+                    userData.location = candidateData.professionalPreferences.location || userData.location;
+                    userData.salary = candidateData.professionalPreferences.salary || userData.salary;
+                    userData.availability = candidateData.professionalPreferences.availability || userData.availability;
+                }
+                
+                if (candidateData.skills && candidateData.skills.technical) {
+                    userData.skills = candidateData.skills.technical.slice(0, 8);
+                }
+                
                 // Mettre à jour l'interface utilisateur avec les données récupérées
-                updateJobInterface();
+                updateUserInterface();
                 
             } catch (error) {
-                console.error("Erreur lors de la récupération des données recruteur:", error);
+                console.error("Erreur lors de la récupération des données candidat:", error);
             }
         }
         
-        // Mettre à jour l'interface utilisateur avec les données de l'offre
-        function updateJobInterface() {
-            document.querySelector('.company-logo').textContent = jobData.companyInitial;
-            document.querySelector('.job-title').textContent = jobData.title;
-            document.querySelector('.company-name').textContent = jobData.company;
+        // Mettre à jour l'interface utilisateur avec les données
+        function updateUserInterface() {
+            document.querySelector('.profile-avatar').textContent = userData.initials;
+            document.querySelector('.profile-name').textContent = userData.name;
+            document.querySelector('.profile-title').textContent = userData.title;
             
             // Mettre à jour les méta-informations
             const metaItems = document.querySelectorAll('.meta-item span');
-            metaItems[0].textContent = jobData.location;
-            metaItems[1].textContent = jobData.contract;
-            metaItems[2].textContent = jobData.remote;
-            metaItems[3].textContent = jobData.salary;
+            metaItems[0].textContent = userData.experience;
+            metaItems[1].textContent = userData.location;
+            metaItems[2].textContent = userData.availability;
+            metaItems[3].textContent = userData.salary;
             
             // Mettre à jour les compétences
             const skillsContainer = document.querySelector('.skills-container');
             skillsContainer.innerHTML = '';
             
-            jobData.skills.forEach(skill => {
+            userData.skills.forEach(skill => {
                 const skillTag = document.createElement('span');
                 skillTag.className = 'skill-tag';
                 skillTag.textContent = skill;
@@ -768,380 +783,357 @@
             });
         }
         
-        // Données des candidats (simulées, à remplacer par les données réelles)
-        const candidatesData = [
+        // Données des offres d'emploi (simulées, à remplacer par les données réelles)
+        const jobsData = [
             {
                 id: 1,
-                name: "Jean Dupont",
-                initials: "JD",
-                title: "Développeur Frontend Senior",
-                experience: "5 ans",
+                title: "Développeur Frontend React",
+                company: "TechSolutions",
+                companyInitial: "T",
                 location: "Paris",
-                availability: "Disponible dans 2 mois",
+                contract: "CDI",
+                remote: "Hybride",
                 salary: "55-65K€",
                 matchScore: 95,
-                skills: ["JavaScript", "React", "TypeScript", "Node.js", "HTML/CSS", "Next.js"],
-                softSkills: ["Communication", "Travail d'équipe", "Autonomie"],
-                email: "jean.dupont@example.com"
+                description: "Nous recherchons un développeur Frontend expérimenté pour rejoindre notre équipe produit. Vous travaillerez sur des applications React modernes et participerez à l'amélioration de notre plateforme SaaS.",
+                skills: ["JavaScript", "React", "TypeScript", "HTML/CSS", "Redux", "Git"],
+                date: "2023-02-20"
             },
             {
                 id: 2,
-                name: "Marie Martin",
-                initials: "MM",
-                title: "Développeuse React",
-                experience: "3 ans",
+                title: "Lead Developer Frontend",
+                company: "InnovateTech",
+                companyInitial: "I",
                 location: "Paris",
-                availability: "Disponible immédiatement",
-                salary: "50-60K€",
+                contract: "CDI",
+                remote: "100% Télétravail",
+                salary: "65-75K€",
                 matchScore: 92,
-                skills: ["JavaScript", "React", "Redux", "HTML/CSS", "TailwindCSS", "Jest"],
-                softSkills: ["Résolution de problèmes", "Organisation", "Adaptabilité"],
-                email: "marie.martin@example.com"
+                description: "En tant que Lead Developer Frontend, vous superviserez une équipe de développeurs et guiderez les décisions techniques. Vous serez responsable de l'architecture frontend et de la mise en œuvre des meilleures pratiques.",
+                skills: ["JavaScript", "React", "TypeScript", "Node.js", "Architecture", "Leadership"],
+                date: "2023-02-15"
             },
             {
                 id: 3,
-                name: "Thomas Bernard",
-                initials: "TB",
-                title: "Développeur Frontend",
-                experience: "4 ans",
+                title: "Développeur Full Stack",
+                company: "DataSystems",
+                companyInitial: "D",
                 location: "Lyon",
-                availability: "Disponible dans 1 mois",
-                salary: "50-60K€",
-                matchScore: 88,
-                skills: ["JavaScript", "React", "Vue.js", "HTML/CSS", "Sass", "Webpack"],
-                softSkills: ["Créativité", "Esprit d'équipe", "Communication"],
-                email: "thomas.bernard@example.com"
+                contract: "CDI",
+                remote: "Hybride",
+                salary: "60-70K€",
+                matchScore: 85,
+                description: "Rejoignez notre équipe en tant que développeur Full Stack pour travailler sur notre plateforme d'analyse de données. Vous développerez des interfaces utilisateur modernes et des API performantes.",
+                skills: ["JavaScript", "React", "Node.js", "Express", "MongoDB", "REST API"],
+                date: "2023-02-10"
             },
             {
                 id: 4,
-                name: "Sophie Petit",
-                initials: "SP",
-                title: "Développeuse Frontend/UI",
-                experience: "2 ans",
+                title: "Développeur Frontend React Native",
+                company: "MobileFirst",
+                companyInitial: "M",
                 location: "Paris",
-                availability: "Disponible dans 2 semaines",
-                salary: "45-55K€",
-                matchScore: 85,
-                skills: ["JavaScript", "React", "HTML/CSS", "UI Design", "Figma", "Bootstrap"],
-                softSkills: ["Créativité", "Souci du détail", "Autonomie"],
-                email: "sophie.petit@example.com"
+                contract: "CDI",
+                remote: "Sur site",
+                salary: "50-60K€",
+                matchScore: 82,
+                description: "Nous recherchons un développeur React Native pour créer des applications mobiles cross-platform. Vous serez impliqué dans toutes les étapes du développement d'applications mobiles, de la conception à la publication.",
+                skills: ["JavaScript", "React Native", "Mobile", "Redux", "API Integration", "Git"],
+                date: "2023-02-05"
             },
             {
                 id: 5,
-                name: "Lucas Dubois",
-                initials: "LD",
-                title: "Développeur Full Stack",
-                experience: "6 ans",
-                location: "Remote",
-                availability: "Disponible dans 3 mois",
-                salary: "60-70K€",
-                matchScore: 82,
-                skills: ["JavaScript", "React", "Node.js", "Express", "MongoDB", "GraphQL"],
-                softSkills: ["Leadership", "Communication", "Gestion de projet"],
-                email: "lucas.dubois@example.com"
+                title: "Ingénieur Frontend",
+                company: "TechGlobal",
+                companyInitial: "T",
+                location: "Lyon",
+                contract: "CDI",
+                remote: "100% Télétravail",
+                salary: "55-65K€",
+                matchScore: 80,
+                description: "Rejoignez notre équipe d'ingénieurs Frontend pour travailler sur des projets innovants. Vous participerez au développement de nouvelles fonctionnalités et à l'amélioration de l'expérience utilisateur.",
+                skills: ["JavaScript", "Vue.js", "HTML/CSS", "WebPack", "Sass", "Jest"],
+                date: "2023-02-01"
             },
             {
                 id: 6,
-                name: "Emma Leroy",
-                initials: "EL",
-                title: "Développeuse Frontend Junior",
-                experience: "1 an",
+                title: "Développeur Frontend Angular",
+                company: "ConsultingTech",
+                companyInitial: "C",
                 location: "Paris",
-                availability: "Disponible immédiatement",
-                salary: "40-45K€",
+                contract: "Freelance",
+                remote: "100% Télétravail",
+                salary: "500-600€/jour",
                 matchScore: 78,
-                skills: ["JavaScript", "React", "HTML/CSS", "Git", "Bootstrap"],
-                softSkills: ["Apprentissage rapide", "Travail d'équipe", "Curiosité"],
-                email: "emma.leroy@example.com"
+                description: "Nous recherchons un développeur Angular expérimenté pour un projet de refonte d'application web. Vous travaillerez en étroite collaboration avec l'équipe produit pour livrer une interface utilisateur moderne et performante.",
+                skills: ["Angular", "TypeScript", "RxJS", "HTML/CSS", "Material Design", "Git"],
+                date: "2023-01-25"
             },
             {
                 id: 7,
-                name: "Alexandre Moreau",
-                initials: "AM",
-                title: "Développeur JavaScript Senior",
-                experience: "7 ans",
-                location: "Lyon",
-                availability: "Disponible dans 1 mois",
-                salary: "65-75K€",
+                title: "Développeur Frontend Junior",
+                company: "StartupInnovate",
+                companyInitial: "S",
+                location: "Paris",
+                contract: "CDD",
+                remote: "Hybride",
+                salary: "40-45K€",
                 matchScore: 75,
-                skills: ["JavaScript", "React", "Angular", "TypeScript", "Node.js", "Architecture"],
-                softSkills: ["Leadership", "Mentorat", "Communication"],
-                email: "alexandre.moreau@example.com"
+                description: "Startup en croissance recherche un développeur Frontend motivé pour rejoindre notre équipe. Vous participerez au développement de notre plateforme web et travaillerez sur des fonctionnalités innovantes.",
+                skills: ["JavaScript", "React", "HTML/CSS", "Git", "Responsive Design"],
+                date: "2023-01-20"
             },
             {
                 id: 8,
-                name: "Julie Fournier",
-                initials: "JF",
-                title: "Développeuse React",
-                experience: "3 ans",
-                location: "Nantes",
-                availability: "Disponible dans 1 mois",
+                title: "Développeur Web Frontend",
+                company: "AgenceDigitale",
+                companyInitial: "A",
+                location: "Lyon",
+                contract: "CDI",
+                remote: "Sur site",
                 salary: "45-55K€",
                 matchScore: 72,
-                skills: ["JavaScript", "React", "Redux", "HTML/CSS", "Jest", "Git"],
-                softSkills: ["Communication", "Autonomie", "Organisation"],
-                email: "julie.fournier@example.com"
+                description: "Agence digitale recherche un développeur frontend pour travailler sur divers projets web. Vous intégrerez des maquettes graphiques et développerez des sites web modernes et responsives.",
+                skills: ["JavaScript", "HTML/CSS", "Responsive", "WordPress", "jQuery", "PHP"],
+                date: "2023-01-15"
             },
             {
                 id: 9,
-                name: "Mathieu Blanc",
-                initials: "MB",
-                title: "Développeur Frontend Junior",
-                experience: "1 an",
+                title: "Développeur Frontend eCommerce",
+                company: "ShopOnline",
+                companyInitial: "S",
                 location: "Paris",
-                availability: "Disponible immédiatement",
-                salary: "35-45K€",
+                contract: "CDI",
+                remote: "Hybride",
+                salary: "50-60K€",
                 matchScore: 70,
-                skills: ["JavaScript", "React", "HTML/CSS", "Responsive Design", "Git"],
-                softSkills: ["Travail d'équipe", "Apprentissage rapide", "Adaptabilité"],
-                email: "mathieu.blanc@example.com"
+                description: "Rejoignez notre équipe eCommerce pour développer et améliorer notre plateforme de vente en ligne. Vous serez responsable de l'implémentation d'interfaces utilisateur et de l'optimisation des conversions.",
+                skills: ["JavaScript", "React", "HTML/CSS", "Shopify", "Prestashop", "SEO"],
+                date: "2023-01-10"
             },
             {
                 id: 10,
-                name: "Claire Mercier",
-                initials: "CM",
-                title: "Développeuse Full Stack",
-                experience: "4 ans",
+                title: "Développeur Fullstack JavaScript",
+                company: "WebSolutions",
+                companyInitial: "W",
                 location: "Remote",
-                availability: "Disponible dans 2 mois",
-                salary: "55-65K€",
+                contract: "Freelance",
+                remote: "100% Télétravail",
+                salary: "450-550€/jour",
                 matchScore: 68,
-                skills: ["JavaScript", "React", "Node.js", "Express", "PostgreSQL", "Docker"],
-                softSkills: ["Résolution de problèmes", "Communication", "Autonomie"],
-                email: "claire.mercier@example.com"
+                description: "Nous recherchons un développeur Fullstack JavaScript pour renforcer notre équipe. Vous travaillerez sur des projets variés et serez impliqué dans toutes les phases du développement, du frontend au backend.",
+                skills: ["JavaScript", "Node.js", "React", "MongoDB", "Express", "API REST"],
+                date: "2023-01-05"
             }
         ];
         
-        // Initialiser le compteur de sélection et l'ensemble des candidats sélectionnés
-        let selectedCandidates = new Set();
-        let displayedCandidates = 6; // Nombre de candidats affichés initialement
+        // Initialiser le compteur de sélection et l'ensemble des offres sélectionnées
+        let selectedJobs = new Set();
+        let displayedJobs = 6; // Nombre d'offres affichées initialement
         
-        // Générer les cartes de candidats
-        function generateCandidateCards(candidates) {
-            const candidatesContainer = document.getElementById('candidates-container');
-            candidatesContainer.innerHTML = '';
+        // Générer les cartes d'offres d'emploi
+        function generateJobCards(jobs) {
+            const jobsContainer = document.getElementById('jobs-container');
+            jobsContainer.innerHTML = '';
             
-            candidates.slice(0, displayedCandidates).forEach(candidate => {
-                const isSelected = selectedCandidates.has(candidate.id);
-                const cardClass = isSelected ? 'candidate-card selected' : 'candidate-card';
+            jobs.slice(0, displayedJobs).forEach(job => {
+                const isSelected = selectedJobs.has(job.id);
+                const cardClass = isSelected ? 'job-card selected' : 'job-card';
                 const buttonClass = isSelected ? 'select-btn selected' : 'select-btn';
-                const buttonText = isSelected ? '<i class="fas fa-check"></i> Sélectionné' : '<i class="fas fa-plus"></i> Sélectionner';
+                const buttonText = isSelected ? '<i class="fas fa-check"></i> Sélectionnée' : '<i class="fas fa-plus"></i> Sélectionner';
                 
                 let matchBadgeClass = 'match-badge';
-                if (candidate.matchScore >= 90) {
+                if (job.matchScore >= 90) {
                     matchBadgeClass += ' high';
-                } else if (candidate.matchScore >= 80) {
+                } else if (job.matchScore >= 80) {
                     matchBadgeClass += ' medium';
                 }
                 
-                const candidateSkills = candidate.skills.map(skill => {
-                    const isMatch = jobData.skills.includes(skill);
-                    return `<span class="candidate-skill-tag${isMatch ? ' match' : ''}">${skill}</span>`;
+                const jobSkills = job.skills.map(skill => {
+                    const isMatch = userData.skills.includes(skill);
+                    return `<span class="job-skill-tag${isMatch ? ' match' : ''}">${skill}</span>`;
                 }).join('');
                 
-                const candidateCard = `
-                    <div class="${cardClass}" data-id="${candidate.id}">
-                        <div class="${matchBadgeClass}">${candidate.matchScore}% match</div>
-                        <div class="candidate-header">
-                            <div class="candidate-avatar">${candidate.initials}</div>
-                            <div class="candidate-header-info">
-                                <h3 class="candidate-name">${candidate.name}</h3>
-                                <p class="candidate-title">${candidate.title}</p>
-                                <div class="candidate-tags">
-                                    <span class="candidate-tag"><i class="fas fa-briefcase"></i> ${candidate.experience}</span>
-                                    <span class="candidate-tag"><i class="fas fa-map-marker-alt"></i> ${candidate.location}</span>
+                const jobCard = `
+                    <div class="${cardClass}" data-id="${job.id}">
+                        <div class="${matchBadgeClass}">${job.matchScore}% match</div>
+                        <div class="job-header">
+                            <div class="company-logo">${job.companyInitial}</div>
+                            <h3 class="job-title">${job.title}</h3>
+                            <p class="company-name">${job.company}</p>
+                            <div class="job-tags">
+                                <span class="job-tag"><i class="fas fa-map-marker-alt"></i> ${job.location}</span>
+                                <span class="job-tag"><i class="fas fa-file-contract"></i> ${job.contract}</span>
+                                <span class="job-tag"><i class="fas fa-home"></i> ${job.remote}</span>
+                            </div>
+                        </div>
+                        <div class="job-body">
+                            <p class="job-desc">${job.description}</p>
+                            <div class="job-skills">
+                                <p class="section-subtitle">Compétences requises</p>
+                                <div class="job-skill-tags">
+                                    ${jobSkills}
                                 </div>
                             </div>
                         </div>
-                        <div class="candidate-body">
-                            <div class="meta-item" style="margin-bottom: 1rem;">
-                                <i class="fas fa-calendar-check"></i>
-                                <span>${candidate.availability}</span>
-                            </div>
-                            <div class="candidate-skills">
-                                <p class="section-subtitle">Compétences techniques</p>
-                                <div class="candidate-skill-tags">
-                                    ${candidateSkills}
-                                </div>
-                            </div>
-                            <div class="candidate-skills">
-                                <p class="section-subtitle">Soft skills</p>
-                                <div class="candidate-skill-tags">
-                                    ${candidate.softSkills.map(skill => `<span class="candidate-skill-tag">${skill}</span>`).join('')}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="candidate-footer">
-                            <div class="candidate-salary">${candidate.salary}</div>
-                            <button class="${buttonClass}" data-id="${candidate.id}">${buttonText}</button>
+                        <div class="job-footer">
+                            <div class="job-salary">${job.salary}</div>
+                            <button class="${buttonClass}" data-id="${job.id}">${buttonText}</button>
                         </div>
                     </div>
                 `;
                 
-                candidatesContainer.innerHTML += candidateCard;
+                jobsContainer.innerHTML += jobCard;
             });
             
             // Ajouter les écouteurs d'événements pour les boutons de sélection
             document.querySelectorAll('.select-btn').forEach(button => {
-                button.addEventListener('click', toggleCandidateSelection);
+                button.addEventListener('click', toggleJobSelection);
             });
         }
         
-        // Fonction pour basculer la sélection d'un candidat
-        function toggleCandidateSelection() {
-            const candidateId = parseInt(this.getAttribute('data-id'));
-            const candidateCard = document.querySelector(`.candidate-card[data-id="${candidateId}"]`);
+        // Fonction pour basculer la sélection d'une offre
+        function toggleJobSelection() {
+            const jobId = parseInt(this.getAttribute('data-id'));
+            const jobCard = document.querySelector(`.job-card[data-id="${jobId}"]`);
             
-            if (selectedCandidates.has(candidateId)) {
-                // Désélectionner le candidat
-                selectedCandidates.delete(candidateId);
-                candidateCard.classList.remove('selected');
+            if (selectedJobs.has(jobId)) {
+                // Désélectionner l'offre
+                selectedJobs.delete(jobId);
+                jobCard.classList.remove('selected');
                 this.classList.remove('selected');
                 this.innerHTML = '<i class="fas fa-plus"></i> Sélectionner';
             } else {
                 // Vérifier si le maximum de sélections est atteint
-                if (selectedCandidates.size >= 10) {
-                    alert('Vous avez déjà sélectionné 10 candidats, le maximum autorisé. Veuillez en désélectionner un avant d\'en ajouter un nouveau.');
+                if (selectedJobs.size >= 10) {
+                    alert('Vous avez déjà sélectionné 10 offres, le maximum autorisé. Veuillez en désélectionner une avant d\'en ajouter une nouvelle.');
                     return;
                 }
                 
-                // Sélectionner le candidat
-                selectedCandidates.add(candidateId);
-                candidateCard.classList.add('selected');
+                // Sélectionner l'offre
+                selectedJobs.add(jobId);
+                jobCard.classList.add('selected');
                 this.classList.add('selected');
-                this.innerHTML = '<i class="fas fa-check"></i> Sélectionné';
+                this.innerHTML = '<i class="fas fa-check"></i> Sélectionnée';
             }
             
             // Mettre à jour les compteurs
             updateSelectionCounters();
             
             // Activer/désactiver le bouton de soumission
-            document.getElementById('submit-btn').disabled = selectedCandidates.size === 0;
+            document.getElementById('submit-btn').disabled = selectedJobs.size === 0;
         }
         
         // Mettre à jour les compteurs de sélection
         function updateSelectionCounters() {
-            document.getElementById('selection-count').textContent = `${selectedCandidates.size}/10`;
-            document.getElementById('selected-count').textContent = selectedCandidates.size;
+            document.getElementById('selection-count').textContent = `${selectedJobs.size}/10`;
+            document.getElementById('selected-count').textContent = selectedJobs.size;
         }
         
         // Gérer le bouton "Afficher plus"
         document.getElementById('load-more-btn').addEventListener('click', function() {
-            // Augmenter le nombre de candidats affichés
-            displayedCandidates = Math.min(displayedCandidates + 4, candidatesData.length);
+            // Augmenter le nombre d'offres affichées
+            displayedJobs = Math.min(displayedJobs + 4, jobsData.length);
             
-            // Regénérer les cartes de candidats
-            generateCandidateCards(getSortedAndFilteredCandidates());
+            // Regénérer les cartes d'offres
+            generateJobCards(getSortedAndFilteredJobs());
             
-            // Masquer le bouton si tous les candidats sont affichés
-            if (displayedCandidates >= candidatesData.length) {
+            // Masquer le bouton si toutes les offres sont affichées
+            if (displayedJobs >= jobsData.length) {
                 this.style.display = 'none';
             }
         });
         
         // Gérer les filtres et le tri
         document.getElementById('sort-filter').addEventListener('change', applyFiltersAndSort);
-        document.getElementById('experience-filter').addEventListener('change', applyFiltersAndSort);
-        document.getElementById('availability-filter').addEventListener('change', applyFiltersAndSort);
+        document.getElementById('contract-filter').addEventListener('change', applyFiltersAndSort);
+        document.getElementById('location-filter').addEventListener('change', applyFiltersAndSort);
         
         function applyFiltersAndSort() {
-            // Réinitialiser le nombre de candidats affichés
-            displayedCandidates = 6;
+            // Réinitialiser le nombre d'offres affichées
+            displayedJobs = 6;
             
-            // Afficher les candidats filtrés et triés
-            generateCandidateCards(getSortedAndFilteredCandidates());
+            // Afficher les offres filtrées et triées
+            generateJobCards(getSortedAndFilteredJobs());
             
-            // Afficher le bouton "Afficher plus" s'il reste des candidats à afficher
+            // Afficher le bouton "Afficher plus" s'il reste des offres à afficher
             const loadMoreBtn = document.getElementById('load-more-btn');
-            loadMoreBtn.style.display = candidatesData.length > displayedCandidates ? 'flex' : 'none';
+            loadMoreBtn.style.display = jobsData.length > displayedJobs ? 'flex' : 'none';
         }
         
-        function getSortedAndFilteredCandidates() {
+        function getSortedAndFilteredJobs() {
             // Récupérer les valeurs des filtres
             const sortValue = document.getElementById('sort-filter').value;
-            const experienceValue = document.getElementById('experience-filter').value;
-            const availabilityValue = document.getElementById('availability-filter').value;
+            const contractValue = document.getElementById('contract-filter').value;
+            const locationValue = document.getElementById('location-filter').value;
             
-            // Filtrer les candidats
-            let filteredCandidates = [...candidatesData];
+            // Filtrer les offres
+            let filteredJobs = [...jobsData];
             
-            if (experienceValue !== 'all') {
-                filteredCandidates = filteredCandidates.filter(candidate => {
-                    const years = parseInt(candidate.experience);
-                    if (experienceValue === 'junior') return years <= 2;
-                    if (experienceValue === 'mid') return years >= 3 && years <= 5;
-                    if (experienceValue === 'senior') return years >= 5;
+            if (contractValue !== 'all') {
+                filteredJobs = filteredJobs.filter(job => {
+                    if (contractValue === 'cdi') return job.contract === 'CDI';
+                    if (contractValue === 'cdd') return job.contract === 'CDD';
+                    if (contractValue === 'freelance') return job.contract === 'Freelance';
                     return true;
                 });
             }
             
-            if (availabilityValue !== 'all') {
-                filteredCandidates = filteredCandidates.filter(candidate => {
-                    if (availabilityValue === 'immediate') return candidate.availability.includes('immédiatement');
-                    if (availabilityValue === 'one-month') {
-                        return candidate.availability.includes('semaine') || 
-                               (candidate.availability.includes('mois') && candidate.availability.includes('1'));
-                    }
-                    if (availabilityValue === 'more') {
-                        return !candidate.availability.includes('immédiatement') && 
-                               !candidate.availability.includes('semaine') && 
-                               !(candidate.availability.includes('mois') && candidate.availability.includes('1'));
-                    }
+            if (locationValue !== 'all') {
+                filteredJobs = filteredJobs.filter(job => {
+                    if (locationValue === 'paris') return job.location.includes('Paris');
+                    if (locationValue === 'lyon') return job.location.includes('Lyon');
+                    if (locationValue === 'remote') return job.remote.includes('Télétravail');
                     return true;
                 });
             }
             
-            // Trier les candidats
-            filteredCandidates.sort((a, b) => {
+            // Trier les offres
+            filteredJobs.sort((a, b) => {
                 if (sortValue === 'match') return b.matchScore - a.matchScore;
-                if (sortValue === 'experience') {
-                    const expA = parseInt(a.experience);
-                    const expB = parseInt(b.experience);
-                    return expB - expA;
-                }
-                if (sortValue === 'availability') {
-                    const getAvailabilityValue = (availability) => {
-                        if (availability.includes('immédiatement')) return 0;
-                        if (availability.includes('semaine')) return 1;
-                        if (availability.includes('1 mois')) return 2;
-                        if (availability.includes('2 mois')) return 3;
-                        if (availability.includes('3 mois')) return 4;
-                        return 5;
+                if (sortValue === 'salary') {
+                    // Extraire les valeurs numériques des salaires pour trier
+                    const getSalaryValue = (salary) => {
+                        const match = salary.match(/(\d+)/g);
+                        return match ? parseInt(match[match.length > 1 ? 1 : 0]) : 0;
                     };
-                    return getAvailabilityValue(a.availability) - getAvailabilityValue(b.availability);
+                    return getSalaryValue(b.salary) - getSalaryValue(a.salary);
+                }
+                if (sortValue === 'recent') {
+                    return new Date(b.date) - new Date(a.date);
                 }
                 return 0;
             });
             
-            return filteredCandidates;
+            return filteredJobs;
         }
         
         // Gérer le bouton de soumission
         document.getElementById('submit-btn').addEventListener('click', function() {
-            if (selectedCandidates.size === 0) {
-                alert('Veuillez sélectionner au moins un candidat avant de valider.');
+            if (selectedJobs.size === 0) {
+                alert('Veuillez sélectionner au moins une offre avant de valider.');
                 return;
             }
             
-            // Récupérer les candidats sélectionnés
-            const selectedCandidatesArray = Array.from(selectedCandidates).map(id => {
-                return candidatesData.find(candidate => candidate.id === id);
+            // Récupérer les offres sélectionnées
+            const selectedJobsArray = Array.from(selectedJobs).map(id => {
+                return jobsData.find(job => job.id === id);
             });
             
-            // Sauvegarder les candidats sélectionnés dans localStorage
-            localStorage.setItem('selectedCandidates', JSON.stringify(selectedCandidatesArray));
+            // Sauvegarder les offres sélectionnées dans localStorage
+            localStorage.setItem('selectedJobs', JSON.stringify(selectedJobsArray));
             
             // Rediriger vers la page de matching
-            window.location.href = 'recruiter-matches.html';
+            window.location.href = 'candidate-matches.html';
         });
         
-        // Afficher les candidats au chargement de la page
+        // Afficher les offres au chargement de la page
         document.addEventListener('DOMContentLoaded', function() {
-            // Mettre à jour l'interface utilisateur avec les données de l'offre
-            updateJobInterface();
+            // Mettre à jour l'interface utilisateur avec les données de l'utilisateur
+            updateUserInterface();
             
-            // Générer les cartes de candidats
-            generateCandidateCards(candidatesData);
+            // Générer les cartes d'offres d'emploi
+            generateJobCards(jobsData);
             
             // Initialiser les compteurs de sélection
             updateSelectionCounters();
@@ -1149,8 +1141,8 @@
             // Désactiver le bouton de soumission au départ
             document.getElementById('submit-btn').disabled = true;
             
-            // Afficher le bouton "Afficher plus" s'il reste des candidats à afficher
-            document.getElementById('load-more-btn').style.display = candidatesData.length > displayedCandidates ? 'flex' : 'none';
+            // Afficher le bouton "Afficher plus" s'il reste des offres à afficher
+            document.getElementById('load-more-btn').style.display = jobsData.length > displayedJobs ? 'flex' : 'none';
         });
     </script>
 </body>

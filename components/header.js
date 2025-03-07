@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="container">
             <div class="header-left">
                 <h1 class="logo-container">
-                    <a href="index.html">
+                    <a href="../pages/index.html">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 50" class="logo-svg">
                           <defs>
                             <linearGradient id="logo-gradient-primary" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -57,16 +57,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 </h1>
                 <nav>
                     <ul>
-                        <li><a href="index.html" class="${currentPage === 'index.html' ? 'active' : ''}">Accueil</a></li>
-                        <li><a href="post-job.html" class="${currentPage === 'post-job.html' ? 'active' : ''}">Publier une offre</a></li>
-                        <li><a href="candidate-upload.html" class="${currentPage === 'candidate-upload.html' ? 'active' : ''}">Je suis candidat</a></li>
-                        <li><a href="recruiter-dashboard.html" class="${currentPage === 'recruiter-dashboard.html' ? 'active' : ''}">Je suis recruteur</a></li>
+                        <li><a href="../pages/index.html" class="${currentPage === 'index.html' ? 'active' : ''}">Accueil</a></li>
+                        <li><a href="../pages/post-job.html" class="${currentPage === 'post-job.html' ? 'active' : ''}">Publier une offre</a></li>
+                        <li><a href="../pages/candidate-upload.html" class="${currentPage === 'candidate-upload.html' ? 'active' : ''}">Je suis candidat</a></li>
+                        <li><a href="../pages/recruiter-dashboard.html" class="${currentPage === 'recruiter-dashboard.html' ? 'active' : ''}">Je suis recruteur</a></li>
                     </ul>
                 </nav>
             </div>
             <div class="auth-buttons">
-                <a href="candidate-login.html" class="btn-auth ${currentPage === 'candidate-login.html' ? 'active' : ''}">Connexion</a>
-                <a href="recruiter-login.html" class="btn-auth btn-auth-primary ${currentPage === 'recruiter-login.html' ? 'active' : ''}">Inscription</a>
+                <a href="../pages/candidate-login.html" class="btn-auth ${currentPage === 'candidate-login.html' ? 'active' : ''}">Connexion</a>
+                <a href="../pages/recruiter-login.html" class="btn-auth btn-auth-primary ${currentPage === 'recruiter-login.html' ? 'active' : ''}">Inscription</a>
             </div>
         </div>
         `;

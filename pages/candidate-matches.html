@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offres recommandées - Nexten</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .matches-section {
+            padding: 4rem 0;
+        }
+        
+        .matches-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .matches-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .match-card {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .match-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .match-score {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            border-bottom-left-radius: var(--radius);
+        }
+        
+        .match-company-logo {
+            width: 80px;
+            height: 80px;
+            min-width: 80px;
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+        }
+        
+        .company-initial {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .match-content {
+            flex: 1;
+        }
+        
+        .match-header {
+            margin-bottom: 1rem;
+        }
+        
+        .match-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+        
+        .match-company {
+            font-size: 1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.3rem;
+        }
+        
+        .match-company i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .match-location {
+            font-size: 0.9rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+        }
+        
+        .match-location i {
+            margin-right: 0.5rem;
+            color: #e74c3c;
+        }
+        
+        .match-body {
+            margin-bottom: 1rem;
+        }
+        
+        .match-description {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        
+        .match-salary {
+            font-weight: 500;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .match-salary i {
+            margin-right: 0.5rem;
+            color: var(--success);
+        }
+        
+        .match-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        .match-tags {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .match-tag {
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .match-tag.highlight {
+            background-color: rgba(108, 99, 255, 0.2);
+            border: 1px solid var(--primary);
+        }
+        
+        .apply-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .apply-btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .matches-summary {
+            background-color: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .summary-title i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .summary-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .highlight-section {
+            background-color: rgba(108, 99, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .highlight-title {
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .highlight-text {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.5;
+        }
+        
+        .no-matches {
+            text-align: center;
+            background-color: white;
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .no-matches i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .no-matches h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .match-type {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background-color: #3498db;
+            color: white;
+            padding: 0.3rem 0.7rem;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .upload-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+        
+        .upload-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+            text-align: center;
+            position: relative;
+        }
+        
+        .upload-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 25px;
+            right: -40%;
+            width: 80%;
+            height: 2px;
+            background-color: #e2e8f0;
+        }
+        
+        .step-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .step-title {
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .upload-step.active .step-number {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .upload-step.active .step-title {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .upload-step.completed .step-number {
+            background-color: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-briefcase"></i> Nexten</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="post-job.html">Publier une offre</a></li>
+                    <li><a href="candidate-upload.html" class="active">Espace candidat</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="matches-section">
+        <div class="container">
+            <div class="upload-steps">
+                <div class="upload-step completed">
+                    <div class="step-number"><i class="fas fa-check"></i></div>
+                    <div class="step-title">Upload CV</div>
+                </div>
+                <div class="upload-step completed">
+                    <div class="step-number"><i class="fas fa-check"></i></div>
+                    <div class="step-title">Questionnaire</div>
+                </div>
+                <div class="upload-step active">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Matching</div>
+                </div>
+            </div>
+        
+            <div class="matches-intro">
+                <h2>Vos offres d'emploi recommandées</h2>
+                <p class="section-description">Voici les 10 meilleures offres correspondant à votre profil, analysées et sélectionnées spécialement pour vous.</p>
+            </div>
+            
+            <div class="matches-container">
+                <div class="matches-summary">
+                    <h3 class="summary-title"><i class="fas fa-user-check"></i> Votre profil</h3>
+                    <div class="info-item">
+                        <div class="info-label">Nom :</div>
+                        <div class="info-value">John Doe</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Expérience :</div>
+                        <div class="info-value">Développeur Frontend (3 ans)</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Localisation :</div>
+                        <div class="info-value">Paris, France</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Préférences :</div>
+                        <div class="info-value">CDI, Télétravail partiel, Tech</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Compétences :</div>
+                    </div>
+                    <div class="summary-skills">
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">TypeScript</span>
+                        <span class="skill-tag">MongoDB</span>
+                    </div>
+                    
+                    <div class="highlight-section">
+                        <h4 class="highlight-title">Comment nous avons sélectionné ces offres</h4>
+                        <p class="highlight-text">Notre algorithme a identifié les offres qui correspondent le mieux à vos compétences, votre expérience et vos préférences. En combinant les données de votre CV et vos réponses au questionnaire, nous avons pu créer un profil complet qui nous a permis de vous proposer les offres les plus pertinentes pour vous.</p>
+                    </div>
+                </div>
+                
+                <!-- Liste des offres recommandées -->
+                <div class="match-card">
+                    <div class="match-score">95% Match</div>
+                    <div class="match-type">CDI</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">T</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">Développeur Frontend React</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> TechSolutions</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> Paris, France</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">Nous recherchons un développeur frontend React expérimenté pour rejoindre notre équipe et participer au développement de nouvelles fonctionnalités pour notre plateforme SaaS...</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> 45 000 € - 60 000 € / an</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                <span class="match-tag highlight">React</span>
+                                <span class="match-tag highlight">JavaScript</span>
+                                <span class="match-tag highlight">TypeScript</span>
+                                <span class="match-tag highlight">HTML5</span>
+                                <span class="match-tag highlight">CSS3</span>
+                                <span class="match-tag">Redux</span>
+                            </div>
+                            <button class="apply-btn">Postuler</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <div class="match-score">90% Match</div>
+                    <div class="match-type">Télétravail</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">D</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">Développeur Full Stack JavaScript</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> DigitalCraft</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> Remote</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">Rejoignez notre équipe internationale pour développer des applications web modernes utilisant React, Node.js et MongoDB. Vous travaillerez en télétravail complet avec une équipe dynamique...</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> 50 000 € - 65 000 € / an</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                <span class="match-tag highlight">React</span>
+                                <span class="match-tag highlight">Node.js</span>
+                                <span class="match-tag highlight">JavaScript</span>
+                                <span class="match-tag highlight">MongoDB</span>
+                                <span class="match-tag">Express</span>
+                            </div>
+                            <button class="apply-btn">Postuler</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <div class="match-score">85% Match</div>
+                    <div class="match-type">CDI</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">I</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">Développeur Frontend Angular/React</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> InnovateX</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> Lyon, France</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">Nous cherchons un développeur frontend pour travailler sur des projets innovants dans le domaine de la fintech. Expérience avec React ou Angular requise...</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> 42 000 € - 55 000 € / an</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                <span class="match-tag highlight">JavaScript</span>
+                                <span class="match-tag highlight">React</span>
+                                <span class="match-tag">Angular</span>
+                                <span class="match-tag highlight">CSS3</span>
+                                <span class="match-tag highlight">HTML5</span>
+                            </div>
+                            <button class="apply-btn">Postuler</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <div class="match-score">82% Match</div>
+                    <div class="match-type">Freelance</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">W</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">Développeur React Native</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> WebMobile</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> Nantes, France</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">Recherche un développeur React Native pour un projet de 6 mois visant à créer une application mobile pour le secteur de la santé...</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> 450 € - 550 € / jour</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                <span class="match-tag highlight">JavaScript</span>
+                                <span class="match-tag">React Native</span>
+                                <span class="match-tag highlight">React</span>
+                                <span class="match-tag">Mobile</span>
+                                <span class="match-tag highlight">Git</span>
+                            </div>
+                            <button class="apply-btn">Postuler</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="match-card">
+                    <div class="match-score">78% Match</div>
+                    <div class="match-type">CDI</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">C</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">Développeur Frontend Vue.js</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> CloudTech</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> Bordeaux, France</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">Rejoignez notre équipe pour développer des interfaces utilisateur avancées pour notre solution cloud. Expérience en Vue.js appréciée, mais nous acceptons les développeurs React prêts à apprendre...</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> 40 000 € - 55 000 € / an</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                <span class="match-tag">Vue.js</span>
+                                <span class="match-tag highlight">JavaScript</span>
+                                <span class="match-tag highlight">HTML5</span>
+                                <span class="match-tag highlight">CSS3</span>
+                                <span class="match-tag">Vuex</span>
+                            </div>
+                            <button class="apply-btn">Postuler</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ajouter d'autres cartes d'offres jusqu'à 10 au total -->
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Nexten - Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script src="../services/matching-algorithm.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Récupérer les données du candidat depuis localStorage
+            const candidateData = JSON.parse(localStorage.getItem('candidateData') || '{}');
+            
+            console.log('Données du candidat:', candidateData);
+            
+            // Initialiser l'algorithme de matching
+            const matchingAlgorithm = new MatchingAlgorithm();
+            
+            // Mise à jour du profil candidat
+            updateCandidateProfile(candidateData);
+            
+            // Obtenir les offres d'emploi et effectuer le matching
+            fetchJobsAndMatch(candidateData, matchingAlgorithm);
+            
+            // Ajouter des effets aux boutons de candidature
+            document.addEventListener('click', function(e) {
+                if (e.target && e.target.classList.contains('apply-btn')) {
+                    handleApplicationSubmit(e.target);
+                }
+            });
+        });
+        
+        // Fonction pour mettre à jour le profil du candidat avec des données complètes
+        function updateCandidateProfile(candidateData) {
+            const profileSection = document.querySelector('.matches-summary');
+            if (!profileSection) return;
+            
+            // Extraire les informations complètes du profil
+            let candidateName = "Candidat";
+            let experience = "Non spécifié";
+            let location = "Non spécifiée";
+            let preferences = [];
+            let skills = [];
+            
+            // Vérifier si nous avons des données parsées avancées
+            if (candidateData.parsedData) {
+                const parsedData = candidateData.parsedData;
+                
+                // Nom du candidat
+                if (candidateData.fullname) {
+                    candidateName = candidateData.fullname;
+                } else if (candidateData.personalInfo && candidateData.personalInfo.name) {
+                    candidateName = candidateData.personalInfo.name;
+                }
+                
+                // Expérience professionnelle
+                if (parsedData.jobPreferences && parsedData.jobPreferences.preferredRole) {
+                    experience = parsedData.jobPreferences.preferredRole;
+                    
+                    // Ajouter les années d'expérience si disponibles
+                    const experienceYears = extractExperienceYears(candidateData);
+                    if (experienceYears) {
+                        experience += ` (${experienceYears} ${experienceYears > 1 ? 'ans' : 'an'})`;
+                    }
+                } else if (candidateData.experience && candidateData.experience.title) {
+                    experience = candidateData.experience.title;
+                    if (candidateData.experience.duration) {
+                        experience += ` (${candidateData.experience.duration})`;
+                    }
+                }
+                
+                // Localisation
+                if (parsedData.jobPreferences && parsedData.jobPreferences.location) {
+                    location = parsedData.jobPreferences.location;
+                } else if (candidateData.personalInfo && candidateData.personalInfo.location) {
+                    location = candidateData.personalInfo.location;
+                } else if (candidateData.questionnaire && candidateData.questionnaire.jobPreferences && candidateData.questionnaire.jobPreferences.location) {
+                    location = candidateData.questionnaire.jobPreferences.location;
+                }
+                
+                // Préférences
+                if (parsedData.jobPreferences) {
+                    if (parsedData.jobPreferences.contractType) {
+                        preferences.push(parsedData.jobPreferences.contractType);
+                    }
+                    if (parsedData.jobPreferences.remotePreference) {
+                        preferences.push(parsedData.jobPreferences.remotePreference);
+                    }
+                    if (parsedData.jobPreferences.salaryExpectation && parsedData.jobPreferences.salaryExpectation.min) {
+                        const min = parsedData.jobPreferences.salaryExpectation.min;
+                        const max = parsedData.jobPreferences.salaryExpectation.max;
+                        preferences.push(`${min/1000}${max ? '-' + max/1000 : ''}k€`);
+                    }
+                }
+                
+                // Compétences
+                if (parsedData.skills && parsedData.skills.normalized && parsedData.skills.normalized.technicalSkills) {
+                    skills = parsedData.skills.normalized.technicalSkills;
+                } else if (candidateData.skills && Array.isArray(candidateData.skills)) {
+                    skills = candidateData.skills;
+                } else if (candidateData.questionnaire && candidateData.questionnaire.skills && candidateData.questionnaire.skills.technicalSkills) {
+                    skills = candidateData.questionnaire.skills.technicalSkills;
+                }
+            } else {
+                // Fallback sur les informations brutes
+                if (candidateData.fullname) {
+                    candidateName = candidateData.fullname;
+                } else if (candidateData.personalInfo && candidateData.personalInfo.name) {
+                    candidateName = candidateData.personalInfo.name;
+                }
+                
+                if (candidateData.experience) {
+                    if (typeof candidateData.experience === 'string') {
+                        experience = candidateData.experience;
+                    } else if (candidateData.experience.title) {
+                        experience = candidateData.experience.title;
+                        if (candidateData.experience.duration) {
+                            experience += ` (${candidateData.experience.duration})`;
+                        }
+                    }
+                }
+                
+                if (candidateData.personalInfo && candidateData.personalInfo.location) {
+                    location = candidateData.personalInfo.location;
+                }
+                
+                if (candidateData.questionnaire && candidateData.questionnaire.jobPreferences) {
+                    const jobPrefs = candidateData.questionnaire.jobPreferences;
+                    if (jobPrefs.contractType) preferences.push(jobPrefs.contractType);
+                    if (jobPrefs.remotePreference) preferences.push(jobPrefs.remotePreference);
+                    if (jobPrefs.salaryExpectation) preferences.push(jobPrefs.salaryExpectation);
+                }
+                
+                if (candidateData.skills) {
+                    if (Array.isArray(candidateData.skills)) {
+                        skills = candidateData.skills;
+                    }
+                }
+            }
+            
+            // Mise à jour du HTML
+            const infoItems = profileSection.querySelectorAll('.info-item');
+            if (infoItems.length >= 4) {
+                // Nom
+                infoItems[0].querySelector('.info-value').textContent = candidateName;
+                
+                // Expérience
+                infoItems[1].querySelector('.info-value').textContent = experience;
+                
+                // Localisation
+                infoItems[2].querySelector('.info-value').textContent = location;
+                
+                // Préférences
+                infoItems[3].querySelector('.info-value').textContent = preferences.length > 0 ? preferences.join(', ') : "Non spécifiées";
+            }
+            
+            // Mise à jour des compétences
+            const skillsContainer = profileSection.querySelector('.summary-skills');
+            if (skillsContainer) {
+                skillsContainer.innerHTML = '';
+                
+                if (skills.length > 0) {
+                    skills.forEach(skill => {
+                        const skillTag = document.createElement('span');
+                        skillTag.className = 'skill-tag';
+                        skillTag.textContent = typeof skill === 'string' ? skill : skill.name || '';
+                        skillsContainer.appendChild(skillTag);
+                    });
+                } else {
+                    skillsContainer.innerHTML = '<span class="skill-tag">Non spécifiées</span>';
+                }
+            }
+        }
+        
+        // Fonction pour extraire les années d'expérience
+        function extractExperienceYears(candidateData) {
+            // Essayer dans les données parsées
+            if (candidateData.parsedData && candidateData.parsedData.experience && candidateData.parsedData.experience.years) {
+                return parseFloat(candidateData.parsedData.experience.years);
+            }
+            
+            // Essayer dans le questionnaire
+            if (candidateData.questionnaire && candidateData.questionnaire.experience && candidateData.questionnaire.experience.years) {
+                return parseFloat(candidateData.questionnaire.experience.years);
+            }
+            
+            // Essayer de trouver des motifs comme "X ans" dans l'expérience
+            if (candidateData.experience) {
+                let expText = '';
+                if (typeof candidateData.experience === 'string') {
+                    expText = candidateData.experience;
+                } else if (candidateData.experience.duration) {
+                    expText = candidateData.experience.duration;
+                }
+                
+                const match = expText.match(/(\d+)(?:\s*-\s*\d+)?\s*(?:ans|an|années|année|years|year)/i);
+                if (match) {
+                    return parseFloat(match[1]);
+                }
+            }
+            
+            return null;
+        }
+        
+        // Fonction pour récupérer les offres d'emploi et effectuer le matching
+        async function fetchJobsAndMatch(candidateData, matchingAlgorithm) {
+            try {
+                // Dans un environnement réel, on ferait un appel API
+                // Pour le prototype, on utilise les données simulées
+                
+                // Simuler un temps de chargement
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Récupérer les offres d'emploi (depuis le scope global ou simulées)
+                let jobsData = window.jobsData || [];
+                
+                // Si jobsData n'est pas disponible, créer des offres simulées
+                if (!jobsData.length) {
+                    jobsData = [
+                        {
+                            id: 1,
+                            title: "Développeur Frontend",
+                            company: "TechSolutions",
+                            location: "Paris, France",
+                            type: "full-time",
+                            category: "tech",
+                            salary: "45 000 € - 60 000 € / an",
+                            description: "Nous recherchons un développeur frontend passionné pour rejoindre notre équipe et participer à la création d'interfaces utilisateur modernes et réactives.",
+                            requirements: "HTML, CSS, JavaScript, React, Expérience de 2+ ans",
+                            posted: "2025-03-01",
+                            applicationEmail: "jobs@techsolutions.com",
+                            applicationUrl: "https://techsolutions.com/careers"
+                        },
+                        {
+                            id: 2,
+                            title: "UX Designer",
+                            company: "DesignCraft",
+                            location: "Lyon, France",
+                            type: "full-time",
+                            category: "design",
+                            salary: "40 000 € - 55 000 € / an",
+                            description: "DesignCraft recherche un UX Designer talentueux pour concevoir des expériences utilisateur exceptionnelles pour nos clients.",
+                            requirements: "Figma, Adobe XD, Sketch, Expérience de 3+ ans, Portfolio solide",
+                            posted: "2025-03-02",
+                            applicationEmail: "careers@designcraft.fr",
+                            applicationUrl: ""
+                        },
+                        {
+                            id: 3,
+                            title: "Développeur Backend",
+                            company: "DataTech",
+                            location: "Nantes, France",
+                            type: "full-time",
+                            category: "tech",
+                            salary: "50 000 € - 65 000 € / an",
+                            description: "Rejoignez notre équipe backend pour développer des API performantes et des services robustes pour nos applications critiques.",
+                            requirements: "Python, Django, PostgreSQL, AWS, Expérience de 4+ ans",
+                            posted: "2025-03-03",
+                            applicationEmail: "hr@datatech.io",
+                            applicationUrl: "https://datatech.io/jobs"
+                        }
+                    ];
+                    
+                    // Ajouter plus d'offres fictives pour le prototype
+                    jobsData.push(
+                        {
+                            id: 4,
+                            title: "Développeur Full Stack JavaScript",
+                            company: "WebInnovate",
+                            location: "Remote",
+                            type: "remote",
+                            category: "tech",
+                            salary: "50 000 € - 65 000 € / an",
+                            description: "Rejoignez notre équipe internationale pour développer des applications web modernes. Poste en télétravail complet avec une équipe dynamique.",
+                            requirements: "JavaScript, React, Node.js, MongoDB, Express, Git",
+                            posted: "2025-03-05",
+                            applicationEmail: "jobs@webinnovate.com",
+                            applicationUrl: "https://webinnovate.com/careers"
+                        },
+                        {
+                            id: 5,
+                            title: "Développeur Frontend React",
+                            company: "FinTech Solutions",
+                            location: "Paris, France",
+                            type: "full-time",
+                            category: "tech",
+                            salary: "45 000 € - 60 000 € / an",
+                            description: "Nous cherchons un développeur React pour notre équipe qui travaille sur une plateforme financière innovante.",
+                            requirements: "React, JavaScript, TypeScript, HTML5, CSS3, Redux",
+                            posted: "2025-03-06",
+                            applicationEmail: "jobs@fintechsolutions.com",
+                            applicationUrl: ""
+                        },
+                        {
+                            id: 6,
+                            title: "Développeur Frontend Vue.js",
+                            company: "CloudTech",
+                            location: "Lyon, France",
+                            type: "full-time",
+                            category: "tech",
+                            salary: "40 000 € - 50 000 € / an",
+                            description: "Rejoignez notre équipe pour développer des interfaces utilisateur avancées pour notre solution cloud.",
+                            requirements: "Vue.js, JavaScript, HTML5, CSS3, Vuex",
+                            posted: "2025-03-07",
+                            applicationEmail: "hr@cloudtech.io",
+                            applicationUrl: ""
+                        }
+                    );
+                }
+                
+                console.log("Données d'offres d'emploi:", jobsData);
+                
+                // Effectuer le matching avec l'algorithme
+                const matchedJobs = matchingAlgorithm.filterTopMatches(candidateData, jobsData, 10);
+                console.log("Résultats du matching:", matchedJobs);
+                
+                // Afficher les offres correspondantes
+                displayMatchedJobs(matchedJobs);
+                
+            } catch (error) {
+                console.error("Erreur lors du chargement des offres d'emploi:", error);
+                
+                // Afficher un message d'erreur
+                const jobsContainer = document.querySelector('.matches-container');
+                if (jobsContainer) {
+                    const existingCards = jobsContainer.querySelectorAll('.match-card');
+                    existingCards.forEach(card => card.remove());
+                    
+                    const errorMessage = document.createElement('div');
+                    errorMessage.className = 'no-matches';
+                    errorMessage.innerHTML = `
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Une erreur est survenue</h3>
+                        <p>Nous n'avons pas pu charger les offres d'emploi correspondantes. Veuillez réessayer plus tard.</p>
+                    `;
+                    
+                    jobsContainer.appendChild(errorMessage);
+                }
+            }
+        }
+        
+        // Fonction pour afficher les offres correspondantes
+        function displayMatchedJobs(matchedJobs) {
+            const jobsContainer = document.querySelector('.matches-container');
+            if (!jobsContainer) return;
+            
+            // Supprimer les cartes d'offres existantes (sauf le résumé du profil)
+            const summarySection = jobsContainer.querySelector('.matches-summary');
+            jobsContainer.innerHTML = '';
+            
+            // Remettre le résumé du profil
+            if (summarySection) {
+                jobsContainer.appendChild(summarySection);
+            }
+            
+            // Vérifier s'il y a des résultats
+            if (!matchedJobs || matchedJobs.length === 0) {
+                const noMatches = document.createElement('div');
+                noMatches.className = 'no-matches';
+                noMatches.innerHTML = `
+                    <i class="fas fa-search"></i>
+                    <h3>Aucune offre correspondante</h3>
+                    <p>Nous n'avons pas trouvé d'offres d'emploi correspondant à votre profil. Complétez votre profil ou modifiez vos critères pour obtenir plus de résultats.</p>
+                    <a href="candidate-questionnaire.html" class="btn btn-primary">Modifier mon profil</a>
+                `;
+                
+                jobsContainer.appendChild(noMatches);
+                return;
+            }
+            
+            // Créer les cartes pour chaque offre correspondante
+            matchedJobs.forEach(job => {
+                // Créer la carte
+                const matchCard = document.createElement('div');
+                matchCard.className = 'match-card';
+                matchCard.setAttribute('data-id', job.id);
+                
+                // Formater des informations supplémentaires
+                const jobType = normalizeJobType(job.type);
+                const formattedDate = formatDate(job.posted);
+                const matchScore = job.matchingScore || 0;
+                const matchDetails = job.matchingDetails || {};
+                const explanations = job.explanations || [];
+                
+                // Déterminer les compétences correspondantes
+                const skills = parseRequirements(job.requirements);
+                const matchingSkills = matchDetails.skills ? matchDetails.skills.matchedSkills : [];
+                const missingSkills = matchDetails.skills ? matchDetails.skills.missingSkills : [];
+                
+                const skillTags = skills.map(skill => {
+                    const isMatch = matchingSkills.includes(skill);
+                    return `<span class="match-tag ${isMatch ? 'highlight' : ''}">${skill}</span>`;
+                }).join('');
+                
+                // Construire l'explication du matching
+                let explanationHTML = '';
+                if (explanations.length > 0) {
+                    const mainExplanation = explanations.find(exp => exp.type === 'global') || explanations[0];
+                    explanationHTML = `
+                        <div class="match-explanation">
+                            <div class="match-explanation-title">
+                                <i class="fas fa-chart-bar"></i> Analyse du matching
+                            </div>
+                            <div class="match-explanation-text">
+                                ${mainExplanation.text}
+                            </div>
+                    `;
+                    
+                    // Ajouter les compétences correspondantes/manquantes
+                    if (matchingSkills.length > 0 || missingSkills.length > 0) {
+                        explanationHTML += '<div class="match-skills">';
+                        
+                        // Compétences correspondantes (limiter à 3)
+                        matchingSkills.slice(0, 3).forEach(skill => {
+                            explanationHTML += `
+                                <div class="skill-match">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span class="skill-name">${skill}</span>
+                                </div>
+                            `;
+                        });
+                        
+                        // Compétences manquantes (limiter à 2)
+                        missingSkills.slice(0, 2).forEach(skill => {
+                            explanationHTML += `
+                                <div class="skill-match skill-missing">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span class="skill-name">${skill}</span>
+                                </div>
+                            `;
+                        });
+                        
+                        explanationHTML += '</div>';
+                    }
+                    
+                    // Ajouter des indicateurs de critères
+                    if (matchDetails) {
+                        explanationHTML += `
+                            <div class="match-detail-grid">
+                                ${matchDetails.experience ? `
+                                    <div class="match-detail-item">
+                                        <div class="match-detail-title">Expérience</div>
+                                        <div class="match-detail-value">${matchDetails.experience.score}%</div>
+                                        <div class="progress-container">
+                                            <div class="progress-bar" style="width: ${matchDetails.experience.score}%"></div>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${matchDetails.location ? `
+                                    <div class="match-detail-item">
+                                        <div class="match-detail-title">Localisation</div>
+                                        <div class="match-detail-value">${matchDetails.location.score}%</div>
+                                        <div class="progress-container">
+                                            <div class="progress-bar" style="width: ${matchDetails.location.score}%"></div>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                
+                                ${matchDetails.salary ? `
+                                    <div class="match-detail-item">
+                                        <div class="match-detail-title">Salaire</div>
+                                        <div class="match-detail-value">${matchDetails.salary.score}%</div>
+                                        <div class="progress-container">
+                                            <div class="progress-bar" style="width: ${matchDetails.salary.score}%"></div>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }
+                    
+                    explanationHTML += '</div>';
+                }
+                
+                // Construire le contenu HTML de la carte
+                matchCard.innerHTML = `
+                    <div class="match-score" style="${getScoreColor(matchScore)}">${matchScore}%</div>
+                    <div class="match-type">${jobType.label}</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">${job.company.charAt(0)}</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">${job.title}</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> ${job.company}</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> ${job.location}</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">${truncateText(job.description, 150)}</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> ${job.salary}</div>
+                            ${explanationHTML}
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                ${skillTags}
+                            </div>
+                            <button class="apply-btn" data-id="${job.id}" data-title="${job.title}" data-company="${job.company}">Postuler</button>
+                        </div>
+                    </div>
+                `;
+                
+                // Ajouter la carte au conteneur
+                jobsContainer.appendChild(matchCard);
+            });
+            
+            // Ajouter un bouton pour consulter toutes les offres disponibles
+            const viewAllJobs = document.createElement('div');
+            viewAllJobs.className = 'view-all-jobs';
+            viewAllJobs.style.textAlign = 'center';
+            viewAllJobs.style.marginTop = '2rem';
+            viewAllJobs.innerHTML = `
+                <a href="index.html" class="btn btn-outline" style="display: inline-block; padding: 0.8rem 1.5rem; border: 1px solid var(--primary); color: var(--primary); border-radius: var(--radius); text-decoration: none; font-weight: 500;">
+                    Voir toutes les offres d'emploi
+                </a>
+            `;
+            
+            jobsContainer.appendChild(viewAllJobs);
+        }
+        
+        // Fonction pour gérer la soumission de candidature
+        function handleApplicationSubmit(button) {
+            // Récupérer les informations de l'offre
+            const jobId = button.getAttribute('data-id');
+            const jobTitle = button.getAttribute('data-title');
+            const companyName = button.getAttribute('data-company');
+            const matchCard = button.closest('.match-card');
+            
+            // Mettre à jour le bouton
+            button.innerHTML = '<i class="fas fa-check"></i> Candidature envoyée';
+            button.style.backgroundColor = 'var(--success)';
+            button.disabled = true;
+            
+            // Ajouter une animation de succès
+            matchCard.style.borderLeft = '5px solid var(--success)';
+            matchCard.style.transition = 'all 0.3s ease';
+            
+            // Enregistrer la candidature dans localStorage
+            saveApplication(jobId, jobTitle, companyName);
+            
+            // Afficher une notification
+            showNotification({
+                title: 'Candidature envoyée avec succès !',
+                message: `Votre candidature pour le poste "${jobTitle}" chez ${companyName} a bien été transmise.`,
+                type: 'success',
+                duration: 5000
+            });
+        }
+        
+        // Fonction pour sauvegarder une candidature
+        function saveApplication(jobId, jobTitle, companyName) {
+            try {
+                // Récupérer les candidatures existantes
+                const applications = JSON.parse(localStorage.getItem('candidateApplications') || '[]');
+                
+                // Ajouter la nouvelle candidature
+                applications.push({
+                    id: Date.now(), // Identifiant unique
+                    jobId: jobId,
+                    jobTitle: jobTitle,
+                    company: companyName,
+                    applyDate: new Date().toISOString(),
+                    status: 'submitted', // statut initial: submitted, viewed, interview, offer, rejected
+                    statusDate: new Date().toISOString(),
+                    history: [
+                        {
+                            status: 'submitted',
+                            date: new Date().toISOString(),
+                            note: 'Candidature soumise'
+                        }
+                    ]
+                });
+                
+                // Sauvegarder dans localStorage
+                localStorage.setItem('candidateApplications', JSON.stringify(applications));
+                console.log('Candidature sauvegardée:', applications[applications.length - 1]);
+                
+            } catch (error) {
+                console.error('Erreur lors de la sauvegarde de la candidature:', error);
+            }
+        }
+        
+        // Fonction pour afficher une notification
+        function showNotification({ title, message, type = 'info', duration = 5000 }) {
+            // Créer la notification
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-icon"><i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i></div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <div class="notification-close"><i class="fas fa-times"></i></div>
+            `;
+            
+            // Styles pour la notification
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = 'white';
+            notification.style.boxShadow = 'var(--shadow-lg)';
+            notification.style.borderRadius = 'var(--radius)';
+            notification.style.padding = '1rem';
+            notification.style.display = 'flex';
+            notification.style.alignItems = 'flex-start';
+            notification.style.maxWidth = '400px';
+            notification.style.zIndex = '1000';
+            notification.style.transform = 'translateY(100px)';
+            notification.style.opacity = '0';
+            notification.style.transition = 'all 0.5s ease';
+            
+            // Styles pour l'icône
+            notification.querySelector('.notification-icon').style.marginRight = '1rem';
+            notification.querySelector('.notification-icon i').style.color = 
+                type === 'success' ? 'var(--success)' : 
+                type === 'error' ? 'var(--error)' : 
+                'var(--primary)';
+            notification.querySelector('.notification-icon i').style.fontSize = '1.5rem';
+            
+            // Styles pour le contenu
+            notification.querySelector('.notification-title').style.fontWeight = '600';
+            notification.querySelector('.notification-title').style.marginBottom = '0.3rem';
+            
+            // Styles pour le bouton de fermeture
+            notification.querySelector('.notification-close').style.marginLeft = '1rem';
+            notification.querySelector('.notification-close').style.cursor = 'pointer';
+            notification.querySelector('.notification-close i').style.color = 'var(--text)';
+            
+            // Ajouter la notification au document
+            document.body.appendChild(notification);
+            
+            // Animer l'apparition
+            setTimeout(() => {
+                notification.style.transform = 'translateY(0)';
+                notification.style.opacity = '1';
+            }, 100);
+            
+            // Fermer la notification au clic
+            notification.querySelector('.notification-close').addEventListener('click', function() {
+                notification.style.transform = 'translateY(100px)';
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 500);
+            });
+            
+            // Auto-fermeture après la durée spécifiée
+            setTimeout(() => {
+                notification.style.transform = 'translateY(100px)';
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 500);
+            }, duration);
+        }
+        
+        // Fonctions utilitaires
+        function normalizeJobType(type) {
+            if (!type) return { code: 'other', label: 'Autre' };
+            
+            const typeLower = type.toLowerCase();
+            
+            if (typeLower.includes('full-time') || typeLower.includes('cdi')) {
+                return { code: 'cdi', label: 'CDI' };
+            } else if (typeLower.includes('part-time') || typeLower.includes('cdd')) {
+                return { code: 'cdd', label: 'CDD' };
+            } else if (typeLower.includes('contract') || typeLower.includes('freelance')) {
+                return { code: 'freelance', label: 'Freelance' };
+            } else if (typeLower.includes('internship') || typeLower.includes('stage')) {
+                return { code: 'internship', label: 'Stage' };
+            } else if (typeLower.includes('remote') || typeLower.includes('télétravail')) {
+                return { code: 'remote', label: 'Télétravail' };
+            }
+            
+            return { code: 'other', label: type };
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            
+            const date = new Date(dateString);
+            return new Intl.DateTimeFormat('fr-FR', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            }).format(date);
+        }
+        
+        function truncateText(text, maxLength = 150) {
+            if (!text) return '';
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
+        }
+        
+        function getScoreColor(score) {
+            if (score >= 90) {
+                return 'background-color: #10b981;'; // Vert (excellent)
+            } else if (score >= 75) {
+                return 'background-color: #3b82f6;'; // Bleu (très bon)
+            } else if (score >= 60) {
+                return 'background-color: var(--primary);'; // Violet (bon)
+            } else if (score >= 45) {
+                return 'background-color: #f59e0b;'; // Orange (moyen)
+            } else {
+                return 'background-color: #ef4444;'; // Rouge (faible)
+            }
+        }
+        
+        function parseRequirements(requirements) {
+            if (!requirements) return [];
+            
+            return requirements.split(',')
+                .map(item => item.trim())
+                .filter(item => item.length > 0);
+        }
+    </script>
+</body>
+</html>
