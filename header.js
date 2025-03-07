@@ -27,7 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <ul>
                     <li><a href="index.html" class="${currentPage === 'index.html' ? 'active' : ''}">Accueil</a></li>
                     <li><a href="post-job.html" class="${currentPage === 'post-job.html' ? 'active' : ''}">Publier une offre</a></li>
-                    <li><a href="candidate-upload.html" class="${currentPage === 'candidate-upload.html' ? 'active' : ''}">Espace candidat</a></li>
+                    <li><a href="candidate-login.html" class="${currentPage === 'candidate-login.html' ? 'active' : ''}">Espace candidat</a></li>
+                    <li><a href="recruiter-login.html" class="${currentPage === 'recruiter-login.html' ? 'active' : ''}">Espace recruteur</a></li>
                 </ul>
             </nav>
         </div>
