@@ -553,20 +553,395 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Récupérer les données du candidat depuis localStorage
+            const candidateData = JSON.parse(localStorage.getItem('candidateData') || '{}');
+            const questionnaireData = JSON.parse(localStorage.getItem('candidateQuestionnaire') || '{}');
+            
+            console.log('Données du CV:', candidateData);
+            console.log('Données du questionnaire:', questionnaireData);
+            
+            // Mise à jour du profil candidat avec les données du questionnaire
+            updateCandidateProfile(candidateData, questionnaireData);
+            
+            // Simuler la génération des offres correspondantes
+            generateMatchingJobs(candidateData, questionnaireData);
+            
             // Ajouter des effets aux boutons de candidature
             document.querySelectorAll('.apply-btn').forEach(button => {
                 button.addEventListener('click', function() {
+                    // Référence à la carte de correspondance
+                    const matchCard = this.closest('.match-card');
+                    const jobTitle = matchCard.querySelector('.match-title').textContent;
+                    const companyName = matchCard.querySelector('.match-company').textContent.replace('Entreprise : ', '');
+                    
                     this.innerHTML = '<i class="fas fa-check"></i> Candidature envoyée';
                     this.style.backgroundColor = 'var(--success)';
                     this.disabled = true;
                     
-                    // Simuler une notification
+                    // Ajouter une animation de succès
+                    matchCard.style.borderLeft = '5px solid var(--success)';
+                    matchCard.style.transition = 'all 0.3s ease';
+                    
+                    // Simuler l'envoi de la candidature
                     setTimeout(() => {
-                        alert('Votre candidature a été envoyée avec succès ! Le recruteur recevra votre CV et pourra vous contacter directement.');
-                    }, 500);
+                        // Créer une notification sophistiquée
+                        const notification = document.createElement('div');
+                        notification.className = 'notification success';
+                        notification.innerHTML = `
+                            <div class="notification-icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="notification-content">
+                                <div class="notification-title">Candidature envoyée avec succès !</div>
+                                <div class="notification-message">Votre candidature pour le poste "${jobTitle}" chez ${companyName} a bien été transmise.</div>
+                            </div>
+                            <div class="notification-close"><i class="fas fa-times"></i></div>
+                        `;
+                        
+                        // Styles pour la notification
+                        notification.style.position = 'fixed';
+                        notification.style.bottom = '20px';
+                        notification.style.right = '20px';
+                        notification.style.backgroundColor = 'white';
+                        notification.style.boxShadow = 'var(--shadow-lg)';
+                        notification.style.borderRadius = 'var(--radius)';
+                        notification.style.padding = '1rem';
+                        notification.style.display = 'flex';
+                        notification.style.alignItems = 'flex-start';
+                        notification.style.maxWidth = '400px';
+                        notification.style.zIndex = '1000';
+                        notification.style.transform = 'translateY(100px)';
+                        notification.style.opacity = '0';
+                        notification.style.transition = 'all 0.5s ease';
+                        
+                        // Styles pour l'icône
+                        notification.querySelector('.notification-icon').style.marginRight = '1rem';
+                        notification.querySelector('.notification-icon i').style.color = 'var(--success)';
+                        notification.querySelector('.notification-icon i').style.fontSize = '1.5rem';
+                        
+                        // Styles pour le contenu
+                        notification.querySelector('.notification-title').style.fontWeight = '600';
+                        notification.querySelector('.notification-title').style.marginBottom = '0.3rem';
+                        
+                        // Styles pour le bouton de fermeture
+                        notification.querySelector('.notification-close').style.marginLeft = '1rem';
+                        notification.querySelector('.notification-close').style.cursor = 'pointer';
+                        notification.querySelector('.notification-close i').style.color = 'var(--text)';
+                        
+                        // Ajouter la notification au document
+                        document.body.appendChild(notification);
+                        
+                        // Animer l'apparition
+                        setTimeout(() => {
+                            notification.style.transform = 'translateY(0)';
+                            notification.style.opacity = '1';
+                        }, 100);
+                        
+                        // Fermer la notification au clic
+                        notification.querySelector('.notification-close').addEventListener('click', function() {
+                            notification.style.transform = 'translateY(100px)';
+                            notification.style.opacity = '0';
+                            setTimeout(() => notification.remove(), 500);
+                        });
+                        
+                        // Auto-fermeture après 5 secondes
+                        setTimeout(() => {
+                            notification.style.transform = 'translateY(100px)';
+                            notification.style.opacity = '0';
+                            setTimeout(() => notification.remove(), 500);
+                        }, 5000);
+                    }, 800);
                 });
             });
         });
+        
+        // Fonction pour mettre à jour le profil du candidat
+        function updateCandidateProfile(cvData, questionnaireData) {
+            const profileSection = document.querySelector('.matches-summary');
+            if (!profileSection) return;
+            
+            // Nom du candidat
+            let candidateName = "Candidat";
+            if (cvData.personalInfo && cvData.personalInfo.name) {
+                candidateName = cvData.personalInfo.name;
+            } else if (questionnaireData.fullname) {
+                candidateName = questionnaireData.fullname;
+            }
+            
+            // Expérience
+            let experience = "Non spécifié";
+            if (cvData.experience && cvData.experience.company) {
+                experience = `${cvData.experience.company} (${cvData.experience.duration || "Durée non spécifiée"})`;
+            }
+            
+            // Localisation
+            let location = "Non spécifiée";
+            if (cvData.personalInfo && cvData.personalInfo.location) {
+                location = cvData.personalInfo.location;
+            } else if (questionnaireData.address) {
+                location = questionnaireData.address;
+            }
+            
+            // Compétences
+            let skills = [];
+            if (cvData.skills && Array.isArray(cvData.skills)) {
+                skills = cvData.skills;
+            }
+            
+            // Préférences
+            let preferences = [];
+            if (questionnaireData["commute-time"]) {
+                preferences.push(`Trajet max: ${questionnaireData["commute-time"]}`);
+            }
+            if (questionnaireData["workspace-type"]) {
+                preferences.push(questionnaireData["workspace-type"]);
+            }
+            if (questionnaireData["company-structure"] && Array.isArray(questionnaireData["company-structure"])) {
+                preferences.push(questionnaireData["company-structure"].join(", "));
+            }
+            
+            // Mise à jour du HTML
+            const infoItems = profileSection.querySelectorAll('.info-item');
+            if (infoItems.length >= 4) {
+                // Nom
+                infoItems[0].querySelector('.info-value').textContent = candidateName;
+                
+                // Expérience
+                infoItems[1].querySelector('.info-value').textContent = experience;
+                
+                // Localisation
+                infoItems[2].querySelector('.info-value').textContent = location;
+                
+                // Préférences
+                infoItems[3].querySelector('.info-value').textContent = preferences.length > 0 ? preferences.join(', ') : "Non spécifiées";
+            }
+            
+            // Mise à jour des compétences
+            const skillsContainer = profileSection.querySelector('.summary-skills');
+            if (skillsContainer) {
+                skillsContainer.innerHTML = '';
+                
+                if (skills.length > 0) {
+                    skills.forEach(skill => {
+                        const skillTag = document.createElement('span');
+                        skillTag.className = 'skill-tag';
+                        skillTag.textContent = skill;
+                        skillsContainer.appendChild(skillTag);
+                    });
+                } else {
+                    skillsContainer.innerHTML = '<span class="skill-tag">Non spécifiées</span>';
+                }
+            }
+        }
+        
+        // Fonction pour générer les offres d'emploi correspondantes
+        function generateMatchingJobs(cvData, questionnaireData) {
+            const jobsContainer = document.querySelector('.matches-container');
+            if (!jobsContainer) return;
+            
+            // Supprimer les cartes d'offres existantes (sauf le résumé du profil)
+            const existingCards = jobsContainer.querySelectorAll('.match-card');
+            existingCards.forEach(card => card.remove());
+            
+            // Collecter les informations pertinentes du candidat pour le matching
+            const candidateSkills = cvData.skills || [];
+            const desiredJobTitles = questionnaireData["job-titles"] || [];
+            const preferredLocation = (questionnaireData.address || "").includes("Paris") ? "Paris" : 
+                                    (questionnaireData.address || "").includes("Lyon") ? "Lyon" :
+                                    (questionnaireData.address || "").includes("Marseille") ? "Marseille" : "France";
+            const salaryRange = questionnaireData["salary-range"] || "";
+            const commuteTime = questionnaireData["commute-time"] || "30 min";
+            const workspaceType = questionnaireData["workspace-type"] || "";
+            const preferredSectors = questionnaireData["preferred-sectors"] || [];
+            
+            // Liste fictive d'offres d'emploi
+            const jobs = [
+                {
+                    title: "Développeur Frontend React",
+                    company: "TechSolutions",
+                    location: "Paris, France",
+                    description: "Nous recherchons un développeur frontend React expérimenté pour rejoindre notre équipe et participer au développement de nouvelles fonctionnalités pour notre plateforme SaaS...",
+                    salary: "45 000 € - 60 000 € / an",
+                    type: "CDI",
+                    tags: ["React", "JavaScript", "TypeScript", "HTML5", "CSS3", "Redux"],
+                    score: 95
+                },
+                {
+                    title: "Développeur Full Stack JavaScript",
+                    company: "DigitalCraft",
+                    location: "Remote",
+                    description: "Rejoignez notre équipe internationale pour développer des applications web modernes utilisant React, Node.js et MongoDB. Vous travaillerez en télétravail complet avec une équipe dynamique...",
+                    salary: "50 000 € - 65 000 € / an",
+                    type: "Télétravail",
+                    tags: ["React", "Node.js", "JavaScript", "MongoDB", "Express"],
+                    score: 90
+                },
+                {
+                    title: "Développeur Frontend Angular/React",
+                    company: "InnovateX",
+                    location: "Lyon, France",
+                    description: "Nous cherchons un développeur frontend pour travailler sur des projets innovants dans le domaine de la fintech. Expérience avec React ou Angular requise...",
+                    salary: "42 000 € - 55 000 € / an",
+                    type: "CDI",
+                    tags: ["JavaScript", "React", "Angular", "CSS3", "HTML5"],
+                    score: 85
+                },
+                {
+                    title: "Développeur React Native",
+                    company: "WebMobile",
+                    location: "Nantes, France",
+                    description: "Recherche un développeur React Native pour un projet de 6 mois visant à créer une application mobile pour le secteur de la santé...",
+                    salary: "450 € - 550 € / jour",
+                    type: "Freelance",
+                    tags: ["JavaScript", "React Native", "React", "Mobile", "Git"],
+                    score: 82
+                },
+                {
+                    title: "Développeur Frontend Vue.js",
+                    company: "CloudTech",
+                    location: "Bordeaux, France",
+                    description: "Rejoignez notre équipe pour développer des interfaces utilisateur avancées pour notre solution cloud. Expérience en Vue.js appréciée, mais nous acceptons les développeurs React prêts à apprendre...",
+                    salary: "40 000 € - 55 000 € / an",
+                    type: "CDI",
+                    tags: ["Vue.js", "JavaScript", "HTML5", "CSS3", "Vuex"],
+                    score: 78
+                },
+                {
+                    title: "Ingénieur Frontend",
+                    company: "FinTech Solutions",
+                    location: "Paris, France",
+                    description: "Nous recherchons un ingénieur frontend pour notre équipe produit qui travaillera sur notre plateforme de services financiers. Vous serez responsable du développement et de la maintenance de l'interface utilisateur...",
+                    salary: "48 000 € - 60 000 € / an",
+                    type: "CDI",
+                    tags: ["JavaScript", "React", "TypeScript", "Redux", "REST API"],
+                    score: 75
+                },
+                {
+                    title: "Développeur Web React",
+                    company: "E-Commerce Plus",
+                    location: "Lille, France",
+                    description: "Rejoignez une équipe dynamique pour développer et améliorer notre plateforme e-commerce de nouvelle génération...",
+                    salary: "40 000 € - 50 000 € / an",
+                    type: "CDI",
+                    tags: ["React", "JavaScript", "CSS3", "eCommerce", "Responsive Design"],
+                    score: 73
+                },
+                {
+                    title: "Développeur Frontend Senior",
+                    company: "MediaGroup",
+                    location: "Marseille, France",
+                    description: "Nous recherchons un développeur frontend senior pour diriger notre équipe web et contribuer à la refonte de notre plateforme de contenu digital...",
+                    salary: "55 000 € - 70 000 € / an",
+                    type: "CDI",
+                    tags: ["JavaScript", "React", "HTML5", "CSS3", "Leadership"],
+                    score: 70
+                },
+                {
+                    title: "Développeur JavaScript",
+                    company: "StartupX",
+                    location: "Remote, France",
+                    description: "Startup en forte croissance recherche un développeur JavaScript polyvalent pour participer au développement de notre produit SaaS B2B. Télétravail possible à 100%...",
+                    salary: "45 000 € - 55 000 € / an",
+                    type: "Télétravail",
+                    tags: ["JavaScript", "ES6", "React", "Node.js", "SaaS"],
+                    score: 67
+                },
+                {
+                    title: "Développeur UI/UX",
+                    company: "DesignTech",
+                    location: "Toulouse, France",
+                    description: "Nous recherchons un développeur frontend avec de bonnes connaissances en design UI/UX pour créer des interfaces utilisateur modernes et accessibles...",
+                    salary: "38 000 € - 48 000 € / an",
+                    type: "CDI",
+                    tags: ["JavaScript", "UI/UX", "HTML5", "CSS3", "Design"],
+                    score: 65
+                }
+            ];
+            
+            // Fonction pour calculer le score de correspondance réel en fonction du profil candidat
+            function calculateRealScore(job) {
+                let score = job.score; // Score initial
+                
+                // Ajustement en fonction de la localisation
+                if (job.location.includes(preferredLocation)) {
+                    score += 5;
+                }
+                
+                // Ajustement en fonction des compétences
+                let skillMatchCount = 0;
+                job.tags.forEach(tag => {
+                    if (candidateSkills.includes(tag)) {
+                        skillMatchCount++;
+                    }
+                });
+                
+                // Bonus pour un bon taux de correspondance de compétences
+                if (skillMatchCount > 0 && job.tags.length > 0) {
+                    const skillMatchRate = skillMatchCount / job.tags.length;
+                    score += skillMatchRate * 10;
+                }
+                
+                // Ajustement en fonction du type de poste (CDI, télétravail, etc.)
+                if (workspaceType !== "Peu importe") {
+                    if (workspaceType === "Open Space" && job.type === "Télétravail") {
+                        score -= 5; // Pénalité si préférence pour open space mais télétravail proposé
+                    } else if (workspaceType === "Bureau fermé" && job.type !== "Télétravail") {
+                        score -= 3; // Légère pénalité
+                    }
+                }
+                
+                // Normaliser le score entre 0 et 100
+                return Math.min(Math.max(Math.round(score), 0), 100);
+            }
+            
+            // Trier les offres d'emploi en fonction du score ajusté
+            jobs.forEach(job => {
+                job.adjustedScore = calculateRealScore(job);
+            });
+            
+            jobs.sort((a, b) => b.adjustedScore - a.adjustedScore);
+            
+            // Créer les cartes d'offres
+            jobs.forEach(job => {
+                const matchCard = document.createElement('div');
+                matchCard.className = 'match-card';
+                
+                // Déterminer si une compétence du candidat correspond à une compétence requise
+                const matchingTags = job.tags.map(tag => {
+                    return {
+                        tag: tag,
+                        isMatch: candidateSkills.includes(tag)
+                    };
+                });
+                
+                matchCard.innerHTML = `
+                    <div class="match-score">${job.adjustedScore}% Match</div>
+                    <div class="match-type">${job.type}</div>
+                    <div class="match-company-logo">
+                        <span class="company-initial">${job.company.charAt(0)}</span>
+                    </div>
+                    <div class="match-content">
+                        <div class="match-header">
+                            <h3 class="match-title">${job.title}</h3>
+                            <div class="match-company"><i class="fas fa-building"></i> ${job.company}</div>
+                            <div class="match-location"><i class="fas fa-map-marker-alt"></i> ${job.location}</div>
+                        </div>
+                        <div class="match-body">
+                            <div class="match-description">${job.description}</div>
+                            <div class="match-salary"><i class="fas fa-money-bill-wave"></i> ${job.salary}</div>
+                        </div>
+                        <div class="match-footer">
+                            <div class="match-tags">
+                                ${matchingTags.map(item => `
+                                    <span class="match-tag ${item.isMatch ? 'highlight' : ''}">${item.tag}</span>
+                                `).join('')}
+                            </div>
+                            <button class="apply-btn">Postuler</button>
+                        </div>
+                    </div>
+                `;
+                
+                jobsContainer.appendChild(matchCard);
+            });
+        }
     </script>
 </body>
 </html>
