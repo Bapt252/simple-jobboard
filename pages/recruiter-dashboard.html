@@ -6,463 +6,203 @@
     <title>Tableau de bord Recruteur - Nexten</title>
     <link rel="stylesheet" href="../styles/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Dashboard Layout */
-        .dashboard-layout {
-            display: flex;
-            min-height: 100vh;
-            padding-top: 70px; /* Pour le header fixe */
+        /* Styles spécifiques à cette page */
+        .dashboard-section {
+            padding: 2rem 0;
+            background-color: var(--gray);
+            min-height: calc(100vh - 130px);
         }
         
-        /* Sidebar */
-        .sidebar {
-            width: 280px;
-            background-color: white;
-            border-right: 1px solid #f1f5f9;
-            height: calc(100vh - 70px);
-            position: fixed;
-            overflow-y: auto;
-            padding: 1.5rem 0;
-        }
-        
-        .sidebar-profile {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 0 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .sidebar-profile .company-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 8px;
+        /* Header de l'entreprise */
+        .company-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-        
-        .sidebar-profile .profile-info {
-            flex: 1;
-        }
-        
-        .sidebar-profile .company-name {
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 1rem;
-        }
-        
-        .sidebar-profile .profile-title {
-            color: var(--text);
-            font-size: 0.85rem;
-        }
-        
-        .sidebar-nav {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1.5rem;
-            color: var(--text);
-            text-decoration: none;
-            transition: all 0.2s ease;
-            border-left: 3px solid transparent;
-        }
-        
-        .sidebar-link:hover {
-            background-color: #f8fafc;
-            color: var(--primary);
-        }
-        
-        .sidebar-link.active {
-            background-color: #f8fafc;
-            color: var(--primary);
-            border-left-color: var(--primary);
-            font-weight: 500;
-        }
-        
-        .sidebar-link i {
-            width: 20px;
-            text-align: center;
-            font-size: 1.1rem;
-        }
-        
-        .sidebar-divider {
-            height: 1px;
-            background-color: #f1f5f9;
-            margin: 1rem 0;
-        }
-        
-        .sidebar-link.logout {
-            margin-top: auto;
-            color: #ef4444;
-        }
-        
-        /* Dashboard Main Content */
-        .dashboard-main {
-            flex: 1;
-            margin-left: 280px;
             padding: 2rem;
-        }
-        
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .notifications {
-            position: relative;
-        }
-        
-        .btn-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: white;
-            border: 1px solid #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.1rem;
-            color: var(--text);
-            transition: all 0.2s ease;
-        }
-        
-        .btn-icon:hover {
-            background-color: #f8fafc;
-            color: var(--primary);
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: #ef4444;
-            color: white;
-            font-size: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-        
-        /* Dashboard tabs mobile version */
-        .dashboard-tabs {
-            margin-top: 1.5rem;
-            display: none; /* Hidden on desktop */
-        }
-        
-        /* Dashboard Cards and Content */
-        .dashboard-content {
-            padding: 0 1rem;
-        }
-        
-        .dashboard-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .stat-card {
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            display: flex;
+            grid-template-columns: auto 1fr;
+            gap: 2rem;
             align-items: center;
-            justify-content: space-between;
+            color: white;
         }
         
-        .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background-color: #f0f9ff;
-            color: var(--primary);
+        .company-logo {
+            width: 120px;
+            height: 120px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 2rem;
+            color: white;
         }
         
-        .stat-content {
-            flex: 1;
-            margin: 0 1rem;
-        }
-        
-        .stat-value {
+        .company-info h2 {
             font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.3rem;
+            color: white;
         }
         
-        .stat-label {
-            color: var(--text);
-            font-size: 0.95rem;
-        }
-        
-        .stat-trend {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            font-size: 0.85rem;
-            font-weight: 600;
-            padding: 0.3rem 0.6rem;
-            border-radius: 100px;
-        }
-        
-        .stat-trend.up {
-            background-color: #dcfce7;
-            color: #166534;
-        }
-        
-        .stat-trend.down {
-            background-color: #fef2f2;
-            color: #b91c1c;
-        }
-        
-        .stat-trend.neutral {
-            background-color: #f1f5f9;
-            color: #64748b;
-        }
-        
-        .dashboard-row {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .dashboard-col {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        
-        .dashboard-card {
-            background-color: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
-            overflow: hidden;
-        }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid #f1f5f9;
-        }
-        
-        .card-header h3 {
+        .recruiter-name {
             font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--dark);
-            margin: 0;
+            margin-bottom: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
         }
         
-        .card-action {
-            color: var(--primary);
-            font-size: 0.9rem;
+        .company-stats {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
-            text-decoration: none;
         }
         
-        .card-action:hover {
-            text-decoration: underline;
+        /* Section de contrôle */
+        .control-section {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray);
         }
         
-        /* Job listings */
-        .job-listings {
-            padding: 1rem;
+        .view-options {
+            display: flex;
+            gap: 0.8rem;
         }
         
-        .job-item {
-            background-color: white;
+        .view-option {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
             border-radius: var(--radius);
-            padding: 1.2rem;
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid #f1f5f9;
+            color: var(--text);
+            background-color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .view-option:hover, .view-option.active {
+            border-color: var(--primary);
+            background-color: rgba(108, 99, 255, 0.05);
+            color: var(--primary);
+        }
+        
+        .view-option i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Onglets */
+        .tabs-container {
+            padding: 0 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: -1px;
+        }
+        
+        .tab {
+            padding: 1rem 0.5rem;
+            color: var(--text);
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
             transition: all 0.2s ease;
         }
         
-        .job-item:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-            border-left: 3px solid var(--primary);
-        }
-        
-        .job-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
-        
-        .job-title {
-            font-weight: 600;
-            font-size: 1.1rem;
-            color: var(--dark);
-            margin-bottom: 0.25rem;
-        }
-        
-        .job-company {
-            color: var(--text);
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .job-status {
-            padding: 0.3rem 0.75rem;
-            border-radius: 100px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        
-        .job-status.active {
-            background-color: #dcfce7;
-            color: #166534;
-        }
-        
-        .job-status.draft {
-            background-color: #f1f5f9;
-            color: #64748b;
-        }
-        
-        .job-status.expired {
-            background-color: #fef2f2;
-            color: #b91c1c;
-        }
-        
-        .job-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem 2rem;
-            margin-bottom: 1rem;
-        }
-        
-        .job-meta-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text);
-        }
-        
-        .job-meta-item i {
+        .tab.active {
             color: var(--primary);
         }
         
-        .job-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid #f1f5f9;
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 3px 3px 0 0;
         }
         
-        .job-stat {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .tab-content {
+            display: none;
+            padding: 1.5rem;
         }
         
-        .job-stat-value {
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 1.1rem;
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
         }
         
-        .job-stat-label {
-            font-size: 0.8rem;
-            color: var(--text);
-        }
-        
-        /* Candidate cards */
+        /* Cartes des candidats */
         .candidates-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.2rem;
-            padding: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
         }
         
         .candidate-card {
             background-color: white;
             border-radius: var(--radius);
             box-shadow: var(--shadow-sm);
-            padding: 1.2rem;
-            border: 1px solid #f1f5f9;
-            transition: all 0.2s ease;
+            border: 1px solid var(--gray);
+            padding: 1.5rem;
+            transition: var(--transition);
             position: relative;
         }
         
         .candidate-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-md);
+            border-left: 4px solid var(--primary);
+        }
+        
+        .candidate-name {
+            color: var(--primary);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .candidate-name:hover {
+            text-decoration: underline;
+        }
+        
+        .candidate-title {
+            color: var(--dark);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
         }
         
         .candidate-match {
             position: absolute;
             top: 1rem;
             right: 1rem;
-            background-color: #dcfce7;
-            color: #166534;
-            padding: 0.25rem 0.5rem;
-            border-radius: 100px;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
         }
         
-        .candidate-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-        
-        .candidate-avatar {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background-color: #f0f9ff;
+        .candidate-match {
+            background-color: rgba(108, 99, 255, 0.1);
             color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 1.1rem;
         }
         
-        .candidate-info {
-            flex: 1;
+        .candidate-match.high {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success);
         }
         
-        .candidate-name {
-            font-weight: 600;
-            color: var(--dark);
-            margin-bottom: 0.25rem;
-        }
-        
-        .candidate-title {
-            color: var(--text);
-            font-size: 0.9rem;
+        .candidate-match.medium {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
         }
         
         .candidate-skills {
@@ -472,11 +212,11 @@
             margin-bottom: 1rem;
         }
         
-        .skill-tag {
-            background-color: #f1f5f9;
+        .candidate-skill {
+            background-color: var(--gray);
             color: var(--text);
-            padding: 0.25rem 0.5rem;
-            border-radius: 100px;
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
             font-size: 0.8rem;
         }
         
@@ -486,207 +226,217 @@
             align-items: center;
             margin-top: 1rem;
             padding-top: 1rem;
-            border-top: 1px solid #f1f5f9;
+            border-top: 1px solid var(--gray);
         }
         
         .candidate-location {
-            font-size: 0.85rem;
-            color: var(--text);
             display: flex;
             align-items: center;
-            gap: 0.3rem;
+            color: var(--text);
+            font-size: 0.85rem;
         }
         
-        .candidate-actions {
+        .candidate-location i {
+            margin-right: 0.3rem;
+            color: var(--text);
+        }
+        
+        .candidate-action {
             display: flex;
+            align-items: center;
             gap: 0.5rem;
         }
         
-        /* Recruitment pipeline */
-        .pipeline-container {
-            background-color: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .pipeline-header {
+        .candidate-action-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .pipeline-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .pipeline-filters {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .pipeline-filter {
-            background-color: #f1f5f9;
-            color: var(--text);
-            padding: 0.4rem 0.8rem;
-            border-radius: 100px;
-            font-size: 0.85rem;
+            justify-content: center;
+            color: var(--primary);
+            background-color: white;
+            border: 1px solid var(--gray);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition);
         }
         
-        .pipeline-filter.active {
+        .candidate-action-btn:hover {
             background-color: var(--primary);
             color: white;
         }
         
-        .pipeline-board {
-            display: flex;
-            gap: 1.2rem;
-            overflow-x: auto;
-            padding-bottom: 1rem;
+        /* Liste candidats */
+        .candidates-table {
+            width: 100%;
+            border-collapse: collapse;
         }
         
-        .pipeline-stage {
-            min-width: 280px;
-            width: 280px;
-            background-color: #f8fafc;
-            border-radius: var(--radius);
-            overflow: hidden;
-        }
-        
-        .pipeline-stage-header {
+        .candidates-table th {
+            text-align: left;
             padding: 1rem;
-            background-color: #f1f5f9;
-            border-bottom: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            background-color: #f8fafc;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #eee;
         }
         
-        .pipeline-stage-title {
-            font-weight: 600;
-            color: var(--dark);
+        .candidates-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            color: var(--text);
             font-size: 0.95rem;
         }
         
-        .pipeline-stage-count {
-            background-color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 100px;
-            font-size: 0.8rem;
-            color: var(--text);
+        .candidates-table tr:hover {
+            background-color: rgba(108, 99, 255, 0.02);
         }
         
-        .pipeline-candidates {
-            padding: 0.75rem;
-            min-height: 150px;
-            max-height: 500px;
-            overflow-y: auto;
+        .candidates-table .candidate-name {
+            margin-bottom: 0;
         }
         
-        .pipeline-candidate {
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 1rem;
-            margin-bottom: 0.75rem;
-            box-shadow: var(--shadow-sm);
-            cursor: move;
-            transition: all 0.2s ease;
+        /* Planning Section */
+        .planning-section {
+            padding: 1.5rem;
         }
         
-        .pipeline-candidate:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
+        .planning-header {
+            margin-bottom: 1.5rem;
         }
         
-        .pipeline-candidate-name {
-            font-weight: 500;
+        .planning-title {
+            font-size: 1.2rem;
+            font-weight: 600;
             color: var(--dark);
-            margin-bottom: 0.25rem;
-        }
-        
-        .pipeline-candidate-title {
-            font-size: 0.85rem;
-            color: var(--text);
             margin-bottom: 0.5rem;
         }
         
-        .pipeline-candidate-meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
+        .planning-description {
             color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
         }
         
-        /* Messaging */
-        .messaging-container {
-            display: flex;
-            height: 500px;
-            background-color: white;
+        .planning-integration {
+            background-color: #f8fafc;
             border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid #f1f5f9;
-        }
-        
-        .messaging-sidebar {
-            width: 280px;
-            border-right: 1px solid #f1f5f9;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .messaging-header {
             padding: 1rem;
-            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 1.5rem;
         }
         
-        .messaging-search {
-            position: relative;
+        .planning-integration-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
         }
         
-        .messaging-search input {
-            width: 100%;
-            padding: 0.6rem 1rem 0.6rem 2.5rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 100px;
-            font-size: 0.9rem;
+        .planning-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
         
-        .messaging-search i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
+        .planning-option {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: var(--radius);
             color: var(--text);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .planning-option:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background-color: rgba(108, 99, 255, 0.05);
+        }
+        
+        .planning-option i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        /* Messaging Section */
+        .messaging-section {
+            padding: 1.5rem;
+        }
+        
+        .messaging-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+        
+        .messaging-content {
+            display: flex;
+            gap: 1.5rem;
         }
         
         .messaging-contacts {
             flex: 1;
+            border: 1px solid #eee;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        
+        .messaging-contacts-header {
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .messaging-contacts-title {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .messaging-integration {
+            background-color: rgba(108, 99, 255, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+        
+        .messaging-integration i {
+            margin-right: 0.3rem;
+        }
+        
+        .contact-list {
+            max-height: 300px;
             overflow-y: auto;
         }
         
-        .messaging-contact {
+        .contact-item {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid #eee;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.8rem 1rem;
             cursor: pointer;
-            border-bottom: 1px solid #f1f5f9;
             transition: all 0.2s ease;
         }
         
-        .messaging-contact:hover {
-            background-color: #f8fafc;
+        .contact-item:hover {
+            background-color: rgba(108, 99, 255, 0.05);
         }
         
-        .messaging-contact.active {
-            background-color: #f0f9ff;
+        .contact-item.active {
+            background-color: rgba(108, 99, 255, 0.1);
             border-left: 3px solid var(--primary);
         }
         
@@ -694,27 +444,24 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: #f1f5f9;
-            color: var(--primary);
+            background-color: #e2e8f0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 500;
-            font-size: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
         }
         
         .contact-info {
             flex: 1;
-            min-width: 0;
         }
         
         .contact-name {
             font-weight: 500;
             color: var(--dark);
-            margin-bottom: 0.25rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            margin-bottom: 0.2rem;
         }
         
         .contact-preview {
@@ -723,1822 +470,606 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            max-width: 150px;
         }
         
-        .messaging-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+        .contact-time {
+            font-size: 0.75rem;
+            color: #888;
         }
         
-        .chat-header {
+        .messaging-api-info {
+            margin-top: 1rem;
             padding: 1rem;
-            border-bottom: 1px solid #f1f5f9;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .chat-contact {
-            font-weight: 600;
-            color: var(--dark);
-        }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .message {
-            display: flex;
-            flex-direction: column;
-            max-width: 75%;
-        }
-        
-        .message.sent {
-            align-self: flex-end;
-        }
-        
-        .message.received {
-            align-self: flex-start;
-        }
-        
-        .message-bubble {
-            padding: 0.75rem 1rem;
-            border-radius: 12px;
-            font-size: 0.95rem;
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            color: var(--text);
             line-height: 1.5;
         }
         
-        .message.sent .message-bubble {
-            background-color: var(--primary);
-            color: white;
-            border-bottom-right-radius: 4px;
-        }
-        
-        .message.received .message-bubble {
-            background-color: #f1f5f9;
-            color: var(--dark);
-            border-bottom-left-radius: 4px;
-        }
-        
-        .message-time {
-            font-size: 0.75rem;
-            color: var(--text);
-            margin-top: 0.3rem;
-            align-self: flex-end;
-        }
-        
-        .chat-input {
-            padding: 1rem;
-            border-top: 1px solid #f1f5f9;
-            display: flex;
-            gap: 0.75rem;
-        }
-        
-        .chat-input textarea {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e5e7eb;
-            border-radius: var(--radius);
-            font-size: 0.95rem;
-            resize: none;
-            height: 60px;
-        }
-        
-        .chat-input button {
-            width: 60px;
-            height: 60px;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
-        
-        /* Status badges */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.3rem 0.75rem;
-            border-radius: 100px;
-            font-size: 0.8rem;
+        .messaging-api-info span {
+            color: var(--primary);
             font-weight: 500;
         }
         
-        .status-badge.pending {
-            background-color: #fff7ed;
-            color: #c2410c;
+        /* Notes informatives */
+        .info-note {
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.5;
+            margin-top: 1.5rem;
         }
         
-        .status-badge.in-progress {
-            background-color: #e0e7ff;
-            color: var(--primary-dark);
+        .info-note span {
+            color: var(--primary);
+            font-weight: 500;
         }
         
-        .status-badge.completed {
-            background-color: #dcfce7;
-            color: #166534;
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
-        .status-badge.rejected {
-            background-color: #fef2f2;
-            color: #b91c1c;
-        }
-        
-        /* Responsive */
-        @media (max-width: 991px) {
-            .sidebar {
-                left: -280px;
-                transition: left 0.3s ease;
-                z-index: 1000;
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .company-header {
+                grid-template-columns: 1fr;
+                text-align: center;
             }
             
-            .sidebar.open {
-                left: 0;
+            .company-logo {
+                margin: 0 auto;
             }
             
-            .dashboard-main {
-                margin-left: 0;
-            }
-            
-            .dashboard-header {
-                margin-bottom: 1rem;
-            }
-            
-            .dashboard-tabs {
-                display: flex;
-                overflow-x: auto;
-                padding-bottom: 0.5rem;
-            }
-            
-            .dashboard-row {
+            .control-section {
                 flex-direction: column;
+                gap: 1rem;
             }
             
-            .messaging-container {
-                flex-direction: column;
-                height: auto;
-            }
-            
-            .messaging-sidebar {
+            .view-options {
                 width: 100%;
-                max-height: 300px;
+                justify-content: center;
+            }
+            
+            .messaging-content {
+                flex-direction: column;
+            }
+            
+            .candidates-table {
+                display: block;
+                overflow-x: auto;
             }
         }
     </style>
-</head><body>
+</head>
+<body>
     <header>
-        <!-- Le header sera chargé par JavaScript -->
-    </header>
-
-    <div class="dashboard-layout">
-        <div class="sidebar">
-            <div class="sidebar-profile">
-                <div class="company-avatar">TT</div>
-                <div class="profile-info">
-                    <div class="company-name">TechTalent Inc.</div>
-                    <div class="profile-title">Jean Dupont - Recruteur</div>
-                </div>
-            </div>
-            <nav class="sidebar-nav">
-                <a href="#" class="sidebar-link active">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Tableau de bord</span>
-                </a>
-                <a href="#" class="sidebar-link" data-tab="jobs">
-                    <i class="fas fa-briefcase"></i>
-                    <span>Offres d'emploi</span>
-                </a>
-                <a href="#" class="sidebar-link" data-tab="candidates">
-                    <i class="fas fa-users"></i>
-                    <span>Candidats</span>
-                </a>
-                <a href="#" class="sidebar-link" data-tab="pipeline">
-                    <i class="fas fa-project-diagram"></i>
-                    <span>Pipeline de recrutement</span>
-                </a>
-                <a href="#" class="sidebar-link" data-tab="messages">
-                    <i class="fas fa-envelope"></i>
-                    <span>Messagerie</span>
-                </a>
-                <a href="#" class="sidebar-link" data-tab="team">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Mon équipe RH</span>
-                </a>
-                <div class="sidebar-divider"></div>
-                <a href="#" class="sidebar-link">
-                    <i class="fas fa-cog"></i>
-                    <span>Paramètres</span>
-                </a>
-                <a href="#" class="sidebar-link logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Déconnexion</span>
-                </a>
+        <div class="container">
+            <h1><i class="fas fa-briefcase"></i> Nexten</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="post-job.html">Publier une offre</a></li>
+                    <li><a href="candidate-upload.html">Espace candidat</a></li>
+                    <li><a href="recruiter-dashboard.html" class="active">Espace recruteur</a></li>
+                </ul>
             </nav>
         </div>
-        
-        <main class="dashboard-main">
-            <div class="dashboard-header">
-                <div>
-                    <h1>Tableau de bord recruteur</h1>
-                    <p class="welcome-text">Bonjour Jean, voici l'état de vos recrutements.</p>
-                </div>
-                <div class="header-actions">
-                    <div class="notifications">
-                        <button class="btn-icon"><i class="far fa-bell"></i></button>
-                        <span class="notification-badge">3</span>
+    </header>
+
+    <section class="dashboard-section">
+        <div class="container">
+            <div class="card" style="overflow: hidden; margin-bottom: 2rem;">
+                <!-- En-tête de l'entreprise -->
+                <div class="company-header">
+                    <div class="company-logo">
+                        <i class="fas fa-building"></i>
                     </div>
-                    <a href="post-job.html" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Nouvelle offre</a>
+                    <div class="company-info">
+                        <h2>Nom de l'Entreprise</h2>
+                        <div class="recruiter-name">Prénom et nom du recruteur</div>
+                        <div class="company-stats">
+                            <span class="job-count">2 postes ouverts</span> • 
+                            <span class="recruitment-status">3 recrutements en cours</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section de contrôle -->
+                <div class="control-section">
+                    <a href="recruiter-questionnaire.html" class="btn btn-primary">
+                        <i class="fas fa-plus-circle" style="margin-right: 0.5rem;"></i> Création d'un nouveau poste
+                    </a>
+                    <div class="view-options">
+                        <button class="view-option active" data-view="grid">
+                            <i class="fas fa-th"></i> Cartes
+                        </button>
+                        <button class="view-option" data-view="list">
+                            <i class="fas fa-list"></i> Tableau
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Onglets -->
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <div class="tab active" data-tab="selections">Mes Sélections de Candidats</div>
+                        <div class="tab" data-tab="applicants">Candidats qui ont postulé</div>
+                        <div class="tab" data-tab="oneclick">Candidats en un clic</div>
+                        <div class="tab" data-tab="organization">Mon organisation</div>
+                    </div>
+                </div>
+                
+                <!-- Contenu des onglets -->
+                <div id="selections" class="tab-content active">
+                    <div class="candidates-grid">
+                        <!-- Candidat 1 -->
+                        <div class="candidate-card fade-in">
+                            <div class="candidate-match high">92% match</div>
+                            <div class="candidate-name">Thomas Martin</div>
+                            <div class="candidate-title">Développeur Frontend Senior</div>
+                            <div class="candidate-skills">
+                                <span class="badge badge-secondary">JavaScript</span>
+                                <span class="badge badge-secondary">React</span>
+                                <span class="badge badge-secondary">TypeScript</span>
+                                <span class="badge badge-secondary">CSS</span>
+                            </div>
+                            <div class="candidate-footer">
+                                <div class="candidate-location">
+                                    <i class="fas fa-map-marker-alt"></i> Paris
+                                </div>
+                                <div class="candidate-action">
+                                    <button class="candidate-action-btn" title="Contacter">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="candidate-action-btn" title="Planifier">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Candidat 2 -->
+                        <div class="candidate-card fade-in">
+                            <div class="candidate-match high">89% match</div>
+                            <div class="candidate-name">Sophie Dubois</div>
+                            <div class="candidate-title">UX/UI Designer</div>
+                            <div class="candidate-skills">
+                                <span class="badge badge-secondary">Figma</span>
+                                <span class="badge badge-secondary">Adobe XD</span>
+                                <span class="badge badge-secondary">Sketch</span>
+                                <span class="badge badge-secondary">Wireframing</span>
+                            </div>
+                            <div class="candidate-footer">
+                                <div class="candidate-location">
+                                    <i class="fas fa-map-marker-alt"></i> Lyon
+                                </div>
+                                <div class="candidate-action">
+                                    <button class="candidate-action-btn" title="Contacter">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="candidate-action-btn" title="Planifier">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Candidat 3 -->
+                        <div class="candidate-card fade-in">
+                            <div class="candidate-match medium">78% match</div>
+                            <div class="candidate-name">Lucas Bernard</div>
+                            <div class="candidate-title">Développeur Backend</div>
+                            <div class="candidate-skills">
+                                <span class="badge badge-secondary">Python</span>
+                                <span class="badge badge-secondary">Django</span>
+                                <span class="badge badge-secondary">SQL</span>
+                                <span class="badge badge-secondary">API</span>
+                            </div>
+                            <div class="candidate-footer">
+                                <div class="candidate-location">
+                                    <i class="fas fa-map-marker-alt"></i> Marseille
+                                </div>
+                                <div class="candidate-action">
+                                    <button class="candidate-action-btn" title="Contacter">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="candidate-action-btn" title="Planifier">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Autres candidats -->
+                        <div class="candidate-card fade-in">
+                            <div class="candidate-match high">85% match</div>
+                            <div class="candidate-name">Emma Laurent</div>
+                            <div class="candidate-title">Product Owner</div>
+                            <div class="candidate-skills">
+                                <span class="badge badge-secondary">Agile</span>
+                                <span class="badge badge-secondary">Scrum</span>
+                                <span class="badge badge-secondary">Product Management</span>
+                            </div>
+                            <div class="candidate-footer">
+                                <div class="candidate-location">
+                                    <i class="fas fa-map-marker-alt"></i> Bordeaux
+                                </div>
+                                <div class="candidate-action">
+                                    <button class="candidate-action-btn" title="Contacter">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="candidate-action-btn" title="Planifier">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="candidate-card fade-in">
+                            <div class="candidate-match medium">75% match</div>
+                            <div class="candidate-name">Nicolas Petit</div>
+                            <div class="candidate-title">DevOps Engineer</div>
+                            <div class="candidate-skills">
+                                <span class="badge badge-secondary">Docker</span>
+                                <span class="badge badge-secondary">Kubernetes</span>
+                                <span class="badge badge-secondary">CI/CD</span>
+                                <span class="badge badge-secondary">AWS</span>
+                            </div>
+                            <div class="candidate-footer">
+                                <div class="candidate-location">
+                                    <i class="fas fa-map-marker-alt"></i> Toulouse
+                                </div>
+                                <div class="candidate-action">
+                                    <button class="candidate-action-btn" title="Contacter">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="candidate-action-btn" title="Planifier">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="candidate-card fade-in">
+                            <div class="candidate-match high">88% match</div>
+                            <div class="candidate-name">Julie Moreau</div>
+                            <div class="candidate-title">Data Scientist</div>
+                            <div class="candidate-skills">
+                                <span class="badge badge-secondary">Python</span>
+                                <span class="badge badge-secondary">ML</span>
+                                <span class="badge badge-secondary">TensorFlow</span>
+                                <span class="badge badge-secondary">R</span>
+                            </div>
+                            <div class="candidate-footer">
+                                <div class="candidate-location">
+                                    <i class="fas fa-map-marker-alt"></i> Nantes
+                                </div>
+                                <div class="candidate-action">
+                                    <button class="candidate-action-btn" title="Contacter">
+                                        <i class="fas fa-envelope"></i>
+                                    </button>
+                                    <button class="candidate-action-btn" title="Planifier">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vue tableau (masquée par défaut) -->
+                    <table class="candidates-table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>Candidat</th>
+                                <th>Poste</th>
+                                <th>Compétences</th>
+                                <th>Localisation</th>
+                                <th>Match</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="candidate-name">Thomas Martin</div>
+                                </td>
+                                <td>Développeur Frontend Senior</td>
+                                <td>JavaScript, React, TypeScript, CSS</td>
+                                <td>Paris</td>
+                                <td><span class="candidate-match high">92%</span></td>
+                                <td>
+                                    <div class="candidate-action">
+                                        <button class="candidate-action-btn" title="Contacter">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                        <button class="candidate-action-btn" title="Planifier">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="candidate-name">Sophie Dubois</div>
+                                </td>
+                                <td>UX/UI Designer</td>
+                                <td>Figma, Adobe XD, Sketch, Wireframing</td>
+                                <td>Lyon</td>
+                                <td><span class="candidate-match high">89%</span></td>
+                                <td>
+                                    <div class="candidate-action">
+                                        <button class="candidate-action-btn" title="Contacter">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                        <button class="candidate-action-btn" title="Planifier">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="candidate-name">Lucas Bernard</div>
+                                </td>
+                                <td>Développeur Backend</td>
+                                <td>Python, Django, SQL, API</td>
+                                <td>Marseille</td>
+                                <td><span class="candidate-match medium">78%</span></td>
+                                <td>
+                                    <div class="candidate-action">
+                                        <button class="candidate-action-btn" title="Contacter">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                        <button class="candidate-action-btn" title="Planifier">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Autres candidats -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="applicants" class="tab-content">
+                    <!-- Contenu similaire pour les candidats qui ont postulé -->
+                    <p style="padding: 1rem;">Visibilité sur les candidats qui ont montré un intérêt pour vos offres.</p>
+                </div>
+                
+                <div id="oneclick" class="tab-content">
+                    <!-- Contenu pour les candidats en un clic -->
+                    <p style="padding: 1rem;">Candidats qui correspondent à vos offres avec un matching automatique.</p>
+                </div>
+                
+                <div id="organization" class="tab-content">
+                    <!-- Contenu pour l'organisation -->
+                    <p style="padding: 1rem;">Gérez votre organisation et votre équipe de recrutement.</p>
                 </div>
             </div>
             
-            <div class="dashboard-tabs">
-                <div class="dashboard-tab active" data-tab="overview">
-                    <i class="fas fa-th-large"></i> Aperçu général
+            <!-- Section Planning -->
+            <div class="card fade-in" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h3 class="card-title">Planning</h3>
                 </div>
-                <div class="dashboard-tab" data-tab="jobs">
-                    <i class="fas fa-briefcase"></i> Offres
-                </div>
-                <div class="dashboard-tab" data-tab="candidates">
-                    <i class="fas fa-users"></i> Candidats
-                </div>
-                <div class="dashboard-tab" data-tab="pipeline">
-                    <i class="fas fa-project-diagram"></i> Pipeline
-                </div>
-                <div class="dashboard-tab" data-tab="messages">
-                    <i class="fas fa-envelope"></i> Messagerie
-                </div>
-                <div class="dashboard-tab" data-tab="team">
-                    <i class="fas fa-user-friends"></i> Équipe
-                </div>
-            </div>            <div class="dashboard-content">
-                <!-- Vue d'ensemble (dashboard) -->
-                <div class="dashboard-section active" id="overview">
-                    <div class="dashboard-stats">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-briefcase"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-value">5</div>
-                                <div class="stat-label">Offres actives</div>
-                            </div>
-                            <div class="stat-trend up">
-                                <i class="fas fa-arrow-up"></i>
-                                <span>2</span>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-value">32</div>
-                                <div class="stat-label">Candidats</div>
-                            </div>
-                            <div class="stat-trend up">
-                                <i class="fas fa-arrow-up"></i>
-                                <span>8</span>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-user-check"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-value">4</div>
-                                <div class="stat-label">Entretiens programmés</div>
-                            </div>
-                            <div class="stat-trend up">
-                                <i class="fas fa-arrow-up"></i>
-                                <span>1</span>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-value">2</div>
-                                <div class="stat-label">Recrutements finalisés</div>
-                            </div>
-                            <div class="stat-trend neutral">
-                                <i class="fas fa-minus"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="dashboard-row">
-                        <div class="dashboard-col">
-                            <div class="dashboard-card">
-                                <div class="card-header">
-                                    <h3>Offres d'emploi actives</h3>
-                                    <a href="#" class="card-action" data-tab="jobs">Voir toutes</a>
-                                </div>
-                                <div class="job-listings">
-                                    <div class="job-item">
-                                        <div class="job-header">
-                                            <div>
-                                                <div class="job-title">Développeur Frontend Senior</div>
-                                                <div class="job-company">TechTalent Inc.</div>
-                                            </div>
-                                            <div class="job-status active">Actif</div>
-                                        </div>
-                                        <div class="job-meta">
-                                            <div class="job-meta-item">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                                <span>Paris, France</span>
-                                            </div>
-                                            <div class="job-meta-item">
-                                                <i class="fas fa-euro-sign"></i>
-                                                <span>55-65K€</span>
-                                            </div>
-                                            <div class="job-meta-item">
-                                                <i class="fas fa-briefcase"></i>
-                                                <span>CDI</span>
-                                            </div>
-                                        </div>
-                                        <div class="job-stats">
-                                            <div class="job-stat">
-                                                <div class="job-stat-value">56</div>
-                                                <div class="job-stat-label">Vues</div>
-                                            </div>
-                                            <div class="job-stat">
-                                                <div class="job-stat-value">12</div>
-                                                <div class="job-stat-label">Candidats</div>
-                                            </div>
-                                            <div class="job-stat">
-                                                <div class="job-stat-value">4</div>
-                                                <div class="job-stat-label">Entretiens</div>
-                                            </div>
-                                            <div class="job-stat">
-                                                <div class="job-stat-value">94%</div>
-                                                <div class="job-stat-label">Matching</div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="job-item">
-                                        <div class="job-header">
-                                            <div>
-                                                <div class="job-title">UX/UI Designer</div>
-                                                <div class="job-company">TechTalent Inc.</div>
-                                            </div>
-                                            <div class="job-status active">Actif</div>
-                                        </div>
-                                        <div class="job-meta">
-                                            <div class="job-meta-item">
-                                                <i class="fas fa-map-marker-alt"></i>
-                                                <span>Lyon, France</span>
-                                            </div>
-                                            <div class="job-meta-item">
-                                                <i class="fas fa-euro-sign"></i>
-                                                <span>45-55K€</span>
-                                            </div>
-                                            <div class="job-meta-item">
-                                                <i class="fas fa-briefcase"></i>
-                                                <span>CDI</span>
-                                            </div>
-                                        </div>
-                                        <div class="job-stats">
-                                            <div class="job-stat">
-                                                <div class="job-stat-value">42</div>
-                                                <div class="job-stat-label">Vues</div>
-                                            </div>
-                                            <div class="job-stat">
-                                                <div class="job-stat-value">8</div>
-                                                <div class="job-stat-label">Candidats</div>
-                                            </div>
-                                            <div class="job-stat">
-                                                <div class="job-stat-value">2</div>
-                                                <div class="job-stat-label">Entretiens</div>
-                                            </div>
-                                            <div class="job-stat">
-                                                <div class="job-stat-value">87%</div>
-                                                <div class="job-stat-label">Matching</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="dashboard-card">
-                                <div class="card-header">
-                                    <h3>Entretiens à venir</h3>
-                                    <a href="#" class="card-action" data-tab="pipeline">Planning complet</a>
-                                </div>
-                                <div style="padding: 1rem;">
-                                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                                        <div style="background-color: #f8fafc; border-radius: var(--radius); padding: 1rem; border-left: 3px solid var(--primary);">
-                                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                                                <div style="font-weight: 600; color: var(--dark);">Thomas Martin - Entretien technique</div>
-                                                <div style="background-color: #e0e7ff; color: var(--primary); padding: 0.25rem 0.5rem; border-radius: 100px; font-size: 0.8rem;">Aujourd'hui</div>
-                                            </div>
-                                            <div style="color: var(--text); font-size: 0.9rem; margin-bottom: 0.5rem;">Développeur Frontend Senior</div>
-                                            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text); font-size: 0.85rem;">
-                                                <i class="far fa-clock"></i>
-                                                <span>14:00 - 15:00</span>
-                                                <span style="margin: 0 0.5rem;">•</span>
-                                                <i class="fas fa-video"></i>
-                                                <span>Visioconférence</span>
-                                            </div>
-                                        </div>
-
-                                        <div style="background-color: #f8fafc; border-radius: var(--radius); padding: 1rem; border-left: 3px solid var(--primary);">
-                                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
-                                                <div style="font-weight: 600; color: var(--dark);">Sophie Dubois - Entretien RH</div>
-                                                <div style="background-color: #e0e7ff; color: var(--primary); padding: 0.25rem 0.5rem; border-radius: 100px; font-size: 0.8rem;">Demain</div>
-                                            </div>
-                                            <div style="color: var(--text); font-size: 0.9rem; margin-bottom: 0.5rem;">UX/UI Designer</div>
-                                            <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text); font-size: 0.85rem;">
-                                                <i class="far fa-clock"></i>
-                                                <span>10:30 - 11:30</span>
-                                                <span style="margin: 0 0.5rem;">•</span>
-                                                <i class="fas fa-video"></i>
-                                                <span>Visioconférence</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="dashboard-col">
-                            <div class="dashboard-card">
-                                <div class="card-header">
-                                    <h3>Top candidats</h3>
-                                    <a href="#" class="card-action" data-tab="candidates">Voir tous</a>
-                                </div>
-                                <div style="padding: 1rem;">
-                                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                                        <div style="background-color: white; border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow-sm); border: 1px solid #f1f5f9; transition: all 0.2s ease; position: relative;">
-                                            <div style="position: absolute; top: 0.5rem; right: 0.5rem; background-color: #dcfce7; color: #166534; padding: 0.2rem 0.5rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600;">92% match</div>
-                                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                                                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem;">TM</div>
-                                                <div>
-                                                    <div style="font-weight: 600; color: var(--dark); margin-bottom: 0.1rem;">Thomas Martin</div>
-                                                    <div style="color: var(--text); font-size: 0.85rem;">Développeur Frontend Senior</div>
-                                                </div>
-                                            </div>
-                                            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem;">
-                                                <span style="background-color: #f1f5f9; color: var(--text); padding: 0.2rem 0.4rem; border-radius: 100px; font-size: 0.75rem;">JavaScript</span>
-                                                <span style="background-color: #f1f5f9; color: var(--text); padding: 0.2rem 0.4rem; border-radius: 100px; font-size: 0.75rem;">React</span>
-                                                <span style="background-color: #f1f5f9; color: var(--text); padding: 0.2rem 0.4rem; border-radius: 100px; font-size: 0.75rem;">TypeScript</span>
-                                            </div>
-                                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                <div style="color: var(--text); font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem;">
-                                                    <i class="fas fa-map-marker-alt"></i>
-                                                    <span>Paris</span>
-                                                </div>
-                                                <div style="display: flex; gap: 0.4rem;">
-                                                    <button style="width: 28px; height: 28px; border-radius: 50%; background-color: #f8fafc; border: 1px solid #e5e7eb; color: var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                                                        <i class="fas fa-eye" style="font-size: 0.8rem;"></i>
-                                                    </button>
-                                                    <button style="width: 28px; height: 28px; border-radius: 50%; background-color: #f8fafc; border: 1px solid #e5e7eb; color: var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                                                        <i class="fas fa-envelope" style="font-size: 0.8rem;"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div style="background-color: white; border-radius: var(--radius); padding: 1rem; box-shadow: var(--shadow-sm); border: 1px solid #f1f5f9; transition: all 0.2s ease; position: relative;">
-                                            <div style="position: absolute; top: 0.5rem; right: 0.5rem; background-color: #dcfce7; color: #166534; padding: 0.2rem 0.5rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600;">89% match</div>
-                                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
-                                                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem;">SD</div>
-                                                <div>
-                                                    <div style="font-weight: 600; color: var(--dark); margin-bottom: 0.1rem;">Sophie Dubois</div>
-                                                    <div style="color: var(--text); font-size: 0.85rem;">UX/UI Designer</div>
-                                                </div>
-                                            </div>
-                                            <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem;">
-                                                <span style="background-color: #f1f5f9; color: var(--text); padding: 0.2rem 0.4rem; border-radius: 100px; font-size: 0.75rem;">Figma</span>
-                                                <span style="background-color: #f1f5f9; color: var(--text); padding: 0.2rem 0.4rem; border-radius: 100px; font-size: 0.75rem;">UI/UX</span>
-                                                <span style="background-color: #f1f5f9; color: var(--text); padding: 0.2rem 0.4rem; border-radius: 100px; font-size: 0.75rem;">Adobe XD</span>
-                                            </div>
-                                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                                <div style="color: var(--text); font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem;">
-                                                    <i class="fas fa-map-marker-alt"></i>
-                                                    <span>Lyon</span>
-                                                </div>
-                                                <div style="display: flex; gap: 0.4rem;">
-                                                    <button style="width: 28px; height: 28px; border-radius: 50%; background-color: #f8fafc; border: 1px solid #e5e7eb; color: var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                                                        <i class="fas fa-eye" style="font-size: 0.8rem;"></i>
-                                                    </button>
-                                                    <button style="width: 28px; height: 28px; border-radius: 50%; background-color: #f8fafc; border: 1px solid #e5e7eb; color: var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                                                        <i class="fas fa-envelope" style="font-size: 0.8rem;"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="dashboard-card">
-                                <div class="card-header">
-                                    <h3>Messages récents</h3>
-                                    <a href="#" class="card-action" data-tab="messages">Voir tous</a>
-                                </div>
-                                <div style="padding: 1rem;">
-                                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                                        <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem;">
-                                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
-                                                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem;">TM</div>
-                                                <div style="flex: 1;">
-                                                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                                                        <div style="font-weight: 600; color: var(--dark);">Thomas Martin</div>
-                                                        <div style="font-size: 0.75rem; color: var(--text);">10:24</div>
-                                                    </div>
-                                                    <div style="font-size: 0.85rem; color: var(--text);">Bonjour, je vous confirme ma disponibilité pour l'entretien technique de cet après-midi.</div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div style="border-bottom: 1px solid #f1f5f9; padding-bottom: 1rem;">
-                                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
-                                                <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem;">SD</div>
-                                                <div style="flex: 1;">
-                                                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                                                        <div style="font-weight: 600; color: var(--dark);">Sophie Dubois</div>
-                                                        <div style="font-size: 0.75rem; color: var(--text);">Hier</div>
-                                                    </div>
-                                                    <div style="font-size: 0.85rem; color: var(--text);">Merci pour l'invitation à l'entretien. J'ai bien noté la date et l'heure pour demain matin.</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        L'objectif du planning est de faciliter l'organisation des rendez-vous. Le candidat pourra sélectionner les créneaux sur lesquels il est généralement disponible, recommandation au recruteur et matching précis. Possibilité d'organiser les visio et entretien en présentiel grâce au planning lié à la boîte mail.
+                    </p>
                     
-                    <div class="pipeline-container">
-                        <div class="pipeline-header">
-                            <div class="pipeline-title">Pipeline de recrutement - Développeur Frontend Senior</div>
-                            <div class="pipeline-filters">
-                                <div class="pipeline-filter active">Tous</div>
-                                <div class="pipeline-filter">En cours</div>
-                                <div class="pipeline-filter">Terminés</div>
-                            </div>
-                        </div>
-                        
-                        <div class="pipeline-board">
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Candidatures</div>
-                                    <div class="pipeline-stage-count">8</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Lucas Bernard</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Paris</div>
-                                            <div>78% match</div>
-                                        </div>
-                                    </div>
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Emma Laurent</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Remote</div>
-                                            <div>76% match</div>
-                                        </div>
-                                    </div>
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Nicolas Petit</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Lyon</div>
-                                            <div>81% match</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Présélection</div>
-                                    <div class="pipeline-stage-count">4</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Thomas Martin</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend Senior</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Paris</div>
-                                            <div>92% match</div>
-                                        </div>
-                                    </div>
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Julie Moreau</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Nantes</div>
-                                            <div>88% match</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Entretien RH</div>
-                                    <div class="pipeline-stage-count">2</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Thomas Martin</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend Senior</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Paris</div>
-                                            <div>92% match</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Test technique</div>
-                                    <div class="pipeline-stage-count">1</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Thomas Martin</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend Senior</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Paris</div>
-                                            <div>92% match</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Entretien final</div>
-                                    <div class="pipeline-stage-count">0</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <!-- Aucun candidat à cette étape -->
-                                </div>
-                            </div>
-                            
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Offre</div>
-                                    <div class="pipeline-stage-count">0</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <!-- Aucun candidat à cette étape -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                                <!-- Onglet Offres d'emploi -->
-                <div class="dashboard-section" id="jobs">
-                    <div class="section-header">
-                        <h2>Gestion des offres d'emploi</h2>
-                        <p>Créez, modifiez et suivez vos offres d'emploi actives.</p>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                        <div style="display: flex; gap: 1rem;">
-                            <div class="btn btn-primary">
-                                <i class="fas fa-plus"></i> Créer une offre
-                            </div>
-                            <div class="btn btn-secondary">
-                                <i class="fas fa-filter"></i> Filtrer
-                            </div>
-                        </div>
-                        <div style="position: relative;">
-                            <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text);"></i>
-                            <input type="text" placeholder="Rechercher une offre..." style="padding: 0.6rem 1rem 0.6rem 2.5rem; border: 1px solid #e5e7eb; border-radius: 100px; width: 250px;">
-                        </div>
-                    </div>
-                    
-                    <div class="dashboard-table-container" style="background-color: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Titre</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Localisation</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Contrat</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Publiée le</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Candidatures</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Statut</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="font-weight: 500; color: var(--dark);">Développeur Frontend Senior</div>
-                                        <div style="font-size: 0.85rem; color: var(--text);">Réf: FR-DEV-2025-03</div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Paris, France</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">CDI</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">01/03/2025</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">12</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div class="status-badge in-progress">
-                                            <i class="fas fa-circle"></i> Actif
-                                        </div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="font-weight: 500; color: var(--dark);">UX/UI Designer</div>
-                                        <div style="font-size: 0.85rem; color: var(--text);">Réf: FR-UXD-2025-04</div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Lyon, France</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">CDI</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">02/03/2025</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">8</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div class="status-badge in-progress">
-                                            <i class="fas fa-circle"></i> Actif
-                                        </div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="font-weight: 500; color: var(--dark);">Développeur Backend Python</div>
-                                        <div style="font-size: 0.85rem; color: var(--text);">Réf: FR-BEP-2025-02</div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Paris, France</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">CDI</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">20/02/2025</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">6</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div class="status-badge in-progress">
-                                            <i class="fas fa-circle"></i> Actif
-                                        </div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="font-weight: 500; color: var(--dark);">Product Owner</div>
-                                        <div style="font-size: 0.85rem; color: var(--text);">Réf: FR-PO-2025-01</div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Remote</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">CDI</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">15/02/2025</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">4</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div class="status-badge in-progress">
-                                            <i class="fas fa-circle"></i> Actif
-                                        </div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="font-weight: 500; color: var(--dark);">DevOps Engineer</div>
-                                        <div style="font-size: 0.85rem; color: var(--text);">Réf: FR-DEV-2025-01</div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Bordeaux, France</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">CDI</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">10/02/2025</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">2</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div class="status-badge in-progress">
-                                            <i class="fas fa-circle"></i> Actif
-                                        </div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Onglet Candidats -->
-                <div class="dashboard-section" id="candidates">
-                    <div class="section-header">
-                        <h2>Gestion des candidats</h2>
-                        <p>Explorez et gérez les candidats correspondant à vos offres d'emploi.</p>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                        <div class="view-options" style="display: flex; gap: 0.8rem;">
-                            <button class="view-option active" data-view="grid">
-                                <i class="fas fa-th"></i> Cartes
+                    <div style="background-color: var(--light); padding: 1.2rem; border-radius: var(--radius); margin-top: 1.5rem;">
+                        <h4 style="font-weight: 600; color: var(--dark); margin-bottom: 1rem;">Intégration avec vos outils</h4>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <button class="btn btn-secondary">
+                                <i class="fab fa-microsoft" style="margin-right: 0.5rem;"></i> Outlook
                             </button>
-                            <button class="view-option" data-view="list">
-                                <i class="fas fa-list"></i> Tableau
+                            <button class="btn btn-secondary">
+                                <i class="fab fa-google" style="margin-right: 0.5rem;"></i> Gmail
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-calendar-alt" style="margin-right: 0.5rem;"></i> iCalendar
+                            </button>
+                            <button class="btn btn-secondary">
+                                <i class="fas fa-plus" style="margin-right: 0.5rem;"></i> Autres outils
                             </button>
                         </div>
-                        <div style="position: relative;">
-                            <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text);"></i>
-                            <input type="text" placeholder="Rechercher un candidat..." style="padding: 0.6rem 1rem 0.6rem 2.5rem; border: 1px solid #e5e7eb; border-radius: 100px; width: 250px;">
-                        </div>
                     </div>
-                    
-                    <div class="candidates-grid">
-                        <div class="candidate-card">
-                            <div class="candidate-match">92% match</div>
-                            <div class="candidate-header">
-                                <div class="candidate-avatar">TM</div>
-                                <div class="candidate-info">
-                                    <div class="candidate-name">Thomas Martin</div>
-                                    <div class="candidate-title">Développeur Frontend Senior</div>
+                </div>
+            </div>
+            
+            <!-- Section Messagerie -->
+            <div class="card fade-in" style="margin-bottom: 2rem;">
+                <div class="card-header">
+                    <h3 class="card-title">Messagerie</h3>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Échangez avec les candidats et les membres de votre organisation en interne.
+                    </p>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem;">
+                        <div style="flex: 1; border: 1px solid var(--gray); border-radius: var(--radius); overflow: hidden; min-width: 300px;">
+                            <div style="padding: 1rem; background-color: var(--light); border-bottom: 1px solid var(--gray); display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-weight: 600; color: var(--dark);">Conversations</div>
+                                <div class="badge badge-ai">
+                                    <i class="fas fa-plug"></i> API Outlook
                                 </div>
                             </div>
-                            <div class="candidate-skills">
-                                <span class="skill-tag">JavaScript</span>
-                                <span class="skill-tag">React</span>
-                                <span class="skill-tag">TypeScript</span>
-                                <span class="skill-tag">CSS</span>
-                            </div>
-                            <div class="candidate-footer">
-                                <div class="candidate-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>Paris</span>
+                            <div style="max-height: 300px; overflow-y: auto;">
+                                <div style="padding: 0.8rem 1rem; border-bottom: 1px solid var(--gray); display: flex; align-items: center; cursor: pointer; background-color: rgba(108, 99, 255, 0.1); border-left: 3px solid var(--primary);">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--gray); display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 600; margin-right: 1rem;">TM</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 500; color: var(--dark); margin-bottom: 0.2rem;">Thomas Martin</div>
+                                        <div style="font-size: 0.85rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Je suis disponible pour un entretien...</div>
+                                    </div>
+                                    <div style="font-size: 0.75rem; color: var(--text);">14:30</div>
                                 </div>
-                                <div class="candidate-actions">
-                                    <button class="btn-icon btn-sm" title="Voir profil">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Contacter">
-                                        <i class="fas fa-envelope"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Planifier">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </button>
+                                <div style="padding: 0.8rem 1rem; border-bottom: 1px solid var(--gray); display: flex; align-items: center; cursor: pointer;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--gray); display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 600; margin-right: 1rem;">SD</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 500; color: var(--dark); margin-bottom: 0.2rem;">Sophie Dubois</div>
+                                        <div style="font-size: 0.85rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Merci pour votre retour, j'aimerais...</div>
+                                    </div>
+                                    <div style="font-size: 0.75rem; color: var(--text);">Hier</div>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="candidate-card">
-                            <div class="candidate-match">89% match</div>
-                            <div class="candidate-header">
-                                <div class="candidate-avatar">SD</div>
-                                <div class="candidate-info">
-                                    <div class="candidate-name">Sophie Dubois</div>
-                                    <div class="candidate-title">UX/UI Designer</div>
-                                </div>
-                            </div>
-                            <div class="candidate-skills">
-                                <span class="skill-tag">Figma</span>
-                                <span class="skill-tag">Adobe XD</span>
-                                <span class="skill-tag">Sketch</span>
-                                <span class="skill-tag">Wireframing</span>
-                            </div>
-                            <div class="candidate-footer">
-                                <div class="candidate-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>Lyon</span>
-                                </div>
-                                <div class="candidate-actions">
-                                    <button class="btn-icon btn-sm" title="Voir profil">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Contacter">
-                                        <i class="fas fa-envelope"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Planifier">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </button>
+                                <div style="padding: 0.8rem 1rem; border-bottom: 1px solid var(--gray); display: flex; align-items: center; cursor: pointer;">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background-color: var(--gray); display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 600; margin-right: 1rem;">LB</div>
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 500; color: var(--dark); margin-bottom: 0.2rem;">Lucas Bernard</div>
+                                        <div style="font-size: 0.85rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Je vous confirme ma disponibilité...</div>
+                                    </div>
+                                    <div style="font-size: 0.75rem; color: var(--text);">Lun</div>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="candidate-card">
-                            <div class="candidate-match">78% match</div>
-                            <div class="candidate-header">
-                                <div class="candidate-avatar">LB</div>
-                                <div class="candidate-info">
-                                    <div class="candidate-name">Lucas Bernard</div>
-                                    <div class="candidate-title">Développeur Backend</div>
-                                </div>
-                            </div>
-                            <div class="candidate-skills">
-                                <span class="skill-tag">Python</span>
-                                <span class="skill-tag">Django</span>
-                                <span class="skill-tag">SQL</span>
-                                <span class="skill-tag">API</span>
-                            </div>
-                            <div class="candidate-footer">
-                                <div class="candidate-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>Marseille</span>
-                                </div>
-                                <div class="candidate-actions">
-                                    <button class="btn-icon btn-sm" title="Voir profil">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Contacter">
-                                        <i class="fas fa-envelope"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Planifier">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="candidate-card">
-                            <div class="candidate-match">85% match</div>
-                            <div class="candidate-header">
-                                <div class="candidate-avatar">EL</div>
-                                <div class="candidate-info">
-                                    <div class="candidate-name">Emma Laurent</div>
-                                    <div class="candidate-title">Product Owner</div>
-                                </div>
-                            </div>
-                            <div class="candidate-skills">
-                                <span class="skill-tag">Agile</span>
-                                <span class="skill-tag">Scrum</span>
-                                <span class="skill-tag">Product Management</span>
-                                <span class="skill-tag">User Stories</span>
-                            </div>
-                            <div class="candidate-footer">
-                                <div class="candidate-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>Bordeaux</span>
-                                </div>
-                                <div class="candidate-actions">
-                                    <button class="btn-icon btn-sm" title="Voir profil">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Contacter">
-                                        <i class="fas fa-envelope"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Planifier">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="candidate-card">
-                            <div class="candidate-match">75% match</div>
-                            <div class="candidate-header">
-                                <div class="candidate-avatar">NP</div>
-                                <div class="candidate-info">
-                                    <div class="candidate-name">Nicolas Petit</div>
-                                    <div class="candidate-title">DevOps Engineer</div>
-                                </div>
-                            </div>
-                            <div class="candidate-skills">
-                                <span class="skill-tag">Docker</span>
-                                <span class="skill-tag">Kubernetes</span>
-                                <span class="skill-tag">CI/CD</span>
-                                <span class="skill-tag">AWS</span>
-                            </div>
-                            <div class="candidate-footer">
-                                <div class="candidate-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>Toulouse</span>
-                                </div>
-                                <div class="candidate-actions">
-                                    <button class="btn-icon btn-sm" title="Voir profil">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Contacter">
-                                        <i class="fas fa-envelope"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Planifier">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="candidate-card">
-                            <div class="candidate-match">88% match</div>
-                            <div class="candidate-header">
-                                <div class="candidate-avatar">JM</div>
-                                <div class="candidate-info">
-                                    <div class="candidate-name">Julie Moreau</div>
-                                    <div class="candidate-title">Data Scientist</div>
-                                </div>
-                            </div>
-                            <div class="candidate-skills">
-                                <span class="skill-tag">Python</span>
-                                <span class="skill-tag">Machine Learning</span>
-                                <span class="skill-tag">TensorFlow</span>
-                                <span class="skill-tag">R</span>
-                            </div>
-                            <div class="candidate-footer">
-                                <div class="candidate-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>Nantes</span>
-                                </div>
-                                <div class="candidate-actions">
-                                    <button class="btn-icon btn-sm" title="Voir profil">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Contacter">
-                                        <i class="fas fa-envelope"></i>
-                                    </button>
-                                    <button class="btn-icon btn-sm" title="Planifier">
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </button>
-                                </div>
-                            </div>
+                        <div style="background-color: var(--light); border-radius: var(--radius); padding: 1rem; font-size: 0.9rem; color: var(--text); line-height: 1.5; margin-top: 1rem; flex: 1; min-width: 300px;">
+                            <p>La messagerie est connectée via <span style="color: var(--primary); font-weight: 500;">API Outlook</span> pour une communication fluide avec vos candidats et votre équipe.</p>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Onglet Pipeline de recrutement -->
-                <div class="dashboard-section" id="pipeline">
-                    <div class="section-header">
-                        <h2>Pipeline de recrutement</h2>
-                        <p>Suivez et gérez les étapes de recrutement pour vos différentes offres d'emploi.</p>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                        <div style="display: flex; gap: 1rem; align-items: center;">
-                            <div style="font-weight: 600; color: var(--dark);">Offre :</div>
-                            <select style="padding: 0.5rem 1rem; border: 1px solid #e5e7eb; border-radius: var(--radius); width: 300px;">
-                                <option>Développeur Frontend Senior</option>
-                                <option>UX/UI Designer</option>
-                                <option>Développeur Backend Python</option>
-                                <option>Product Owner</option>
-                                <option>DevOps Engineer</option>
-                            </select>
-                        </div>
-                        <div class="btn btn-secondary">
-                            <i class="fas fa-cog"></i> Configurer les étapes
-                        </div>
-                    </div>
-                    
-                    <div class="pipeline-container" style="padding: 0;">
-                        <div class="pipeline-board">
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Candidatures</div>
-                                    <div class="pipeline-stage-count">8</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Lucas Bernard</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Paris</div>
-                                            <div>78% match</div>
-                                        </div>
-                                    </div>
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Emma Laurent</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Remote</div>
-                                            <div>76% match</div>
-                                        </div>
-                                    </div>
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Nicolas Petit</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Lyon</div>
-                                            <div>81% match</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Présélection</div>
-                                    <div class="pipeline-stage-count">4</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Thomas Martin</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend Senior</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Paris</div>
-                                            <div>92% match</div>
-                                        </div>
-                                    </div>
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Julie Moreau</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Nantes</div>
-                                            <div>88% match</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Entretien RH</div>
-                                    <div class="pipeline-stage-count">2</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Thomas Martin</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend Senior</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Paris</div>
-                                            <div>92% match</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Test technique</div>
-                                    <div class="pipeline-stage-count">1</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <div class="pipeline-candidate">
-                                        <div class="pipeline-candidate-name">Thomas Martin</div>
-                                        <div class="pipeline-candidate-title">Développeur Frontend Senior</div>
-                                        <div class="pipeline-candidate-meta">
-                                            <div>Paris</div>
-                                            <div>92% match</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Entretien final</div>
-                                    <div class="pipeline-stage-count">0</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <!-- Aucun candidat à cette étape -->
-                                </div>
-                            </div>
-                            
-                            <div class="pipeline-stage">
-                                <div class="pipeline-stage-header">
-                                    <div class="pipeline-stage-title">Offre</div>
-                                    <div class="pipeline-stage-count">0</div>
-                                </div>
-                                <div class="pipeline-candidates">
-                                    <!-- Aucun candidat à cette étape -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div style="margin-top: 2rem;">
-                        <div class="section-header">
-                            <h3>Détails du candidat sélectionné</h3>
-                            <p>Informations et historique des interactions avec le candidat.</p>
-                        </div>
-                        
-                        <div style="background-color: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 1.5rem; margin-top: 1rem;">
-                            <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem;">
-                                <div style="width: 80px; height: 80px; border-radius: 50%; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1.5rem;">TM</div>
-                                <div>
-                                    <h3 style="font-size: 1.3rem; font-weight: 600; color: var(--dark); margin-bottom: 0.5rem;">Thomas Martin</h3>
-                                    <div style="color: var(--text); margin-bottom: 0.25rem;">Développeur Frontend Senior</div>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 1rem 2rem; margin-top: 0.5rem;">
-                                        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: var(--text);">
-                                            <i class="fas fa-map-marker-alt" style="color: var(--primary);"></i>
-                                            <span>Paris, France</span>
-                                        </div>
-                                        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: var(--text);">
-                                            <i class="fas fa-envelope" style="color: var(--primary);"></i>
-                                            <span>thomas.martin@email.com</span>
-                                        </div>
-                                        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; color: var(--text);">
-                                            <i class="fas fa-phone" style="color: var(--primary);"></i>
-                                            <span>+33 6 12 34 56 78</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div style="margin-left: auto; display: flex; gap: 0.75rem;">
-                                    <button class="btn btn-secondary">
-                                        <i class="fas fa-download"></i> CV
-                                    </button>
-                                    <button class="btn btn-primary">
-                                        <i class="fas fa-envelope"></i> Contacter
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div style="display: flex; gap: 1.5rem;">
-                                <div style="flex: 2;">
-                                    <div style="margin-bottom: 1.5rem;">
-                                        <h4 style="font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">Notes et évaluation</h4>
-                                        <div style="background-color: #f8fafc; border-radius: var(--radius); padding: 1rem; margin-bottom: 1rem;">
-                                            <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
-                                                <div style="font-weight: 600; color: var(--dark);">Entretien RH</div>
-                                                <div style="color: var(--text); font-size: 0.85rem;">06/03/2025</div>
-                                            </div>
-                                            <p style="color: var(--text); font-size: 0.95rem; line-height: 1.5;">Candidat très prometteur avec une excellente expérience en React et TypeScript. Bonne communication et compréhension des besoins techniques. À faire passer en phase de test technique.</p>
-                                            <div style="display: flex; justify-content: space-between; margin-top: 0.75rem;">
-                                                <div style="font-weight: 500; color: var(--text); font-size: 0.9rem;">Par: Marie Dupont</div>
-                                                <div style="display: flex; gap: 0.25rem;">
-                                                    <i class="fas fa-star" style="color: #fbbf24;"></i>
-                                                    <i class="fas fa-star" style="color: #fbbf24;"></i>
-                                                    <i class="fas fa-star" style="color: #fbbf24;"></i>
-                                                    <i class="fas fa-star" style="color: #fbbf24;"></i>
-                                                    <i class="fas fa-star" style="color: #e5e7eb;"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div style="background-color: #f8fafc; border-radius: var(--radius); padding: 1rem;">
-                                            <div>
-                                                <label style="display: block; font-weight: 500; color: var(--dark); margin-bottom: 0.5rem;">Ajouter une note</label>
-                                                <textarea style="width: 100%; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: var(--radius); min-height: 80px; margin-bottom: 0.75rem;"></textarea>
-                                                <div style="display: flex; justify-content: space-between;">
-                                                    <div>
-                                                        <label style="font-size: 0.9rem; color: var(--text); margin-right: 0.5rem;">Évaluation:</label>
-                                                        <i class="far fa-star" style="color: #fbbf24; cursor: pointer;"></i>
-                                                        <i class="far fa-star" style="color: #fbbf24; cursor: pointer;"></i>
-                                                        <i class="far fa-star" style="color: #fbbf24; cursor: pointer;"></i>
-                                                        <i class="far fa-star" style="color: #fbbf24; cursor: pointer;"></i>
-                                                        <i class="far fa-star" style="color: #fbbf24; cursor: pointer;"></i>
-                                                    </div>
-                                                    <button class="btn btn-primary btn-sm">Ajouter</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div style="flex: 1; background-color: #f8fafc; border-radius: var(--radius); padding: 1rem;">
-                                    <h4 style="font-weight: 600; color: var(--dark); margin-bottom: 0.75rem;">Historique des interactions</h4>
-                                    <div style="max-height: 300px; overflow-y: auto;">
-                                        <div style="position: relative; padding-left: 1.5rem; padding-bottom: 1.5rem; border-left: 2px solid var(--primary);">
-                                            <div style="position: absolute; left: -0.5rem; top: 0; width: 1rem; height: 1rem; background-color: var(--primary); border-radius: 50%;"></div>
-                                            <div style="font-weight: 500; color: var(--dark);">Test technique envoyé</div>
-                                            <div style="font-size: 0.85rem; color: var(--text); margin-bottom: 0.25rem;">08/03/2025 à 09:30</div>
-                                            <div style="font-size: 0.9rem; color: var(--text);">Test technique envoyé par email, à compléter pour le 15/03/2025.</div>
-                                        </div>
-                                        
-                                        <div style="position: relative; padding-left: 1.5rem; padding-bottom: 1.5rem; border-left: 2px solid var(--primary);">
-                                            <div style="position: absolute; left: -0.5rem; top: 0; width: 1rem; height: 1rem; background-color: var(--primary); border-radius: 50%;"></div>
-                                            <div style="font-weight: 500; color: var(--dark);">Entretien RH</div>
-                                            <div style="font-size: 0.85rem; color: var(--text); margin-bottom: 0.25rem;">06/03/2025 à 14:00</div>
-                                            <div style="font-size: 0.9rem; color: var(--text);">Entretien RH réalisé par Marie Dupont. Évaluation positive.</div>
-                                        </div>
-                                        
-                                        <div style="position: relative; padding-left: 1.5rem; padding-bottom: 1.5rem; border-left: 2px solid var(--primary);">
-                                            <div style="position: absolute; left: -0.5rem; top: 0; width: 1rem; height: 1rem; background-color: var(--primary); border-radius: 50%;"></div>
-                                            <div style="font-weight: 500; color: var(--dark);">Pré-sélection</div>
-                                            <div style="font-size: 0.85rem; color: var(--text); margin-bottom: 0.25rem;">03/03/2025 à 11:15</div>
-                                            <div style="font-size: 0.9rem; color: var(--text);">CV présélectionné, matching à 92% avec le poste de Développeur Frontend Senior.</div>
-                                        </div>
-                                        
-                                        <div style="position: relative; padding-left: 1.5rem; border-left: 2px solid var(--primary);">
-                                            <div style="position: absolute; left: -0.5rem; top: 0; width: 1rem; height: 1rem; background-color: var(--primary); border-radius: 50%;"></div>
-                                            <div style="font-weight: 500; color: var(--dark);">Candidature reçue</div>
-                                            <div style="font-size: 0.85rem; color: var(--text); margin-bottom: 0.25rem;">01/03/2025 à 16:45</div>
-                                            <div style="font-size: 0.9rem; color: var(--text);">Candidature déposée pour le poste de Développeur Frontend Senior.</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            
+            <!-- Note informative -->
+            <div class="card fade-in" style="background-color: var(--light); margin-bottom: 2rem;">
+                <div class="card-body">
+                    <p>L'accès à un profil candidat se fait facilement en cliquant sur le <span style="color: var(--primary); font-weight: 500;">prénom et nom</span> du candidat. Une page s'affiche avec plusieurs informations le concernant.</p>
+                    <p>Les noms de candidats en <span style="color: var(--primary); font-weight: 500;">bleu</span> sont des liens directs vers leurs pages de profil.</p>
                 </div>
-                
-                <!-- Onglet Messagerie -->
-                <div class="dashboard-section" id="messages">
-                    <div class="section-header">
-                        <h2>Messagerie</h2>
-                        <p>Échangez avec les candidats et votre équipe en temps réel.</p>
-                    </div>
-                    
-                    <div class="messaging-container">
-                        <div class="messaging-sidebar">
-                            <div class="messaging-header">
-                                <div class="messaging-search">
-                                    <i class="fas fa-search"></i>
-                                    <input type="text" placeholder="Rechercher une conversation...">
-                                </div>
-                            </div>
-                            <div class="messaging-contacts">
-                                <div class="messaging-contact active">
-                                    <div class="contact-avatar">TM</div>
-                                    <div class="contact-info">
-                                        <div class="contact-name">Thomas Martin</div>
-                                        <div class="contact-preview">Bonjour, je vous confirme ma disponibilité pour...</div>
-                                    </div>
-                                </div>
-                                <div class="messaging-contact">
-                                    <div class="contact-avatar">SD</div>
-                                    <div class="contact-info">
-                                        <div class="contact-name">Sophie Dubois</div>
-                                        <div class="contact-preview">Merci pour l'invitation à l'entretien. J'ai bien...</div>
-                                    </div>
-                                </div>
-                                <div class="messaging-contact">
-                                    <div class="contact-avatar">LB</div>
-                                    <div class="contact-info">
-                                        <div class="contact-name">Lucas Bernard</div>
-                                        <div class="contact-preview">Concernant les technos utilisées, j'aimerais...</div>
-                                    </div>
-                                </div>
-                                <div class="messaging-contact">
-                                    <div class="contact-avatar">EL</div>
-                                    <div class="contact-info">
-                                        <div class="contact-name">Emma Laurent</div>
-                                        <div class="contact-preview">Bonjour, j'ai quelques questions concernant...</div>
-                                    </div>
-                                </div>
-                                <div class="messaging-contact">
-                                    <div class="contact-avatar">MD</div>
-                                    <div class="contact-info">
-                                        <div class="contact-name">Marie Dupont (Équipe RH)</div>
-                                        <div class="contact-preview">J'ai planifié les entretiens pour la semaine...</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="messaging-main">
-                            <div class="chat-header">
-                                <div class="contact-avatar">TM</div>
-                                <div>
-                                    <div class="chat-contact">Thomas Martin</div>
-                                    <div style="font-size: 0.85rem; color: var(--text);">Candidat - Développeur Frontend Senior</div>
-                                </div>
-                            </div>
-                            <div class="chat-messages">
-                                <div class="message received">
-                                    <div class="message-bubble">
-                                        Bonjour, je vous confirme ma disponibilité pour l'entretien technique de cet après-midi à 14h. J'ai préparé quelques exemples de code que je pourrai vous présenter si nécessaire.
-                                    </div>
-                                    <div class="message-time">10:24</div>
-                                </div>
-                                <div class="message sent">
-                                    <div class="message-bubble">
-                                        Bonjour Thomas, parfait ! Nous avons bien noté votre disponibilité. L'entretien technique sera conduit par notre lead developer qui vous posera des questions sur React et TypeScript principalement. Pas besoin de préparer de présentation, mais vos exemples de code pourraient être intéressants à discuter.
-                                    </div>
-                                    <div class="message-time">10:30</div>
-                                </div>
-                                <div class="message received">
-                                    <div class="message-bubble">
-                                        Très bien, merci pour ces précisions. J'ai une bonne expérience sur ces technologies, donc je suis confiant pour l'entretien. À quelle adresse dois-je me connecter pour la visioconférence ?
-                                    </div>
-                                    <div class="message-time">10:35</div>
-                                </div>
-                                <div class="message sent">
-                                    <div class="message-bubble">
-                                        Je viens de vous envoyer le lien par email. Vous le recevrez également 15 minutes avant le début de l'entretien. N'hésitez pas si vous avez d'autres questions !
-                                    </div>
-                                    <div class="message-time">10:40</div>
-                                </div>
-                            </div>
-                            <div class="chat-input">
-                                <textarea placeholder="Écrivez votre message..."></textarea>
-                                <button><i class="fas fa-paper-plane"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Onglet Équipe RH -->
-                <div class="dashboard-section" id="team">
-                    <div class="section-header">
-                        <h2>Gestion de l'équipe RH</h2>
-                        <p>Gérez les membres de votre équipe et leurs permissions.</p>
-                    </div>
-                    
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                        <div class="btn btn-primary">
-                            <i class="fas fa-plus"></i> Ajouter un membre
-                        </div>
-                        <div style="position: relative;">
-                            <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text);"></i>
-                            <input type="text" placeholder="Rechercher un membre..." style="padding: 0.6rem 1rem 0.6rem 2.5rem; border: 1px solid #e5e7eb; border-radius: 100px; width: 250px;">
-                        </div>
-                    </div>
-                    
-                    <div class="dashboard-table-container" style="background-color: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Nom</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Email</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Rôle</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Accès</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Dernière connexion</th>
-                                    <th style="padding: 1rem; text-align: left; background-color: #f8fafc; border-bottom: 1px solid #f1f5f9; font-weight: 600; color: var(--dark);">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem;">JD</div>
-                                            <div>
-                                                <div style="font-weight: 500; color: var(--dark);">Jean Dupont</div>
-                                                <div style="font-size: 0.85rem; color: var(--text);">Recruteur principal</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">jean.dupont@techtalent.com</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Admin</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <span style="background-color: #dcfce7; color: #166534; padding: 0.25rem 0.5rem; border-radius: 100px; font-size: 0.85rem;">Complet</span>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Aujourd'hui à 09:15</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem;">MD</div>
-                                            <div>
-                                                <div style="font-weight: 500; color: var(--dark);">Marie Dubois</div>
-                                                <div style="font-size: 0.85rem; color: var(--text);">Chargée de recrutement</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">marie.dubois@techtalent.com</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Recruteur</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <span style="background-color: #e0e7ff; color: var(--primary); padding: 0.25rem 0.5rem; border-radius: 100px; font-size: 0.85rem;">Standard</span>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Aujourd'hui à 10:42</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                            <div style="width: 40px; height: 40px; border-radius: 50%; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 1rem;">PL</div>
-                                            <div>
-                                                <div style="font-weight: 500; color: var(--dark);">Pierre Leroy</div>
-                                                <div style="font-size: 0.85rem; color: var(--text);">Responsable technique</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">pierre.leroy@techtalent.com</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Interviewer</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <span style="background-color: #fff7ed; color: #c2410c; padding: 0.25rem 0.5rem; border-radius: 100px; font-size: 0.85rem;">Limité</span>
-                                    </td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">Hier à 16:30</td>
-                                    <td style="padding: 1rem; border-bottom: 1px solid #f1f5f9;">
-                                        <div style="display: flex; gap: 0.5rem;">
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn-icon btn-sm" style="width: 32px; height: 32px;">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div style="margin-top: 2rem;">
-                        <div class="section-header">
-                            <h3>Rôles et permissions</h3>
-                            <p>Configurez les niveaux d'accès et les autorisations pour chaque rôle.</p>
-                        </div>
-                        
-                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem;">
-                            <div style="background-color: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 1.5rem;">
-                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-                                    <div style="width: 40px; height: 40px; border-radius: 8px; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                                        <i class="fas fa-user-shield"></i>
-                                    </div>
-                                    <div style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Admin</div>
-                                </div>
-                                <div style="margin-bottom: 1.5rem;">
-                                    <div style="color: var(--text); font-size: 0.95rem; line-height: 1.5;">Accès complet à toutes les fonctionnalités du système de recrutement.</div>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-check" style="color: #10b981;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Gestion des offres d'emploi</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-check" style="color: #10b981;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Gestion des candidats</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-check" style="color: #10b981;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Gestion de l'équipe RH</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-check" style="color: #10b981;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Configuration du système</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-check" style="color: #10b981;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Rapports et statistiques</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div style="background-color: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 1.5rem;">
-                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-                                    <div style="width: 40px; height: 40px; border-radius: 8px; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                                        <i class="fas fa-user-tie"></i>
-                                    </div>
-                                    <div style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Recruteur</div>
-                                </div>
-                                <div style="margin-bottom: 1.5rem;">
-                                    <div style="color: var(--text); font-size: 0.95rem; line-height: 1.5;">Gestion complète du processus de recrutement sans accès administratif.</div>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-check" style="color: #10b981;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Gestion des offres d'emploi</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-check" style="color: #10b981;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Gestion des candidats</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-times" style="color: #ef4444;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Gestion de l'équipe RH</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-times" style="color: #ef4444;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Configuration du système</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-check" style="color: #10b981;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Rapports et statistiques</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div style="background-color: white; border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 1.5rem;">
-                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-                                    <div style="width: 40px; height: 40px; border-radius: 8px; background-color: #f0f9ff; color: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-                                        <i class="fas fa-user"></i>
-                                    </div>
-                                    <div style="font-weight: 600; color: var(--dark); font-size: 1.1rem;">Interviewer</div>
-                                </div>
-                                <div style="margin-bottom: 1.5rem;">
-                                    <div style="color: var(--text); font-size: 0.95rem; line-height: 1.5;">Accès limité pour les membres techniques qui réalisent les entretiens.</div>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-times" style="color: #ef4444;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Gestion des offres d'emploi</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-check" style="color: #10b981;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Affichage des profils candidats</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-check" style="color: #10b981;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Évaluation des candidats</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-times" style="color: #ef4444;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Gestion de l'équipe RH</span>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                        <i class="fas fa-times" style="color: #ef4444;"></i>
-                                        <span style="color: var(--text); font-size: 0.95rem;">Rapports et statistiques</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>        </main>
-    </div>
+            </div>
+        </div>
+    </section>
 
     <footer>
-        <!-- Le footer sera chargé par JavaScript -->
+        <div class="container">
+            <p>&copy; 2025 Nexten - Tous droits réservés</p>
+        </div>
     </footer>
 
-    <script src="../components/header.js"></script>
-    <script src="../components/footer.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Gestion des onglets de la navigation principale
-            const sidebarLinks = document.querySelectorAll('.sidebar-link[data-tab]');
-            const dashboardTabs = document.querySelectorAll('.dashboard-tab');
-            const sections = document.querySelectorAll('.dashboard-section');
+            // Vérifier le flux d'arrivée de l'utilisateur (avec ou sans poste à pourvoir)
+            const recruitmentFlow = localStorage.getItem('recruiterFlow') || '';
             
-            // Fonction pour activer un onglet et sa section
-            function activateTab(tabId) {
-                // Désactiver tous les onglets et sections
-                sidebarLinks.forEach(link => link.classList.remove('active'));
-                dashboardTabs.forEach(tab => tab.classList.remove('active'));
-                sections.forEach(section => section.classList.remove('active'));
-                
-                // Activer l'onglet correspondant dans la sidebar
-                const sidebarLink = document.querySelector(`.sidebar-link[data-tab="${tabId}"]`);
-                if (sidebarLink) {
-                    sidebarLink.classList.add('active');
+            // Si l'utilisateur vient de confirmer une sélection de candidats, mettre à jour l'interface
+            const selectedCandidatesData = localStorage.getItem('selectedCandidates');
+            if (selectedCandidatesData) {
+                const selectedCandidates = JSON.parse(selectedCandidatesData);
+                const candidateCount = document.querySelector('.job-count');
+                if (candidateCount) {
+                    candidateCount.textContent = `${selectedCandidates.length} candidats sélectionnés`;
                 }
                 
-                // Activer l'onglet correspondant dans les tabs mobiles
-                const dashboardTab = document.querySelector(`.dashboard-tab[data-tab="${tabId}"]`);
-                if (dashboardTab) {
-                    dashboardTab.classList.add('active');
-                }
+                // Afficher une notification de succès
+                showNotification('Candidats ajoutés à votre sélection', 'Vos candidats sélectionnés ont été ajoutés à votre tableau de bord.');
                 
-                // Activer la section correspondante
-                const section = document.getElementById(tabId);
-                if (section) {
-                    section.classList.add('active');
-                }
+                // Effacer les données pour éviter de réafficher la notification au rechargement
+                localStorage.removeItem('selectedCandidates');
             }
             
-            // Gestion des clics sur les liens de la sidebar
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const tabId = this.getAttribute('data-tab');
-                    activateTab(tabId);
-                });
-            });
+            // Afficher un message d'accueil si l'utilisateur vient du flux "pas de poste à pourvoir"
+            if (recruitmentFlow === 'noJob') {
+                showNotification('Bienvenue dans votre espace recruteur', 'Vous pouvez maintenant explorer les profils disponibles et créer de nouvelles offres d\'emploi.');
+                localStorage.removeItem('recruiterFlow');
+            }
             
-            // Gestion des clics sur les tabs mobiles
-            dashboardTabs.forEach(tab => {
+            // Gestion des onglets
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const tabId = this.getAttribute('data-tab');
-                    activateTab(tabId);
+                    
+                    // Désactiver tous les onglets et contenus
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Activer l'onglet sélectionné et son contenu
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
                 });
             });
             
-            // Gestion des liens vers d'autres onglets dans les cartes
-            const cardActions = document.querySelectorAll('.card-action[data-tab]');
-            cardActions.forEach(action => {
-                action.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const tabId = this.getAttribute('data-tab');
-                    activateTab(tabId);
-                });
-            });
-            
-            // Gestion du bouton de menu mobile
-            const mobileMenuBtn = document.createElement('button');
-            mobileMenuBtn.className = 'mobile-menu-btn';
-            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-            mobileMenuBtn.style.position = 'fixed';
-            mobileMenuBtn.style.top = '85px';
-            mobileMenuBtn.style.left = '15px';
-            mobileMenuBtn.style.width = '40px';
-            mobileMenuBtn.style.height = '40px';
-            mobileMenuBtn.style.borderRadius = '50%';
-            mobileMenuBtn.style.backgroundColor = 'white';
-            mobileMenuBtn.style.boxShadow = 'var(--shadow-md)';
-            mobileMenuBtn.style.border = 'none';
-            mobileMenuBtn.style.display = 'none';
-            mobileMenuBtn.style.alignItems = 'center';
-            mobileMenuBtn.style.justifyContent = 'center';
-            mobileMenuBtn.style.cursor = 'pointer';
-            mobileMenuBtn.style.zIndex = '1000';
-            mobileMenuBtn.style.color = 'var(--primary)';
-            document.body.appendChild(mobileMenuBtn);
-            
-            mobileMenuBtn.addEventListener('click', function() {
-                const sidebar = document.querySelector('.sidebar');
-                sidebar.classList.toggle('open');
-            });
-            
-            // Gestion de l'affichage (cartes/tableau) dans l'onglet Candidats
+            // Gestion des options d'affichage (cartes/tableau)
             const viewOptions = document.querySelectorAll('.view-option');
-            if (viewOptions.length > 0) {
-                const candidatesGrid = document.querySelector('.candidates-grid');
-                const candidatesTable = document.querySelector('.candidates-table');
-                
-                if (candidatesGrid && candidatesTable) {
-                    viewOptions.forEach(option => {
-                        option.addEventListener('click', function() {
-                            const view = this.getAttribute('data-view');
-                            
-                            // Désactiver toutes les options
-                            viewOptions.forEach(o => o.classList.remove('active'));
-                            
-                            // Activer l'option sélectionnée
-                            this.classList.add('active');
-                            
-                            // Afficher la vue correspondante
-                            if (view === 'grid') {
-                                candidatesGrid.style.display = 'grid';
-                                candidatesTable.style.display = 'none';
-                            } else if (view === 'list') {
-                                candidatesGrid.style.display = 'none';
-                                candidatesTable.style.display = 'table';
-                            }
-                        });
-                    });
-                }
-            }
+            const candidatesGrid = document.querySelector('.candidates-grid');
+            const candidatesTable = document.querySelector('.candidates-table');
             
-            // Gestion de la responsivité
-            function handleResponsiveLayout() {
-                const mobileBreakpoint = 991;
-                
-                if (window.innerWidth <= mobileBreakpoint) {
-                    mobileMenuBtn.style.display = 'flex';
-                } else {
-                    mobileMenuBtn.style.display = 'none';
-                    document.querySelector('.sidebar').classList.remove('open');
-                }
-            }
-            
-            // Appel initial
-            handleResponsiveLayout();
-            
-            // Écouter les changements de taille de fenêtre
-            window.addEventListener('resize', handleResponsiveLayout);
+            viewOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const view = this.getAttribute('data-view');
+                    
+                    // Désactiver toutes les options
+                    viewOptions.forEach(o => o.classList.remove('active'));
+                    
+                    // Activer l'option sélectionnée
+                    this.classList.add('active');
+                    
+                    // Afficher la vue correspondante
+                    if (view === 'grid') {
+                        candidatesGrid.style.display = 'grid';
+                        candidatesTable.style.display = 'none';
+                    } else if (view === 'list') {
+                        candidatesGrid.style.display = 'none';
+                        candidatesTable.style.display = 'table';
+                    }
+                });
+            });
         });
+        
+        // Fonction pour afficher une notification
+        function showNotification(title, message) {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = 'white';
+            notification.style.boxShadow = 'var(--shadow-lg)';
+            notification.style.borderRadius = 'var(--radius)';
+            notification.style.padding = '1rem';
+            notification.style.zIndex = '1000';
+            notification.style.minWidth = '300px';
+            notification.style.maxWidth = '400px';
+            notification.style.transform = 'translateY(100px)';
+            notification.style.opacity = '0';
+            notification.style.transition = 'all 0.3s ease';
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: flex-start;">
+                    <div style="color: var(--primary); font-size: 1.5rem; margin-right: 1rem;">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 0.3rem; color: var(--dark);">${title}</div>
+                        <div style="font-size: 0.95rem; color: var(--text);">${message}</div>
+                    </div>
+                    <div style="margin-left: 1rem; cursor: pointer; color: var(--text);" onclick="this.parentNode.parentNode.remove()">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animer l'apparition
+            setTimeout(() => {
+                notification.style.transform = 'translateY(0)';
+                notification.style.opacity = '1';
+            }, 100);
+            
+            // Auto-effacement après 5 secondes
+            setTimeout(() => {
+                notification.style.transform = 'translateY(100px)';
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 5000);
+        }
     </script>
 </body>
 </html>
