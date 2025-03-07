@@ -1024,7 +1024,48 @@
                 candidateData.questionnaireCompleted = true;
                 candidateData.timestamp = new Date().toISOString();
                 
-                // Sauvegarder l'état final
+                // Essayer d'utiliser le parser avancé si disponible
+                try {
+                    // Appel à l'API de parsing (avec fallback en cas d'échec)
+                    fetch('http://localhost:3000/api/process-candidate', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(candidateData),
+                        // Timeout après 3 secondes pour éviter de bloquer le processus
+                        signal: AbortSignal.timeout(3000)
+                    })
+                    .then(response => response.json())
+                    .then(parsedData => {
+                        console.log('Données analysées par le parser avancé:', parsedData);
+                        
+                        // Conserver les données originales et ajouter les données parsées
+                        candidateData.parsedData = parsedData.parsedData;
+                        candidateData.dataQuality = parsedData.parsedData.metadata.dataQuality;
+                        candidateData.matchingTags = parsedData.parsedData.tags;
+                        
+                        // Sauvegarder les données enrichies
+                        localStorage.setItem('candidateData', JSON.stringify(candidateData));
+                        
+                        // Rediriger vers la page de confirmation
+                        window.location.href = 'candidate-dashboard.html';
+                    })
+                    .catch(error => {
+                        console.warn('Erreur avec le parser avancé, utilisation du parser standard:', error);
+                        // Continuer avec le parser standard en cas d'erreur
+                        continueParsing(candidateData);
+                    });
+                } catch (error) {
+                    console.warn('Le parser avancé n\'est pas disponible:', error);
+                    // Continuer avec le parser standard
+                    continueParsing(candidateData);
+                }
+            }
+            
+            // Fonction pour continuer le traitement avec le parser standard
+            function continueParsing(candidateData) {
+                // Sauvegarder l'état final avec le parser standard
                 localStorage.setItem('candidateData', JSON.stringify(candidateData));
                 
                 // Rediriger vers la page de confirmation

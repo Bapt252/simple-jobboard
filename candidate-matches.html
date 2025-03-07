@@ -742,14 +742,49 @@
             existingCards.forEach(card => card.remove());
             
             // Collecter les informations pertinentes du candidat pour le matching
-            const candidateSkills = cvData.skills || [];
-            const desiredJobTitles = questionnaireData["job-titles"] || [];
-            const preferredLocation = (questionnaireData.address || "").includes("Paris") ? "Paris" : 
+            // Vérifier si nous avons des données enrichies par le parser avancé
+            const hasEnrichedData = candidateData.parsedData && candidateData.matchingTags;
+            
+            let candidateSkills = [];
+            let preferredLocation = "France";
+            let salaryRange = "";
+            let workspaceType = "";
+            
+            if (hasEnrichedData) {
+                console.log("Utilisation des données enrichies par le parser avancé");
+                // Utiliser les données normalisées du parser avancé
+                const parsedData = candidateData.parsedData;
+                
+                // Récupérer les compétences normalisées
+                candidateSkills = parsedData.skills?.normalized?.technicalSkills || cvData.skills || [];
+                
+                // Récupérer la localisation
+                preferredLocation = parsedData.jobPreferences?.normalized?.location || 
+                                  ((questionnaireData.address || "").includes("Paris") ? "Paris" : 
+                                   (questionnaireData.address || "").includes("Lyon") ? "Lyon" :
+                                   (questionnaireData.address || "").includes("Marseille") ? "Marseille" : "France");
+                
+                // Récupérer le salaire
+                const salaryData = parsedData.jobPreferences?.normalized?.salaryExpectation || {};
+                salaryRange = salaryData.min && salaryData.max ? 
+                            `${salaryData.min/1000}-${salaryData.max/1000}k` : 
+                            questionnaireData["salary-range"] || "";
+                
+                // Récupérer la préférence de travail
+                workspaceType = parsedData.jobPreferences?.normalized?.remotePreference || 
+                              questionnaireData["workspace-type"] || "";
+            } else {
+                // Fallback sur les données standards
+                candidateSkills = cvData.skills || [];
+                preferredLocation = (questionnaireData.address || "").includes("Paris") ? "Paris" : 
                                     (questionnaireData.address || "").includes("Lyon") ? "Lyon" :
                                     (questionnaireData.address || "").includes("Marseille") ? "Marseille" : "France";
-            const salaryRange = questionnaireData["salary-range"] || "";
+                salaryRange = questionnaireData["salary-range"] || "";
+                workspaceType = questionnaireData["workspace-type"] || "";
+            }
+            
+            const desiredJobTitles = questionnaireData["job-titles"] || [];
             const commuteTime = questionnaireData["commute-time"] || "30 min";
-            const workspaceType = questionnaireData["workspace-type"] || "";
             const preferredSectors = questionnaireData["preferred-sectors"] || [];
             
             // Liste fictive d'offres d'emploi
