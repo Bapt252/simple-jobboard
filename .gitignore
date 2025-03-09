@@ -14,3 +14,4 @@ venv/
 # 🚫 Ignorer les fichiers temporaires et sauvegardes
 *.swp
 *.swo
+tmp-simple-jobboard/
