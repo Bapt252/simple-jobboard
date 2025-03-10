@@ -4,512 +4,266 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexten - Plateforme de recrutement simplifiée</title>
-    <link rel="stylesheet" href="styles/styles.css">
+    <!-- Liens CSS externes -->
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #6366F1;
-            --primary-dark: #4F46E5;
-            --secondary: #8B5CF6;
-            --accent: #C4B5FD;
-            --light-bg: #F3F4F6;
-            --dark: #1F2937;
-            --text: #4B5563;
-            --radius: 0.5rem;
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            color: var(--text);
-            background-color: #fff;
-        }
-        
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-        
-        header .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-        }
-        
-        .hero {
-            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-            min-height: 500px;
-            display: flex;
-            align-items: center;
-            position: relative;
-            padding-top: 6rem;
-            overflow: hidden;
-        }
-        
-        .hero::before, .hero::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .hero::before {
-            top: -10%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-        }
-        
-        .hero::after {
-            bottom: -10%;
-            left: -10%;
-            width: 400px;
-            height: 400px;
-        }
-        
-        .hero .container {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .hero h2 {
-            color: white;
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            max-width: 800px;
-        }
-        
-        .hero-subtitle {
-            color: white;
-            font-size: 1.25rem;
-            margin-bottom: 2.5rem;
-            max-width: 700px;
-            opacity: 0.9;
-        }
-        
-        .search-bar {
-            background-color: white;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
-            display: flex;
-            overflow: hidden;
-            width: 100%;
-            max-width: 800px;
-        }
-        
-        .search-bar input {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border: none;
-            outline: none;
-            font-size: 1rem;
-        }
-        
-        .search-bar select {
-            padding: 1rem;
-            border: none;
-            outline: none;
-            border-left: 1px solid #e2e8f0;
-            font-size: 1rem;
-            background-color: #f8fafc;
-            min-width: 180px;
-        }
-        
-        .search-bar button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 1rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .btn-primary {
-            background-color: white;
-            color: var(--primary);
-            padding: 1rem 2rem;
-            border-radius: var(--radius);
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            display: inline-block;
-        }
-        
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: var(--radius);
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            display: inline-block;
-            backdrop-filter: blur(5px);
-        }
-        
-        .user-types {
-            padding: 5rem 0;
-            background-color: #fff;
-        }
-        
-        .section-title {
-            text-align: center;
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1rem;
-        }
-        
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.1rem;
-            color: var(--text);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            line-height: 1.6;
-        }
-        
-        .user-types-container {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .user-type-card {
-            background-color: white;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            padding: 2.5rem;
-            width: 320px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .user-type-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-        }
-        
-        .top-10-badge {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 0.9rem;
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
-            transform: rotate(10deg);
-            z-index: 1;
-        }
-        
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .float {
-            animation: float 4s ease-in-out infinite;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-        
-        .feature-card {
-            background-color: white;
-            border-radius: 1rem;
-            padding: 2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
-        
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        @media (max-width: 991px) {
-            .hero h2 {
-                font-size: 2.5rem;
-            }
-            
-            .search-bar {
-                flex-direction: column;
-                width: 100%;
-            }
-        }
-        
-        @media (max-width: 767px) {
-            header .container {
-                flex-direction: column;
-                padding-top: 1rem;
-                gap: 1rem;
-            }
-            
-            .hero {
-                padding-top: 8rem;
-            }
-        }
-    </style>
 </head>
 <body>
     <header>
         <div class="container">
             <h1>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" style="height: 40px; margin-right: 5px;">
-                  <defs>
-                    <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stop-color="#6366F1" />
-                      <stop offset="100%" stop-color="#8B5CF6" />
-                    </linearGradient>
-                  </defs>
-                  <path d="M20,10 L30,10 L30,40 L20,40 L20,25 L10,40 L0,40 L0,10 L10,10 L10,25 Z" fill="url(#logo-gradient)"/>
-                  <text x="35" y="32" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#374151">exten</text>
-                  <circle cx="180" cy="15" r="12" fill="url(#logo-gradient)" opacity="0.2"/>
-                  <text x="173" y="20" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#6366F1">10</text>
-                </svg>
+                <a href="index.html" class="logo-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" class="logo">
+                      <defs>
+                        <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                          <stop offset="0%" stop-color="#6366F1" />
+                          <stop offset="100%" stop-color="#8B5CF6" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M20,10 L30,10 L30,40 L20,40 L20,25 L10,40 L0,40 L0,10 L10,10 L10,25 Z" fill="url(#logo-gradient)"/>
+                      <text x="35" y="32" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#374151">exten</text>
+                      <circle cx="180" cy="15" r="12" fill="url(#logo-gradient)" opacity="0.2"/>
+                      <text x="173" y="20" font-family="Arial, sans-serif" font-weight="bold" font-size="12" fill="#6366F1">10</text>
+                    </svg>
+                </a>
             </h1>
-            <nav>
+            <nav class="main-nav">
                 <ul>
                     <li><a href="index.html" class="active">Accueil</a></li>
                     <li><a href="pages/post-job.html">Publier une offre</a></li>
                     <li><a href="pages/candidate-upload.html">Espace candidat</a></li>
                     <li><a href="pages/recruiter-dashboard.html">Espace recruteur</a></li>
                 </ul>
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
             </nav>
         </div>
     </header>
 
-    <section class="hero">
-        <!-- Éléments décoratifs -->
-        <div class="hero-decoration hero-decoration-1"></div>
-        <div class="hero-decoration hero-decoration-2"></div>
+    <main>
+        <section class="hero">
+            <div class="hero-decoration hero-decoration-1"></div>
+            <div class="hero-decoration hero-decoration-2"></div>
+            
+            <div class="container">
+                <h2>L'intelligence artificielle au service du recrutement</h2>
+                <p class="hero-subtitle">
+                    Notre approche unique : 10 offres ciblées pour les candidats, 10 candidats qualifiés pour les recruteurs.
+                </p>
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Rechercher par titre, entreprise ou compétence...">
+                    <select id="category-filter">
+                        <option value="">Toutes catégories</option>
+                        <option value="tech">Technologie</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="design">Design</option>
+                        <option value="sales">Ventes</option>
+                        <option value="other">Autre</option>
+                    </select>
+                    <button id="search-button" class="btn"><i class="fas fa-search"></i> Rechercher</button>
+                </div>
+            </div>
+        </section>
         
-        <div class="container">
-            <h2>L'intelligence artificielle au service du recrutement</h2>
-            <p class="hero-subtitle">
-                Notre approche unique : 10 offres ciblées pour les candidats, 10 candidats qualifiés pour les recruteurs.
-            </p>
-            <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Rechercher par titre, entreprise ou compétence...">
-                <select id="category-filter">
-                    <option value="">Toutes catégories</option>
-                    <option value="tech">Technologie</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="design">Design</option>
-                    <option value="sales">Ventes</option>
-                    <option value="other">Autre</option>
-                </select>
-                <button id="search-button" class="btn"><i class="fas fa-search"></i> Rechercher</button>
-            </div>
-        </div>
-    </section>
-    
-    <section class="user-types" style="padding: 3rem 0; background-color: var(--light-bg);">
-        <div class="container">
-            <h2 class="section-title">Une approche inédite</h2>
-            <p class="section-subtitle">
-                Notre plateforme change complètement la façon dont vous cherchez un emploi ou recrutez des talents.
-                Découvrez comment notre solution TOP 10 révolutionne le recrutement.
-            </p>
-            
-            <div class="user-types-container">
-                <div class="user-type-card float">
-                    <div class="top-10-badge">TOP 10</div>
-                    <div class="user-type-icon">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <h3 class="user-type-title">Je suis candidat</h3>
-                    <p class="user-type-description">
-                        Téléchargez votre CV et laissez notre IA vous recommander les 10 meilleures offres d'emploi
-                        correspondant parfaitement à votre profil et à vos aspirations.
-                    </p>
-                    <a href="pages/candidate-login.html" class="user-type-btn">Accéder à mon espace</a>
-                </div>
+        <section class="user-types">
+            <div class="container">
+                <h2 class="section-title">Une approche inédite</h2>
+                <p class="section-subtitle">
+                    Notre plateforme change complètement la façon dont vous cherchez un emploi ou recrutez des talents.
+                    Découvrez comment notre solution TOP 10 révolutionne le recrutement.
+                </p>
                 
-                <div class="user-type-card float" style="animation-delay: 0.5s;">
-                    <div class="top-10-badge">TOP 10</div>
-                    <div class="user-type-icon">
-                        <i class="fas fa-building"></i>
+                <div class="user-types-container">
+                    <div class="user-type-card float">
+                        <div class="top-10-badge">TOP 10</div>
+                        <div class="user-type-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3 class="user-type-title">Je suis candidat</h3>
+                        <p class="user-type-description">
+                            Téléchargez votre CV et laissez notre IA vous recommander les 10 meilleures offres d'emploi
+                            correspondant parfaitement à votre profil et à vos aspirations.
+                        </p>
+                        <a href="pages/candidate-login.html" class="user-type-btn">Accéder à mon espace</a>
                     </div>
-                    <h3 class="user-type-title">Je suis recruteur</h3>
-                    <p class="user-type-description">
-                        Publiez votre offre d'emploi et découvrez les 10 meilleurs profils correspondant
-                        exactement à vos besoins, pour un recrutement ciblé et efficace.
-                    </p>
-                    <a href="pages/recruiter-login.html" class="user-type-btn">Accéder à mon espace</a>
+                    
+                    <div class="user-type-card float" style="animation-delay: 0.5s;">
+                        <div class="top-10-badge">TOP 10</div>
+                        <div class="user-type-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3 class="user-type-title">Je suis recruteur</h3>
+                        <p class="user-type-description">
+                            Publiez votre offre d'emploi et découvrez les 10 meilleurs profils correspondant
+                            exactement à vos besoins, pour un recrutement ciblé et efficace.
+                        </p>
+                        <a href="pages/recruiter-login.html" class="user-type-btn">Accéder à mon espace</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="features" style="padding: 4rem 0;">
-        <div class="container">
-            <h2 class="section-title">Pourquoi choisir Nexten ?</h2>
-            <p class="section-subtitle">
-                Notre approche innovante vous permet de gagner du temps et d'améliorer la qualité de vos recrutements.
-            </p>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <h3>Intelligence Artificielle</h3>
-                    <p>Notre algorithme avancé analyse les CV et les offres d'emploi pour identifier les correspondances pertinentes.</p>
-                </div>
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Pourquoi choisir Nexten ?</h2>
+                <p class="section-subtitle">
+                    Notre approche innovante vous permet de gagner du temps et d'améliorer la qualité de vos recrutements.
+                </p>
                 
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-filter"></i>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>Intelligence Artificielle</h3>
+                        <p>Notre algorithme avancé analyse les CV et les offres d'emploi pour identifier les correspondances pertinentes.</p>
                     </div>
-                    <h3>Matching ciblé</h3>
-                    <p>Fini les centaines de résultats à trier. Nous vous proposons uniquement les 10 meilleures correspondances.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-clock"></i>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-filter"></i>
+                        </div>
+                        <h3>Matching ciblé</h3>
+                        <p>Fini les centaines de résultats à trier. Nous vous proposons uniquement les 10 meilleures correspondances.</p>
                     </div>
-                    <h3>Gain de temps</h3>
-                    <p>Notre système de parsing automatique extrait toutes les informations pertinentes de votre CV ou de votre offre.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bullseye"></i>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Gain de temps</h3>
+                        <p>Notre système de parsing automatique extrait toutes les informations pertinentes de votre CV ou de votre offre.</p>
                     </div>
-                    <h3>Précision</h3>
-                    <p>Notre technologie va au-delà des mots-clés pour comprendre le contexte et les compétences transférables.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-lock"></i>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>Précision</h3>
+                        <p>Notre technologie va au-delà des mots-clés pour comprendre le contexte et les compétences transférables.</p>
                     </div>
-                    <h3>Confidentialité</h3>
-                    <p>Vos données sont sécurisées et ne sont utilisées que pour améliorer la qualité de nos matchings.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-headset"></i>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3>Confidentialité</h3>
+                        <p>Vos données sont sécurisées et ne sont utilisées que pour améliorer la qualité de nos matchings.</p>
                     </div>
-                    <h3>Support personnalisé</h3>
-                    <p>Notre équipe est disponible pour vous accompagner dans votre recherche d'emploi ou de candidats.</p>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3>Support personnalisé</h3>
+                        <p>Notre équipe est disponible pour vous accompagner dans votre recherche d'emploi ou de candidats.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <section style="padding: 4rem 0; background-color: var(--light-bg);">
+        </section>
+        
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title">Comment ça marche ?</h2>
+                
+                <div class="progress-steps">
+                    <div class="step active">
+                        <div class="step-circle">1</div>
+                        <div class="step-text">Téléchargez votre CV ou publiez votre offre</div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-circle">2</div>
+                        <div class="step-text">Notre IA analyse votre contenu</div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-circle">3</div>
+                        <div class="step-text">Découvrez vos matchings personnalisés</div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-circle">4</div>
+                        <div class="step-text">Entrez en contact directement</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Téléchargez votre CV ou publiez votre offre</h3>
+                    <p>En quelques clics, importez votre CV ou créez votre offre d'emploi sur notre plateforme. Notre processus simple et intuitif vous permet de commencer en moins de 5 minutes.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="job-listings">
+            <div class="container">
+                <h2 class="section-title">Offres d'emploi récentes</h2>
+                <div id="jobs-container" class="jobs-grid"></div>
+                
+                <div class="pagination">
+                    <button id="load-more" class="btn btn-secondary">Voir plus d'offres</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
         <div class="container">
-            <h2 class="section-title">Comment ça marche ?</h2>
-            
-            <div class="progress-steps">
-                <div class="step active">
-                    <div class="step-circle">1</div>
-                    <div class="step-text">Téléchargez votre CV ou publiez votre offre</div>
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50" class="logo">
+                      <use href="#logo-gradient"></use>
+                      <path d="M20,10 L30,10 L30,40 L20,40 L20,25 L10,40 L0,40 L0,10 L10,10 L10,25 Z" fill="url(#logo-gradient)"/>
+                      <text x="35" y="32" font-family="Arial, sans-serif" font-weight="bold" font-size="24" fill="#ffffff">exten</text>
+                    </svg>
                 </div>
                 
-                <div class="step">
-                    <div class="step-circle">2</div>
-                    <div class="step-text">Notre IA analyse votre contenu</div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-circle">3</div>
-                    <div class="step-text">Découvrez vos matchings personnalisés</div>
-                </div>
-                
-                <div class="step">
-                    <div class="step-circle">4</div>
-                    <div class="step-text">Entrez en contact directement</div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Plateforme</h4>
+                        <ul>
+                            <li><a href="index.html">Accueil</a></li>
+                            <li><a href="pages/post-job.html">Publier une offre</a></li>
+                            <li><a href="pages/jobs.html">Offres d'emploi</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Entreprise</h4>
+                        <ul>
+                            <li><a href="pages/about.html">À propos</a></li>
+                            <li><a href="pages/contact.html">Contact</a></li>
+                            <li><a href="pages/blog.html">Blog</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Légal</h4>
+                        <ul>
+                            <li><a href="pages/privacy.html">Confidentialité</a></li>
+                            <li><a href="pages/terms.html">Conditions d'utilisation</a></li>
+                            <li><a href="pages/cookies.html">Cookies</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             
-            <div class="card">
-                <h3>Téléchargez votre CV ou publiez votre offre</h3>
-                <p>En quelques clics, importez votre CV ou créez votre offre d'emploi sur notre plateforme. Notre processus simple et intuitif vous permet de commencer en moins de 5 minutes.</p>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Nexten - Tous droits réservés</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <section class="job-listings">
-        <div class="container">
-            <h2>Offres d'emploi récentes</h2>
-            <div id="jobs-container"></div>
-        </div>
-    </section>
-
-    <div class="pagination">
-        <div class="container">
-            <button id="load-more" class="btn btn-secondary">Voir plus d'offres</button>
-        </div>
-    </div>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Nexten - Tous droits réservés</p>
         </div>
     </footer>
 
-    <script src="services/app.js"></script>
-    <script src="components/header.js"></script>
-    <script src="components/footer.js"></script>
+    <!-- Scripts JS -->
+    <script src="js/app.js"></script>
+    <script src="js/components/header.js"></script>
+    <script src="js/components/jobListing.js"></script>
 </body>
 </html>
